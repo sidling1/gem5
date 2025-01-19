@@ -41,6 +41,14 @@ def define_options(parser):
     parser.set_defaults(cpu_type="X86TimingSimpleCPU")
 
     parser.add_argument(
+        "--test-variable",
+        action="store",
+        type=int,
+        default=10,
+        help="Test variable for command-line options",
+    )
+
+    parser.add_argument(
         "--topology",
         type=str,
         default="Crossbar",
@@ -172,6 +180,7 @@ def init_network(options, network, InterfaceClass):
         network.ni_flit_size = options.link_width_bits / 8
         network.routing_algorithm = options.routing_algorithm
         network.garnet_deadlock_threshold = options.garnet_deadlock_threshold
+        network.test_variable = options.test_variable
 
         # Create Bridges and connect them to the corresponding links
         for intLink in network.int_links:

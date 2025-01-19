@@ -72,10 +72,17 @@ InputUnit::InputUnit(int id, PortDirection direction, Router *router)
  * and marked as valid for SwitchAllocation starting that cycle.
  *
  */
+static bool isprinted=false;
 
 void
 InputUnit::wakeup()
 {
+    if (!isprinted){
+        isprinted=true;
+        int testvar = m_router->get_net_ptr()->get_test_variable();
+        std::cout << "Test Var " << testvar << std::endl;
+    }
+
     flit *t_flit;
     if (m_in_link->isReady(curTick())) {
 

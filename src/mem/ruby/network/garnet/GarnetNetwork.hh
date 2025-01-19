@@ -65,6 +65,8 @@ class GarnetNetwork : public Network
     GarnetNetwork(const Params &p);
     ~GarnetNetwork() = default;
 
+    int get_test_variable(){ return m_test_variable;}
+
     void init();
 
     const char *garnetVersion = "3.0";

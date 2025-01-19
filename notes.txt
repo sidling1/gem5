@@ -1,0 +1,2 @@
+- Set the number of L2 caches properly, otherwise there will be assetion errors that are hard to debug
+https://gem5-users.gem5.narkive.com/NBb4tEiw/network-mesh-topology-not-working

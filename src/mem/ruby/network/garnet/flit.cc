@@ -46,6 +46,8 @@ namespace garnet
 flit::flit(int packet_id, int id, int  vc, int vnet, RouteInfo route, int size,
     MsgPtr msg_ptr, int MsgSize, uint32_t bWidth, Tick curTime)
 {
+    // std::cout << "Flit created for packet " << packet_id << std::endl;
+
     m_size = size;
     m_msg_ptr = msg_ptr;
     m_enqueue_time = curTime;

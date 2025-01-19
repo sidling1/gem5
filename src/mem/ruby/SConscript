@@ -52,6 +52,8 @@ Import('*')
 if not env['CONF']['RUBY']:
     Return()
 
+# DebugFlag('RouterDebug')
+
 DebugFlag('ProtocolTrace')
 DebugFlag('RubyCache')
 DebugFlag('RubyCacheTrace')

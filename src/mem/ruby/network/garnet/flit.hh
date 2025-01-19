@@ -115,6 +115,16 @@ class flit
 
     uint32_t m_width;
     int msgSize;
+
+    // new functions
+    void add_to_route(int x){m_path_traversed.push_back(x);}
+    void print_route(){
+        for (int i=0;i<m_path_traversed.size();i++){
+            std::cout << m_path_traversed[i];
+            if (i != m_path_traversed.size()-1)std::cout << " -> ";
+        }
+        std::cout << std::endl;
+    }
   protected:
     int m_packet_id;
     int m_id;
@@ -129,6 +139,9 @@ class flit
     int m_outport;
     Tick src_delay;
     std::pair<flit_stage, Tick> m_stage;
+
+    // extra information
+    std::vector<int> m_path_traversed;
 };
 
 inline std::ostream&

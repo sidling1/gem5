@@ -153,6 +153,7 @@ class Network : public ClockedObject
     RubySystem *getRubySystem() const { return m_ruby_system; }
 
   protected:
+    int m_test_variable;
     // Private copy constructor and assignment operator
     Network(const Network& obj);
     Network& operator=(const Network& obj);

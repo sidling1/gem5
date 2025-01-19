@@ -168,6 +168,17 @@ OutputUnit::set_credit_link(CreditLink *credit_link)
 void
 OutputUnit::insert_flit(flit *t_flit)
 {
+    // insert current router information into the flit header if the flit type is Head
+    if (t_flit->get_type() == flit_type::HEAD_ || t_flit->get_type() == flit_type::HEAD_TAIL_){
+        t_flit->add_to_route(m_router->get_id());
+
+        // Print the final route that the flit has travelled
+        if (t_flit->get_route().dest_router == m_router->get_id()){
+            t_flit->print_route();
+        }
+    }
+
+
     outBuffer.insert(t_flit);
     m_out_link->scheduleEventAbsolute(m_router->clockEdge(Cycles(1)));
 }

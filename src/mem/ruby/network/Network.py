@@ -40,6 +40,8 @@ class RubyNetwork(ClockedObject):
         "Not Specified", "the name of the imported topology module"
     )
 
+    test_variable = Param.Int(8, "test variable")
+
     number_of_virtual_networks = Param.Unsigned(
         "Number of virtual networks "
         "used by the coherence protocol in use.  The on-chip network "

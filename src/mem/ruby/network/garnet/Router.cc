@@ -64,6 +64,9 @@ Router::init()
 {
     BasicRouter::init();
 
+    // DPRINTF(RouterDebug, "Router %d initialized", m_id);
+    // std::cout << "Router" << m_id << " Woke up\n";
+
     switchAllocator.init();
     crossbarSwitch.init();
 }
@@ -73,6 +76,8 @@ Router::wakeup()
 {
     DPRINTF(RubyNetwork, "Router %d woke up\n", m_id);
     assert(clockEdge() == curTick());
+
+    // std::cout << "Router" << m_id << " Woke up\n";
 
     // check for incoming flits
     for (int inport = 0; inport < m_input_unit.size(); inport++) {
