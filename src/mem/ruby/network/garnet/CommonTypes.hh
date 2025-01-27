@@ -46,7 +46,7 @@ namespace garnet
 
 enum flit_type {HEAD_, BODY_, TAIL_, HEAD_TAIL_,
                 CREDIT_, NUM_FLIT_TYPE_};
-enum VC_state_type {IDLE_, VC_AB_, ACTIVE_, NUM_VC_STATE_TYPE_};
+enum VC_state_type {IDLE_, VC_AB_, ACTIVE_, NUM_VC_STATE_TYPE_, BUSY_STORE_};
 enum VNET_type {CTRL_VNET_, DATA_VNET_, NULL_VNET_, NUM_VNET_TYPE_};
 enum flit_stage {I_, VA_, SA_, ST_, LT_, NUM_FLIT_STAGE_};
 enum link_type { EXT_IN_, EXT_OUT_, INT_, NUM_LINK_TYPES_ };

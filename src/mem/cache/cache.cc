@@ -196,7 +196,7 @@ Cache::doWritebacks(PacketList& writebacks, Tick forward_time)
 
         // Call isCachedAbove for Writebacks, CleanEvicts and
         // WriteCleans to discover if the block is cached above.
-        if (isCachedAbove(wbPkt)) {
+        if (isCachedAbove(wbPkt)) { // This means that it is cached in the higher levels ( L1 is the highest level )( what if called from the highest level ? )
             if (wbPkt->cmd == MemCmd::CleanEvict) {
                 // Delete CleanEvict because cached copies exist above. The
                 // packet destructor will delete the request object because

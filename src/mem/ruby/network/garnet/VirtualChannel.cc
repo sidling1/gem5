@@ -67,6 +67,9 @@ VirtualChannel::set_active(Tick curTime)
 bool
 VirtualChannel::need_stage(flit_stage stage, Tick time)
 {
+    if(m_vc_state.first == BUSY_STORE_){
+        return false; // Not in any stage
+    }
     if (inputBuffer.isReady(time)) {
         assert(m_vc_state.first == ACTIVE_ && m_vc_state.second <= time);
         flit *t_flit = inputBuffer.peekTopFlit();

@@ -43,8 +43,9 @@ namespace garnet
 {
 
 // Constructor for the flit
+// Is this correct ?????????????
 flit::flit(int packet_id, int id, int  vc, int vnet, RouteInfo route, int size,
-    MsgPtr msg_ptr, int MsgSize, uint32_t bWidth, Tick curTime)
+    MsgPtr msg_ptr, int MsgSize, uint32_t bWidth, Tick curTime, bool isStore, bool isReadReq, bool isWriteReq)
 {
     m_size = size;
     m_msg_ptr = msg_ptr;
@@ -60,6 +61,9 @@ flit::flit(int packet_id, int id, int  vc, int vnet, RouteInfo route, int size,
     m_stage.second = curTime;
     m_width = bWidth;
     msgSize = MsgSize;
+    m_isStore = isStore;
+    m_isReadReq = isReadReq;
+    m_isWriteReq = isWriteReq;
 
     if (size == 1) {
         m_type = HEAD_TAIL_;

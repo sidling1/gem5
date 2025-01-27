@@ -73,16 +73,91 @@ InputUnit::InputUnit(int id, PortDirection direction, Router *router)
  *
  */
 
+void InputUnit::handleLocalReply(flit* t_flit){
+    // std::cout << "Handling Local Reply, will try to get the flit out of the VC !" << std::endl;
+    // How to check if the flit has the data we are looking for ?
+    // Lets say the flit has a msg_ptr and the msg_ptr type is RequestMsg
+    // It has a DataBlock
+    // Now we need to check if the address that we had is present in this Datablock ?
+    Addr req = t_flit->get_msg_ptr()->get_physical_address();
+
+    for(auto vc : m_vc_as_cache){
+        if(vc >= virtualChannels.size()) continue;
+
+        flit* vc_flit = virtualChannels[vc].getTopFlit();
+        if(vc_flit == nullptr){
+            continue;
+        }
+        MsgPtr& vc_msg = vc_flit->get_msg_ptr();
+        std::cout << "Finding in VC ( " << vc << " )" << std::endl;
+        if(req >= vc_msg->get_physical_address() && req <= vc_msg->get_physical_address() + (Addr)128){
+            std::cout << "Found the required address [" << req << "] inside the VC(" << vc << ") having address [" << vc_msg->get_physical_address() << "] and block size - " << 128 << std::endl;
+            return;
+        }
+    }
+}
+
 void
 InputUnit::wakeup()
 {
     flit *t_flit;
-    if (m_in_link->isReady(curTick())) {
+    // Consume the incoming link
+    // Now you have the flit for the peket, and you need to store this flit into the VC
+    // and just disable the SA and VA for this particular flit so that it keeps there in the 
+    // same router till the SA and VA are started again.
+    if(m_vc_per_vnet == m_vc_as_cache.size()){
+        // what is the logic? can i do all this in one curTick() ?
+        // this will only activate when some message is recieved, need to do something about it !!
+        std::cout << "All VC's of this router are full, emptying them" << std::endl;
+        for(auto vc : m_vc_as_cache){
+            assert(virtualChannels[vc].get_state() == BUSY_STORE_);
+            set_vc_active(vc, curTick());
+            assert(virtualChannels[vc].get_state() == ACTIVE_);
 
+            if(virtualChannels[vc].isReady(curTick())){
+                t_flit = virtualChannels[vc].getTopFlit();
+
+                assert(t_flit != nullptr);
+                assert(t_flit->m_isStore == true);
+
+                Cycles pipe_stages = m_router->get_pipe_stages();
+                if (pipe_stages == 1) {
+                    // 1-cycle router
+                    // Flit goes for SA directly
+                    t_flit->advance_stage(SA_, curTick());
+                } else {
+                    assert(pipe_stages > 1);
+                    // Router delay is modeled by making flit wait in buffer for
+                    // (pipe_stages cycles - 1) cycles before going for SA
+
+                    Cycles wait_time = pipe_stages - Cycles(1);
+                    t_flit->advance_stage(SA_, m_router->clockEdge(wait_time));
+
+                    // Wakeup the router in that cycle to perform SA
+                    m_router->schedule_wakeup(Cycles(wait_time));
+                }
+                t_flit->m_isStore = false;
+                std::cout << "Packet [ " << t_flit->getPacketID() << " ] removed from ( " << vc << " ) [ Router : " << m_router->get_id() << " ] and leaving for it's desired location !" << std::endl;
+            }
+        }
+        m_vc_as_cache.clear();
+        if (m_in_link->isReady(curTick())) {
+            m_router->schedule_wakeup(Cycles(1));
+        }
+        return;
+    }
+
+    if (m_in_link->isReady(curTick())) {
         t_flit = m_in_link->consumeLink();
+        
+        // if(t_flit->m_isReadReq || t_flit->m_isWriteReq){
+        //     handleLocalReply(t_flit);
+        // }
+
         DPRINTF(RubyNetwork, "Router[%d] Consuming:%s Width: %d Flit:%s\n",
         m_router->get_id(), m_in_link->name(),
         m_router->getBitWidth(), *t_flit);
+
         assert(t_flit->m_width == m_router->getBitWidth());
         int vc = t_flit->get_vc();
         t_flit->increment_hops(); // for stats
@@ -92,6 +167,10 @@ InputUnit::wakeup()
 
             assert(virtualChannels[vc].get_state() == IDLE_);
             set_vc_active(vc, curTick());
+
+            // Here the srfd unit will be active and check for the store flag
+            // and if the store flag is true, it wont get any outport
+
 
             // Route computation for this vc
             int outport = m_router->route_compute(t_flit->get_route(),
@@ -117,20 +196,31 @@ InputUnit::wakeup()
         m_num_buffer_reads[vnet]++;
 
         Cycles pipe_stages = m_router->get_pipe_stages();
-        if (pipe_stages == 1) {
-            // 1-cycle router
-            // Flit goes for SA directly
-            t_flit->advance_stage(SA_, curTick());
-        } else {
-            assert(pipe_stages > 1);
-            // Router delay is modeled by making flit wait in buffer for
-            // (pipe_stages cycles - 1) cycles before going for SA
+        // If the srfd unit says, then dont advance it for the further steps right ?
 
-            Cycles wait_time = pipe_stages - Cycles(1);
-            t_flit->advance_stage(SA_, m_router->clockEdge(wait_time));
+        // And also this has to be seen only when it is a data packet and nothing else
+        // how do i check if this is a data packet.
+        if(t_flit->m_isStore == false || t_flit->get_route().src_router != m_router->get_id() || m_vc_as_cache.size() == m_vc_per_vnet-1){
+            // It is not to be stored, hence continue with the next pipeline stage.
+            if (pipe_stages == 1) {
+                // 1-cycle router
+                // Flit goes for SA directly
+                t_flit->advance_stage(SA_, curTick());
+            } else {
+                assert(pipe_stages > 1);
+                // Router delay is modeled by making flit wait in buffer for
+                // (pipe_stages cycles - 1) cycles before going for SA
 
-            // Wakeup the router in that cycle to perform SA
-            m_router->schedule_wakeup(Cycles(wait_time));
+                Cycles wait_time = pipe_stages - Cycles(1);
+                t_flit->advance_stage(SA_, m_router->clockEdge(wait_time));
+
+                // Wakeup the router in that cycle to perform SA
+                m_router->schedule_wakeup(Cycles(wait_time));
+            }
+        }else{
+            m_vc_as_cache.insert(vc);
+            set_vc_busy_store(vc, curTick());
+            std::cout << "Packet [ " << t_flit->getPacketID() << " ] kept inside the VC ( " << vc << " ) [ Router : " << m_router->get_id() << " ] and wont go anywhere untill otherwise stated !" << std::endl;
         }
 
         if (m_in_link->isReady(curTick())) {

@@ -52,7 +52,7 @@ class flit
   public:
     flit() {}
     flit(int packet_id, int id, int vc, int vnet, RouteInfo route, int size,
-         MsgPtr msg_ptr, int MsgSize, uint32_t bWidth, Tick curTime);
+         MsgPtr msg_ptr, int MsgSize, uint32_t bWidth, Tick curTime, bool isStore=false, bool isReadReq=false, bool isWriteReq=false);
 
     virtual ~flit(){};
 
@@ -115,7 +115,11 @@ class flit
 
     uint32_t m_width;
     int msgSize;
-  protected:
+    bool m_isStore;
+    bool m_isReadReq;
+    bool m_isWriteReq;
+
+  protected: 
     int m_packet_id;
     int m_id;
     int m_vnet;

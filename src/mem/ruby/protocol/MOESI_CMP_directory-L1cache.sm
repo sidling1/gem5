@@ -127,6 +127,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
   structure(Entry, desc="...", interface="AbstractCacheEntry") {
     State CacheState,        desc="cache state";
     bool Dirty,              desc="Is the data dirty (different than memory)?";
+    bool Store,  default="0",     desc="Is the data supposed to be stored in VC ? (our optimization)";
     DataBlock DataBlk,       desc="data for the block";
   }
 
@@ -136,6 +137,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
     State TBEState,          desc="Transient state";
     DataBlock DataBlk,       desc="data for the block, required for concurrent writebacks";
     bool Dirty,              desc="Is the data dirty (different than memory)?";
+    bool Store,  default="0",            desc="Is the data supposed to be stored in VC ? (our optimization)";
     int NumPendingMsgs, default="0",     desc="Number of acks/data messages that this processor is waiting for";
   }
 
@@ -413,6 +415,8 @@ machine(MachineType:L1Cache, "L1 cache protocol")
                       in_msg.LineAddress, L1Icache_entry,
                       TBEs[in_msg.LineAddress]);
             } else {
+              // Something Interesting !!!
+
               // No room in the L1, so we need to make room in the L1
               // Check if the line we want to evict is not locked
               Addr addr := L1Icache.cacheProbe(in_msg.LineAddress);
@@ -422,6 +426,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
                       getL1ICacheEntry(addr),
                       TBEs[addr]);
             }
+            
           }
         } else {
           // *** DATA ACCESS ***
@@ -447,6 +452,8 @@ machine(MachineType:L1Cache, "L1 cache protocol")
                       in_msg.LineAddress, L1Dcache_entry,
                       TBEs[in_msg.LineAddress]);
             } else {
+              // Here also we have evictions so Something Interesting !!!
+
               // No room in the L1, so we need to make room in the L1
               // Check if the line we want to evict is not locked
               Addr addr := L1Dcache.cacheProbe(in_msg.LineAddress);
@@ -468,7 +475,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
   action(a_issueGETS, "a", desc="Issue GETS") {
     peek(mandatoryQueue_in, RubyRequest) {
       enqueue(requestNetwork_out, RequestMsg,  request_latency) {
-        out_msg.addr := address;
+        out_msg.addr := address; // Is this the address requested ? let's say this is the address that we are looking for, how to compare that this address is the address that we have in our flit ?
         out_msg.Type := CoherenceRequestType:GETS;
         out_msg.Requestor := machineID;
         out_msg.RequestorMachine := MachineType:L1Cache;
@@ -477,6 +484,11 @@ machine(MachineType:L1Cache, "L1 cache protocol")
         out_msg.MessageSize := MessageSizeType:Request_Control;
         out_msg.AccessMode := in_msg.AccessMode;
         out_msg.Prefetch := in_msg.Prefetch;
+        if ((in_msg.Type == RubyRequestType:IFETCH) || (in_msg.Type == RubyRequestType:LD)){
+          out_msg.isReadReq := true;
+        }else if ((in_msg.Type == RubyRequestType:ST) || (in_msg.Type == RubyRequestType:ATOMIC)){
+          out_msg.isWriteReq := true;
+        }
       }
     }
   }
@@ -493,12 +505,18 @@ machine(MachineType:L1Cache, "L1 cache protocol")
         out_msg.MessageSize := MessageSizeType:Request_Control;
         out_msg.AccessMode := in_msg.AccessMode;
         out_msg.Prefetch := in_msg.Prefetch;
+        if ((in_msg.Type == RubyRequestType:IFETCH) || (in_msg.Type == RubyRequestType:LD)){
+          out_msg.isReadReq := true;
+        }else if ((in_msg.Type == RubyRequestType:ST) || (in_msg.Type == RubyRequestType:ATOMIC)){
+          out_msg.isWriteReq := true;
+        }
       }
     }
   }
 
   action(d_issuePUTX, "d", desc="Issue PUTX") {
     enqueue(requestNetwork_out, RequestMsg, request_latency) {
+
       out_msg.addr := address;
       out_msg.Type := CoherenceRequestType:PUTX;
       out_msg.Requestor := machineID;
@@ -506,6 +524,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
       out_msg.Destination.add(mapAddressToMachine(address,
                                                   MachineType:L2Cache));
       out_msg.MessageSize := MessageSizeType:Writeback_Control;
+      out_msg.isWriteReq := true;
     }
   }
 
@@ -841,6 +860,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
   }
 
   // L2 will usually request data for a writeback
+  // This is where the data is sent for writeback, now i want to set the Store bit in this thing, how do i handle that ?
   action(qq_sendWBDataFromTBEToL2, "\q", desc="Send data from TBE to L2") {
     enqueue(requestNetwork_out, RequestMsg, request_latency) {
       assert(is_valid(tbe));
@@ -854,8 +874,9 @@ machine(MachineType:L1Cache, "L1 cache protocol")
       } else {
         out_msg.Type := CoherenceRequestType:WRITEBACK_CLEAN_DATA;
       }
-      out_msg.DataBlk := tbe.DataBlk;
+      out_msg.DataBlk := tbe.DataBlk; // This is the data block present in our flit
       out_msg.MessageSize := MessageSizeType:Writeback_Data;
+      out_msg.Store := true;
     }
   }
 

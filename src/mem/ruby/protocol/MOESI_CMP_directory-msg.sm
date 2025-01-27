@@ -106,6 +106,27 @@ structure(RequestMsg, desc="...", interface="Message") {
   MessageSizeType MessageSize, desc="size category of the message";
   RubyAccessMode AccessMode,    desc="user/supervisor access type";
   PrefetchBit Prefetch,         desc="Is this a prefetch request";
+  
+  bool Store, default=0 , desc="Is this a store request ?";
+  bool isReadReq, default=0, desc="Is this a read request ?";
+  bool isWriteReq, default=0, desc="Is this a write request ?";
+  // Look into if these get their getter and setter methods generated or not ?
+
+  Addr get_physical_address(){
+    return addr;
+  }
+
+  bool get_read_bit(){
+    return isReadReq;
+  }
+
+  bool get_write_bit(){
+    return isWriteReq;
+  }
+
+  bool get_store_bit(){
+    return Store;
+  }
 
   bool functionalRead(Packet *pkt) {
     // Read only those messages that contain the data

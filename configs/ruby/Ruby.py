@@ -245,8 +245,11 @@ def create_system(
 
     if cpus is None:
         cpus = system.cpu
-
+    # buildEnv["PROTOCOL"] = "MOESI_CMP_directory"
+    print("Bulding Environment", buildEnv)
+    print("Protocol used for building ruby system", buildEnv["PROTOCOL"])
     protocol = buildEnv["PROTOCOL"]
+    
     exec(f"from . import {protocol}")
     try:
         (cpu_sequencers, dir_cntrls, topology) = eval(
@@ -285,6 +288,9 @@ def create_system(
     system.system_port = system.sys_port_proxy.in_ports
 
     setup_memory_controllers(system, ruby, dir_cntrls, options)
+
+    # for i, cpu in enumerate(cpus):
+    #     cpu_sequencers[i].connectCpuPorts(cpu)
 
     # Connect the cpu sequencers and the piobus
     if piobus != None:

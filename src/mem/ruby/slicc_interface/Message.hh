@@ -73,6 +73,22 @@ class Message
 
     virtual ~Message() { }
 
+    virtual Addr get_physical_address(){
+      return 0;
+    }
+
+    virtual bool get_read_bit(){
+      return false;
+    }
+
+    virtual bool get_write_bit(){
+      return false;
+    }
+    virtual bool get_store_bit() {
+      // std::cout << "Not Implemented Error" << std::endl;
+      return false;
+    }
+
     virtual MsgPtr clone() const = 0;
     virtual void print(std::ostream& out) const = 0;
 
@@ -130,6 +146,7 @@ class Message
     Tick m_LastEnqueueTime; // my last enqueue time
     Tick m_DelayedTicks; // my delayed cycles
     uint64_t m_msg_counter; // FIXME, should this be a 64-bit value?
+
 
     // Variables for required network traversal
     int incoming_link;

@@ -57,6 +57,7 @@ class ProtocolInfo
         useSecondaryLoadLinked(use_secondary_load_linked),
         useSecondaryStoreConditional(use_secondary_store_conditional)
     {
+      std::cout << "Using the [ " << name << " ] Protocol for cache coherence" << std::endl;
     }
 
     std::string getName() const { return name; }

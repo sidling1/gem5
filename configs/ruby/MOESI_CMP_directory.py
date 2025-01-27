@@ -70,9 +70,14 @@ def define_options(parser):
 def create_system(
     options, full_system, system, dma_ports, bootmem, ruby_system, cpus
 ):
-    if buildEnv["PROTOCOL"] != "MOESI_CMP_directory":
+    # if buildEnv["PROTOCOL"] != "MOESI_CMP_directory":
+    #     panic(
+    #         "This script requires the MOESI_CMP_directory protocol to be built."
+    #     )
+
+    if buildEnv["RUBY_PROTOCOL_MOESI_CMP_directory"] != True:
         panic(
-            "This script requires the MOESI_CMP_directory protocol to be built."
+            "This script required the MOESI_CMP_directory to be built."
         )
 
     cpu_sequencers = []

@@ -212,6 +212,9 @@ NetworkInterface::wakeup()
 
         if (b->isReady(curTime)) { // Is there a message waiting
             msg_ptr = b->peekMsgPtr();
+
+            // Here the message is getting converted into flits ( From the packet in the message if any )
+            
             if (flitisizeMessage(msg_ptr, vnet)) {
                 b->dequeue(curTime);
             }
@@ -444,11 +447,16 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         int packet_id = m_net_ptr->getNextPacketID();
         for (int i = 0; i < num_flits; i++) {
             m_net_ptr->increment_injected_flits(vnet);
+
+            // Here first we need to indentify if it is an evicted packet
+            // and does it need to be stored ?
+            // std::cout << "Store Bit of Message " << msg_ptr->get_store_bit() << std::endl;
+
             flit *fl = new flit(packet_id,
                 i, vc, vnet, route, num_flits, new_msg_ptr,
                 m_net_ptr->MessageSizeType_to_int(
                 net_msg_ptr->getMessageSize()),
-                oPort->bitWidth(), curTick());
+                oPort->bitWidth(), curTick(), (i == 0 ? msg_ptr->get_store_bit() : false), msg_ptr->get_read_bit(), msg_ptr->get_write_bit());
 
             fl->set_src_delay(curTick() - msg_ptr->getTime());
             niOutVcs[vc].insert(fl);
@@ -475,6 +483,11 @@ NetworkInterface::calculateVC(int vnet)
             vc_busy_counter[vnet] = 0;
             return ((vnet*m_vc_per_vnet) + delta);
         }
+    }
+
+    if(outVcState[vnet*m_vc_per_vnet].isInState(BUSY_STORE_, curTick())){
+        vc_busy_counter[vnet] = 0;
+        return -1;
     }
 
     vc_busy_counter[vnet] += 1;

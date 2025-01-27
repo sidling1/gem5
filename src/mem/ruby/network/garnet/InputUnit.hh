@@ -69,6 +69,10 @@ class InputUnit : public Consumer
         virtualChannels[vc].set_idle(curTime);
     }
 
+    inline void set_vc_busy_store(int vc, Tick curTime){
+        virtualChannels[vc].set_state(BUSY_STORE_, curTime);
+    }
+
     inline void
     set_vc_active(int vc, Tick curTime)
     {
@@ -156,6 +160,7 @@ class InputUnit : public Consumer
     uint32_t functionalWrite(Packet *pkt);
 
     void resetStats();
+    void handleLocalReply(flit* t_flit);
 
   private:
     Router *m_router;
@@ -165,6 +170,8 @@ class InputUnit : public Consumer
     NetworkLink *m_in_link;
     CreditLink *m_credit_link;
     flitBuffer creditQueue;
+
+    std::set<int> m_vc_as_cache;
 
     // Input Virtual channels
     std::vector<VirtualChannel> virtualChannels;

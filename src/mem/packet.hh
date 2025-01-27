@@ -177,6 +177,7 @@ class MemCmd
         IsPrint,        //!< Print state matching address (for debugging)
         IsFlush,        //!< Flush the address from caches
         FromCache,      //!< Request originated from a caching agent
+        IsStore,        //!< Issued on eviction to a data block already in cache
         NUM_COMMAND_ATTRIBUTES
     };
 
@@ -235,6 +236,7 @@ class MemCmd
     bool isEviction() const        { return testCmdAttrib(IsEviction); }
     bool isClean() const           { return testCmdAttrib(IsClean); }
     bool fromCache() const         { return testCmdAttrib(FromCache); }
+    bool isStore() const           { return testCmdAttrib(IsStore); }
 
     /**
      * A writeback is an eviction that carries data.
@@ -392,6 +394,9 @@ class Packet : public Printable, public Extensible<Packet>
 
     /// True if the request targets the secure memory space.
     bool _isSecure;
+
+    // /// (Optimization) True if this is a packet to be stored in the Router Buffers
+    // bool _isTrue;
 
     /// The size of the request or transfer.
     unsigned size;
@@ -612,6 +617,7 @@ class Packet : public Printable, public Extensible<Packet>
     bool fromCache() const           { return cmd.fromCache(); }
     bool isWriteback() const         { return cmd.isWriteback(); }
     bool hasData() const             { return cmd.hasData(); }
+    bool isStore() const             { return cmd.isStore(); }
     bool hasRespData() const
     {
         MemCmd resp_cmd = cmd.responseCommand();
