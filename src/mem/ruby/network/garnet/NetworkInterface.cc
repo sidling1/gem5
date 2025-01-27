@@ -214,7 +214,7 @@ NetworkInterface::wakeup()
             msg_ptr = b->peekMsgPtr();
 
             // Here the message is getting converted into flits ( From the packet in the message if any )
-            
+
             if (flitisizeMessage(msg_ptr, vnet)) {
                 b->dequeue(curTime);
             }

@@ -249,7 +249,7 @@ def create_system(
     print("Bulding Environment", buildEnv)
     print("Protocol used for building ruby system", buildEnv["PROTOCOL"])
     protocol = buildEnv["PROTOCOL"]
-    
+
     exec(f"from . import {protocol}")
     try:
         (cpu_sequencers, dir_cntrls, topology) = eval(

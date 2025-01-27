@@ -426,7 +426,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
                       getL1ICacheEntry(addr),
                       TBEs[addr]);
             }
-            
+
           }
         } else {
           // *** DATA ACCESS ***

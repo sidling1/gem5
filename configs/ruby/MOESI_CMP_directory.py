@@ -76,9 +76,7 @@ def create_system(
     #     )
 
     if buildEnv["RUBY_PROTOCOL_MOESI_CMP_directory"] != True:
-        panic(
-            "This script required the MOESI_CMP_directory to be built."
-        )
+        panic("This script required the MOESI_CMP_directory to be built.")
 
     cpu_sequencers = []
 

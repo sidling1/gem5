@@ -119,7 +119,7 @@ class flit
     bool m_isReadReq;
     bool m_isWriteReq;
 
-  protected: 
+  protected:
     int m_packet_id;
     int m_id;
     int m_vnet;

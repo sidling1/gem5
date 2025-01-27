@@ -103,7 +103,7 @@ InputUnit::wakeup()
     flit *t_flit;
     // Consume the incoming link
     // Now you have the flit for the peket, and you need to store this flit into the VC
-    // and just disable the SA and VA for this particular flit so that it keeps there in the 
+    // and just disable the SA and VA for this particular flit so that it keeps there in the
     // same router till the SA and VA are started again.
     if(m_vc_per_vnet == m_vc_as_cache.size()){
         // what is the logic? can i do all this in one curTick() ?
@@ -149,7 +149,7 @@ InputUnit::wakeup()
 
     if (m_in_link->isReady(curTick())) {
         t_flit = m_in_link->consumeLink();
-        
+
         // if(t_flit->m_isReadReq || t_flit->m_isWriteReq){
         //     handleLocalReply(t_flit);
         // }

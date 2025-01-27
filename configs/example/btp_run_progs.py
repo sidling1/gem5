@@ -55,10 +55,7 @@ Ruby.define_options(parser)
 
 args = parser.parse_args()
 
-cpus = [
-    X86TimingSimpleCPU()
-    for i in range(args.num_cpus)
-]
+cpus = [X86TimingSimpleCPU() for i in range(args.num_cpus)]
 
 # create the desired simulated system
 # system = System(cpu=cpus, mem_ranges=[AddrRange(args.mem_size)])
