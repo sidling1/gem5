@@ -400,8 +400,10 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         int vc = calculateVC(vnet);
 
         if (vc == -1) {
+            // std::cout << "Couldn't Get a VC empty, Router : " << oPort->routerID() << std::endl;
             return false ;
         }
+
         MsgPtr new_msg_ptr = msg_ptr->clone();
         NodeID destID = dest_nodes[ctr];
 
@@ -458,6 +460,7 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
                 net_msg_ptr->getMessageSize()),
                 oPort->bitWidth(), curTick(), (i == 0 ? msg_ptr->get_store_bit() : false), msg_ptr->get_read_bit(), msg_ptr->get_write_bit());
 
+            msg_ptr->set_store_bit(false);
             fl->set_src_delay(curTick() - msg_ptr->getTime());
             niOutVcs[vc].insert(fl);
         }
@@ -483,11 +486,6 @@ NetworkInterface::calculateVC(int vnet)
             vc_busy_counter[vnet] = 0;
             return ((vnet*m_vc_per_vnet) + delta);
         }
-    }
-
-    if(outVcState[vnet*m_vc_per_vnet].isInState(BUSY_STORE_, curTick())){
-        vc_busy_counter[vnet] = 0;
-        return -1;
     }
 
     vc_busy_counter[vnet] += 1;

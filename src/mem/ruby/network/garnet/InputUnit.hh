@@ -172,6 +172,7 @@ class InputUnit : public Consumer
     flitBuffer creditQueue;
 
     std::set<int> m_vc_as_cache;
+    std::map<int, int> m_store_time;
 
     // Input Virtual channels
     std::vector<VirtualChannel> virtualChannels;

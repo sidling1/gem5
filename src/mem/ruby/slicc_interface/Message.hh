@@ -77,6 +77,8 @@ class Message
       return 0;
     }
 
+    virtual void set_store_bit(bool val){}
+
     virtual bool get_read_bit(){
       return false;
     }

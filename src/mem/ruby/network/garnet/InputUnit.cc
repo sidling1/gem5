@@ -84,12 +84,10 @@ void InputUnit::handleLocalReply(flit* t_flit){
     for(auto vc : m_vc_as_cache){
         if(vc >= virtualChannels.size()) continue;
 
-        flit* vc_flit = virtualChannels[vc].getTopFlit();
-        if(vc_flit == nullptr){
-            continue;
-        }
+        flit* vc_flit = virtualChannels[vc].peekTopFlit();
+        assert(vc_flit != nullptr);
         MsgPtr& vc_msg = vc_flit->get_msg_ptr();
-        std::cout << "Finding in VC ( " << vc << " )" << std::endl;
+        // std::cout << "Finding in VC ( " << vc << " )" << std::endl;
         if(req >= vc_msg->get_physical_address() && req <= vc_msg->get_physical_address() + (Addr)128){
             std::cout << "Found the required address [" << req << "] inside the VC(" << vc << ") having address [" << vc_msg->get_physical_address() << "] and block size - " << 128 << std::endl;
             return;
@@ -100,8 +98,53 @@ void InputUnit::handleLocalReply(flit* t_flit){
 void
 InputUnit::wakeup()
 {
+    // std::cout << "Input Unit Wakeup Called" << std::endl;
     flit *t_flit;
-    // Consume the incoming link
+    for(int vc : m_vc_as_cache){
+        m_store_time[vc]++;
+    }
+
+    std::set<int> rem;
+    for(int vc : m_vc_as_cache){
+        if(m_store_time[vc] > 100){
+            set_vc_active(vc, curTick());
+            assert(virtualChannels[vc].get_state() == ACTIVE_);
+
+            if(virtualChannels[vc].isReady(curTick()) || true){
+                t_flit = virtualChannels[vc].peekTopFlit();
+
+                assert(t_flit != nullptr);
+                assert(t_flit->m_isStore == true);
+
+                Cycles pipe_stages = m_router->get_pipe_stages();
+                if (pipe_stages == 1) {
+                    // 1-cycle router
+                    // Flit goes for SA directly
+                    t_flit->advance_stage(SA_, curTick());
+                } else {
+                    assert(pipe_stages > 1);
+                    // Router delay is modeled by making flit wait in buffer for
+                    // (pipe_stages cycles - 1) cycles before going for SA
+
+                    Cycles wait_time = pipe_stages - Cycles(1);
+                    t_flit->advance_stage(SA_, m_router->clockEdge(wait_time));
+
+                    // Wakeup the router in that cycle to perform SA
+                    m_router->schedule_wakeup(Cycles(wait_time));
+                }
+                rem.insert(vc);
+                t_flit->m_isStore = false;
+                t_flit->get_msg_ptr()->set_store_bit(false);
+                std::cout << "Time limit up , Packet [ " << t_flit->getPacketID() << " ] removed from ( " << vc << " ) [ Router : " << m_router->get_id() << " ] and leaving for it's desired location !" << std::endl;
+            }
+        }
+    }
+
+    for(int vc : rem){
+        m_vc_as_cache.erase(vc);
+        m_store_time.erase(vc);
+    }
+    // // Consume the incoming link
     // Now you have the flit for the peket, and you need to store this flit into the VC
     // and just disable the SA and VA for this particular flit so that it keeps there in the
     // same router till the SA and VA are started again.
@@ -109,13 +152,12 @@ InputUnit::wakeup()
         // what is the logic? can i do all this in one curTick() ?
         // this will only activate when some message is recieved, need to do something about it !!
         std::cout << "All VC's of this router are full, emptying them" << std::endl;
-        for(auto vc : m_vc_as_cache){
-            assert(virtualChannels[vc].get_state() == BUSY_STORE_);
+        for(int vc : m_vc_as_cache){
             set_vc_active(vc, curTick());
             assert(virtualChannels[vc].get_state() == ACTIVE_);
 
-            if(virtualChannels[vc].isReady(curTick())){
-                t_flit = virtualChannels[vc].getTopFlit();
+            if(virtualChannels[vc].isReady(curTick()) || true){
+                t_flit = virtualChannels[vc].peekTopFlit();
 
                 assert(t_flit != nullptr);
                 assert(t_flit->m_isStore == true);
@@ -137,22 +179,19 @@ InputUnit::wakeup()
                     m_router->schedule_wakeup(Cycles(wait_time));
                 }
                 t_flit->m_isStore = false;
+                t_flit->get_msg_ptr()->set_store_bit(false);
                 std::cout << "Packet [ " << t_flit->getPacketID() << " ] removed from ( " << vc << " ) [ Router : " << m_router->get_id() << " ] and leaving for it's desired location !" << std::endl;
             }
         }
         m_vc_as_cache.clear();
-        if (m_in_link->isReady(curTick())) {
-            m_router->schedule_wakeup(Cycles(1));
-        }
-        return;
     }
 
     if (m_in_link->isReady(curTick())) {
         t_flit = m_in_link->consumeLink();
 
-        // if(t_flit->m_isReadReq || t_flit->m_isWriteReq){
-        //     handleLocalReply(t_flit);
-        // }
+        if(t_flit->m_isReadReq || t_flit->m_isWriteReq){
+            handleLocalReply(t_flit);
+        }
 
         DPRINTF(RubyNetwork, "Router[%d] Consuming:%s Width: %d Flit:%s\n",
         m_router->get_id(), m_in_link->name(),
@@ -200,7 +239,7 @@ InputUnit::wakeup()
 
         // And also this has to be seen only when it is a data packet and nothing else
         // how do i check if this is a data packet.
-        if(t_flit->m_isStore == false || t_flit->get_route().src_router != m_router->get_id() || m_vc_as_cache.size() == m_vc_per_vnet-1){
+        if(t_flit->m_isStore == false || t_flit->get_route().src_router != m_router->get_id() || (t_flit->get_type() != HEAD_ && t_flit->get_type() != HEAD_TAIL_)){
             // It is not to be stored, hence continue with the next pipeline stage.
             if (pipe_stages == 1) {
                 // 1-cycle router
@@ -219,7 +258,7 @@ InputUnit::wakeup()
             }
         }else{
             m_vc_as_cache.insert(vc);
-            set_vc_busy_store(vc, curTick());
+            m_store_time[vc] = 0;
             std::cout << "Packet [ " << t_flit->getPacketID() << " ] kept inside the VC ( " << vc << " ) [ Router : " << m_router->get_id() << " ] and wont go anywhere untill otherwise stated !" << std::endl;
         }
 

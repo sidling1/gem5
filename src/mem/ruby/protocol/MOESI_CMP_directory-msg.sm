@@ -112,6 +112,10 @@ structure(RequestMsg, desc="...", interface="Message") {
   bool isWriteReq, default=0, desc="Is this a write request ?";
   // Look into if these get their getter and setter methods generated or not ?
 
+  void set_store_bit(bool val){
+    Store := val;
+  }
+
   Addr get_physical_address(){
     return addr;
   }
