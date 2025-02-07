@@ -64,6 +64,7 @@ from common import ObjectList
 from common import MemConfig
 from common.FileSystemConfig import config_filesystem
 from common.Caches import *
+from common.cpu2017 import *
 from common.cpu2000 import *
 
 
@@ -119,10 +120,10 @@ def get_processes(args):
         return multiprocesses, 1
 
 
-warn(
-    "The se.py script is deprecated. It will be removed in future releases of "
-    " gem5."
-)
+# warn(
+#     "The se.py script is deprecated. It will be removed in future releases of "
+#     " gem5."
+# )
 
 parser = argparse.ArgumentParser()
 Options.addCommonOptions(parser)
@@ -141,27 +142,26 @@ if args.bench:
     if len(apps) != args.num_cpus:
         print("number of benchmarks not equal to set num_cpus!")
         sys.exit(1)
-
+    idx = 0
     for app in apps:
+        idx+=1
         try:
             if get_runtime_isa() == ISA.ARM:
                 exec(
-                    "workload = %s('arm_%s', 'linux', '%s')"
-                    % (app, args.arm_iset, args.spec_input)
+                    "workload = %s('arm_%s', 'linux', '%s')" % (app, args.arm_iset, args.spec_input)
                 )
             else:
                 # TARGET_ISA has been removed, but this is missing a ], so it
                 # has incorrect syntax and wasn't being used anyway.
+                
+                print(app,args.spec_input)
                 exec(
-                    "workload = %s(buildEnv['TARGET_ISA', 'linux', '%s')"
-                    % (app, args.spec_input)
+                    "workload = {}('X86', 'linux', '{}')".format(app, args.spec_input)
                 )
-            multiprocesses.append(workload.makeProcess())
+            multiprocesses.append(workload.makeProcess(idx=idx))
         except:
-            print(
-                f"Unable to find workload for {get_runtime_isa().name()}: {app}",
-                file=sys.stderr,
-            )
+            print("Unable to find workload for {}".format(app))
+            print(app,args.spec_input)
             sys.exit(1)
 elif args.cmd:
     multiprocesses, numThreads = get_processes(args)
@@ -251,9 +251,7 @@ for i in range(np):
         system.cpu[i].branchPred = bpClass()
 
     if args.indirect_bp_type:
-        indirectBPClass = ObjectList.indirect_bp_list.get(
-            args.indirect_bp_type
-        )
+        indirectBPClass = ObjectList.indirect_bp_list.get(args.indirect_bp_type)
         system.cpu[i].branchPred.indirectBranchPred = indirectBPClass()
 
     system.cpu[i].createThreads()
