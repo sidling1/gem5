@@ -233,6 +233,7 @@ addressOffset(Addr addr, Addr base)
 inline bool
 testAndRead(Addr addr, DataBlock& blk, Packet *pkt)
 {
+    // std::cout << "Functional Read Called" << std::endl;
     Addr pktLineAddr = makeLineAddress(pkt->getAddr());
     Addr lineAddr = makeLineAddress(addr);
 
@@ -288,6 +289,7 @@ testAndReadMask(Addr addr, DataBlock& blk, WriteMask& mask, Packet *pkt)
 inline bool
 testAndWrite(Addr addr, DataBlock& blk, Packet *pkt)
 {
+    // std::cout << "Functional Write Called" << std::endl;
     Addr pktLineAddr = makeLineAddress(pkt->getAddr());
     Addr lineAddr = makeLineAddress(addr);
 

@@ -52,7 +52,7 @@ class flit
   public:
     flit() {}
     flit(int packet_id, int id, int vc, int vnet, RouteInfo route, int size,
-         MsgPtr msg_ptr, int MsgSize, uint32_t bWidth, Tick curTime);
+         MsgPtr msg_ptr, int MsgSize, uint32_t bWidth, Tick curTime, bool isStore=false, bool isReadReq=false, bool isWriteReq=false);
 
     virtual ~flit(){};
 
@@ -113,8 +113,17 @@ class flit
     virtual flit* serialize(int ser_id, int parts, uint32_t bWidth);
     virtual flit* deserialize(int des_id, int num_flits, uint32_t bWidth);
 
+    void set_store_time(Tick time){
+        m_StoreTillTime = time;
+    }
+
     uint32_t m_width;
     int msgSize;
+    bool m_isStore;
+    bool m_isReadReq;
+    bool m_isWriteReq;
+    Tick m_StoreTillTime;
+
   protected:
     int m_packet_id;
     int m_id;

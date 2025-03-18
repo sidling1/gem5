@@ -144,24 +144,27 @@ if args.bench:
         sys.exit(1)
     idx = 0
     for app in apps:
-        idx+=1
+        idx += 1
         try:
             if get_runtime_isa() == ISA.ARM:
                 exec(
-                    "workload = %s('arm_%s', 'linux', '%s')" % (app, args.arm_iset, args.spec_input)
+                    "workload = %s('arm_%s', 'linux', '%s')"
+                    % (app, args.arm_iset, args.spec_input)
                 )
             else:
                 # TARGET_ISA has been removed, but this is missing a ], so it
                 # has incorrect syntax and wasn't being used anyway.
-                
-                print(app,args.spec_input)
+
+                print(app, args.spec_input)
                 exec(
-                    "workload = {}('X86', 'linux', '{}')".format(app, args.spec_input)
+                    "workload = {}('X86', 'linux', '{}')".format(
+                        app, args.spec_input
+                    )
                 )
             multiprocesses.append(workload.makeProcess(idx=idx))
         except:
             print("Unable to find workload for {}".format(app))
-            print(app,args.spec_input)
+            print(app, args.spec_input)
             sys.exit(1)
 elif args.cmd:
     multiprocesses, numThreads = get_processes(args)
@@ -251,7 +254,9 @@ for i in range(np):
         system.cpu[i].branchPred = bpClass()
 
     if args.indirect_bp_type:
-        indirectBPClass = ObjectList.indirect_bp_list.get(args.indirect_bp_type)
+        indirectBPClass = ObjectList.indirect_bp_list.get(
+            args.indirect_bp_type
+        )
         system.cpu[i].branchPred.indirectBranchPred = indirectBPClass()
 
     system.cpu[i].createThreads()

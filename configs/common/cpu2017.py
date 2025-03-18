@@ -31,9 +31,11 @@ from os.path import isdir, isfile, islink
 
 bench_path = "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017"
 
- 
+
 # '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017'
-spec_dist = os.environ.get('M5_CPU2017', '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017')
+spec_dist = os.environ.get(
+    "M5_CPU2017", "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017"
+)
 
 
 def copyfiles(srcdir, dstdir):
@@ -50,8 +52,8 @@ def copyfiles(srcdir, dstdir):
         root = normpath(root)
         prefix = os.path.commonprefix([root, srcdir])
 
-        root = root[len(prefix):]
-        if root.startswith('/'):
+        root = root[len(prefix) :]
+        if root.startswith("/"):
             root = root[1:]
 
         for entry in dirs:
@@ -67,71 +69,74 @@ def copyfiles(srcdir, dstdir):
 
     # some of the spec benchmarks expect to be run from one directory up.
     # just create some symlinks that solve the problem
-    inlink = joinpath(dstdir, 'input')
-    outlink = joinpath(dstdir, 'output')
+    inlink = joinpath(dstdir, "input")
+    outlink = joinpath(dstdir, "output")
     if not exists(inlink):
-        os.symlink('.', inlink)
+        os.symlink(".", inlink)
     if not exists(outlink):
-        os.symlink('.', outlink)
+        os.symlink(".", outlink)
+
 
 class Benchmark(object):
     print("Working")
+
     def __init__(self, isa, os, input_set):
-        if not hasattr(self.__class__, 'name'):
+        if not hasattr(self.__class__, "name"):
             self.name = self.__class__.__name__
 
-        if not hasattr(self.__class__, 'binary'):
+        if not hasattr(self.__class__, "binary"):
             self.binary = self.name
 
-        if not hasattr(self.__class__, 'args'):
+        if not hasattr(self.__class__, "args"):
             self.args = []
 
-        if not hasattr(self.__class__, 'output'):
-            self.output = '%s.out' % self.name
+        if not hasattr(self.__class__, "output"):
+            self.output = "%s.out" % self.name
 
-        if not hasattr(self.__class__, 'simpoint'):
+        if not hasattr(self.__class__, "simpoint"):
             self.simpoint = None
 
         try:
             func = getattr(self.__class__, input_set)
         except AttributeError:
             raise AttributeError(
-                'The benchmark %s does not have the %s input set' % \
-                (self.name, input_set))
+                "The benchmark %s does not have the %s input set"
+                % (self.name, input_set)
+            )
 
-        executable = joinpath(spec_dist, 'binaries', self.binary)
-        print ("executable= %s " % (executable))
+        executable = joinpath(spec_dist, "binaries", self.binary)
+        print("executable= %s " % (executable))
         if not isfile(executable):
-            raise AttributeError('%s not found' % executable)
+            raise AttributeError("%s not found" % executable)
         self.executable = executable
 
         # root of tree for input & output data files
-        data_dir = joinpath(spec_dist, 'data', self.name)
+        data_dir = joinpath(spec_dist, "data", self.name)
         # optional subtree with files shared across input sets
-        all_dir = joinpath(data_dir, 'all')
+        all_dir = joinpath(data_dir, "all")
         # dirs for input & output files for this input set
-        inputs_dir = joinpath(data_dir, input_set, 'input')
-        outputs_dir = joinpath(data_dir, input_set, 'output')
+        inputs_dir = joinpath(data_dir, input_set, "input")
+        outputs_dir = joinpath(data_dir, input_set, "output")
         # keep around which input set was specified
         self.input_set = input_set
-        print ("inputs_dir = %s " % (inputs_dir))
-        print ("outputs_dir = %s " % (outputs_dir))
+        print("inputs_dir = %s " % (inputs_dir))
+        print("outputs_dir = %s " % (outputs_dir))
         if not isdir(inputs_dir):
-            raise AttributeError('%s not found' % inputs_dir)
+            raise AttributeError("%s not found" % inputs_dir)
 
-        self.inputs_dir = [ inputs_dir ]
+        self.inputs_dir = [inputs_dir]
         if isdir(all_dir):
-            self.inputs_dir += [ joinpath(all_dir, 'input') ]
+            self.inputs_dir += [joinpath(all_dir, "input")]
         if isdir(outputs_dir):
             self.outputs_dir = outputs_dir
 
-        if not hasattr(self.__class__, 'stdin'):
-            self.stdin = joinpath(inputs_dir, '%s.in' % self.name)
+        if not hasattr(self.__class__, "stdin"):
+            self.stdin = joinpath(inputs_dir, "%s.in" % self.name)
             if not isfile(self.stdin):
                 self.stdin = None
 
-        if not hasattr(self.__class__, 'stdout'):
-            self.stdout = joinpath(outputs_dir, '%s.out' % self.name)
+        if not hasattr(self.__class__, "stdout"):
+            self.stdout = joinpath(outputs_dir, "%s.out" % self.name)
             if not isfile(self.stdout):
                 self.stdout = None
 
@@ -140,14 +145,14 @@ class Benchmark(object):
     def makeProcessArgs(self, **kwargs):
         # set up default args for Process object
         process_args = {}
-        process_args['cmd'] = [ self.name ] + self.args
-        process_args['executable'] = self.executable
+        process_args["cmd"] = [self.name] + self.args
+        process_args["executable"] = self.executable
         if self.stdin:
-            process_args['input'] = self.stdin
+            process_args["input"] = self.stdin
         if self.stdout:
-            process_args['output'] = self.stdout
+            process_args["output"] = self.stdout
         if self.simpoint:
-            process_args['simpoint'] = self.simpoint
+            process_args["simpoint"] = self.simpoint
         # explicit keywords override defaults
         process_args.update(kwargs)
 
@@ -158,12 +163,13 @@ class Benchmark(object):
 
         # figure out working directory: use m5's outdir unless
         # overridden by Process's cwd param
-        cwd = process_args.get('cwd')
+        cwd = process_args.get("cwd")
 
         if not cwd:
             from m5 import options
+
             cwd = options.outdir
-            process_args['cwd'] = cwd
+            process_args["cwd"] = cwd
         if not isdir(cwd):
             os.makedirs(cwd)
         # copy input files to working directory
@@ -171,907 +177,1366 @@ class Benchmark(object):
             copyfiles(d, cwd)
         # generate Process object
         from m5.objects import Process
-        return Process(**process_args, pid=100+idx)
+
+        return Process(**process_args, pid=100 + idx)
 
     def __str__(self):
         return self.name
 
+
 class DefaultBenchmark(Benchmark):
-    def ref(self, isa, os): pass
-    def test(self, isa, os): pass
-    def train(self, isa, os): pass
+    def ref(self, isa, os):
+        pass
+
+    def test(self, isa, os):
+        pass
+
+    def train(self, isa, os):
+        pass
+
 
 class MinneDefaultBenchmark(DefaultBenchmark):
-    def smred(self, isa, os): pass
-    def mdred(self, isa, os): pass
-    def lgred(self, isa, os): pass
+    def smred(self, isa, os):
+        pass
+
+    def mdred(self, isa, os):
+        pass
+
+    def lgred(self, isa, os):
+        pass
+
 
 class namd(DefaultBenchmark):
-    name = 'namd'
-    lang = 'C++'
+    name = "namd"
+    lang = "C++"
 
     def all(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/all/input/namd.input','--iterations', '1','--output','namd.out']
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/all/input/namd.input",
+            "--iterations",
+            "1",
+            "--output",
+            "namd.out",
+        ]
+
     def ref(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/all/input/namd.input','--iterations', '1','--output','namd.out']
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/all/input/namd.input",
+            "--iterations",
+            "1",
+            "--output",
+            "namd.out",
+        ]
+
 
 class blender(DefaultBenchmark):
-    name = 'blender'
-    lang = 'C++'
+    name = "blender"
+    lang = "C++"
 
     def ref(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/blender/ref/input/sh3_no_char.blend']
-        self.output = 'test.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/blender/ref/input/sh3_no_char.blend",
+        ]
+        self.output = "test.out"
 
     def test(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/blender/test/input/cube.blend']
-        self.output = 'ref.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/blender/test/input/cube.blend",
+        ]
+        self.output = "ref.out"
 
     def train(self, isa, os):
-        self.args = ['-m1200','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/blender/train/input/sh5_reduced.blend']
-        self.output = 'train.out' 
-               
+        self.args = [
+            "-m1200",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/blender/train/input/sh5_reduced.blend",
+        ]
+        self.output = "train.out"
+
+
 class fotonik(DefaultBenchmark):
-    name = 'fotonik'
-    lang = 'Fortran'
+    name = "fotonik"
+    lang = "Fortran"
 
     def ref(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/fortran/ref/input/']
-        self.output = 'test.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/fortran/ref/input/",
+        ]
+        self.output = "test.out"
 
     def test(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/fortran/test/input/']
-        self.output = 'ref.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/fortran/test/input/",
+        ]
+        self.output = "ref.out"
 
     def train(self, isa, os):
-        self.args = ['-m1200','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/fortran/train/input/']
-        self.output = 'train.out' 
-        
+        self.args = [
+            "-m1200",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/fortran/train/input/",
+        ]
+        self.output = "train.out"
+
+
 class nab(DefaultBenchmark):
-    name = 'nab'
-    lang = 'C'
+    name = "nab"
+    lang = "C"
 
     def ref(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/nab/ref/input/']
-        self.output = 'test.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/nab/ref/input/",
+        ]
+        self.output = "test.out"
 
     def test(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/nab/test/input/']
-        self.output = 'ref.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/nab/test/input/",
+        ]
+        self.output = "ref.out"
 
     def train(self, isa, os):
-        self.args = ['-m1200','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/nab/train/input/']
-        self.output = 'train.out' 
-  
+        self.args = [
+            "-m1200",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/nab/train/input/",
+        ]
+        self.output = "train.out"
+
+
 class roms(DefaultBenchmark):
-    name = 'roms'
-    lang = 'Fortran'
+    name = "roms"
+    lang = "Fortran"
 
     def ref(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/roms/ref/input/']
-        self.output = 'test.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/roms/ref/input/",
+        ]
+        self.output = "test.out"
 
     def test(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/roms/test/input/']
-        self.output = 'ref.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/roms/test/input/",
+        ]
+        self.output = "ref.out"
 
     def train(self, isa, os):
-        self.args = ['-m1200','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/roms/train/input/']
-        self.output = 'train.out' 
-        
+        self.args = [
+            "-m1200",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/roms/train/input/",
+        ]
+        self.output = "train.out"
+
+
 class wrf(DefaultBenchmark):
-    name = 'wrf'
-    lang = 'C'
+    name = "wrf"
+    lang = "C"
 
     def ref(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/wrf/ref/input/']
-        self.output = 'test.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/wrf/ref/input/",
+        ]
+        self.output = "test.out"
 
     def test(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/wrf/test/input/']
-        self.output = 'ref.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/wrf/test/input/",
+        ]
+        self.output = "ref.out"
 
     def train(self, isa, os):
-        self.args = ['-m1200','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/wrf/train/input/']
-        self.output = 'train.out' 
-   
- 
+        self.args = [
+            "-m1200",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/wrf/train/input/",
+        ]
+        self.output = "train.out"
+
+
 class bwaves(DefaultBenchmark):
-    name = 'bwaves'
+    name = "bwaves"
     number = 503
-    lang = 'C'
+    lang = "C"
 
     def all(self, isa, os):
-        self.args = [ '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/bwaves/test/' ]
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/bwaves/test/"
+        ]
+
 
 class cactus(DefaultBenchmark):
-    name = 'cactus'
-    number = 507 
-    lang = 'C++'
+    name = "cactus"
+    number = 507
+    lang = "C++"
 
     def ref(self, isa, os):
-        self.args = ['/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/cactus/ref/input/spec_ref.par']
-        self.output = 'spec_ref.out'
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/cactus/ref/input/spec_ref.par"
+        ]
+        self.output = "spec_ref.out"
+
 
 class xalancbmk(DefaultBenchmark):
-    name = 'xalancbmk'
-    number =523
-    lang = 'C++'
+    name = "xalancbmk"
+    number = 523
+    lang = "C++"
 
     def ref(self, isa, os):
-    	self.args = [ '-v', '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xalancbmk/ref/input/t5.xml', '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xalancbmk/ref/input/xalanc.xsl']
+        self.args = [
+            "-v",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xalancbmk/ref/input/t5.xml",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xalancbmk/ref/input/xalanc.xsl",
+        ]
+
 
 class milc(DefaultBenchmark):
-    name = 'milc'
-    lang = 'C'
+    name = "milc"
+    lang = "C"
+
     def ref(self, isa, os):
-        self.stdin = '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/milc/ref/input/su3imp.in'
-   
+        self.stdin = "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/milc/ref/input/su3imp.in"
+
 
 class soplex(DefaultBenchmark):
-    name = 'soplex'
-    lang = 'C++'
+    name = "soplex"
+    lang = "C++"
 
     def test(self, isa, os):
-        self.args = ['-m10000','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/soplex/test/input/test.mps']
-        self.output = 'test.out'  
+        self.args = [
+            "-m10000",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/soplex/test/input/test.mps",
+        ]
+        self.output = "test.out"
 
     def ref(self, isa, os):
-        self.args = ['-m3500','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/soplex/ref/input/ref.mps']
-        self.output = 'ref.out'  
+        self.args = [
+            "-m3500",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/soplex/ref/input/ref.mps",
+        ]
+        self.output = "ref.out"
 
     def train(self, isa, os):
-        self.args = ['-m1200','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/soplex/train/input/train.mps']
-        self.output = 'train.out'  
+        self.args = [
+            "-m1200",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/soplex/train/input/train.mps",
+        ]
+        self.output = "train.out"
+
 
 class gamess(DefaultBenchmark):
-    name = 'gamess'
-    number = 416 
-    lang = 'F95'
+    name = "gamess"
+    number = 416
+    lang = "F95"
 
     def ref(self, isa, os):
-     	self.stdin = '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/gamess/ref/input/cytosine.2.config'
+        self.stdin = "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/gamess/ref/input/cytosine.2.config"
+
 
 class bzip2(DefaultBenchmark):
-    name = 'bzip2'
+    name = "bzip2"
     number = 256
-    lang = 'C'
+    lang = "C"
 
     def all(self, isa, os):
-        self.args = ['/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/bzip2/all/input/input.program', '1']
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/bzip2/all/input/input.program",
+            "1",
+        ]
 
     def test(self, isa, os):
-        self.args = [ '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/bzip2/test/input/dryer.jpg ','2']
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/bzip2/test/input/dryer.jpg ",
+            "2",
+        ]
 
     def train(self, isa, os):
-        self.args = [ '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/bzip2/train/input/byoudoin.jpg','5' ]
-    
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/bzip2/train/input/byoudoin.jpg",
+            "5",
+        ]
+
     def ref(self, isa, os):
-        self.args = [ '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/bzip2/ref/input/input.source','280' ]
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/bzip2/ref/input/input.source",
+            "280",
+        ]
+
 
 class bzip2_source(bzip2):
     def ref(self, isa, os):
-        self.simpoint = 977*100E6
-        self.args = [ 'input.source', '58' ]
+        self.simpoint = 977 * 100e6
+        self.args = ["input.source", "58"]
 
     def lgred(self, isa, os):
-        self.args = [ 'input.source', '1' ]
+        self.args = ["input.source", "1"]
+
 
 class bzip2_graphic(bzip2):
     def ref(self, isa, os):
-        self.simpoint = 718*100E6
-        self.args = [ 'input.graphic', '58' ]
+        self.simpoint = 718 * 100e6
+        self.args = ["input.graphic", "58"]
 
     def lgred(self, isa, os):
-        self.args = [ 'input.graphic', '1' ]
+        self.args = ["input.graphic", "1"]
+
 
 class bzip2_program(bzip2):
     def ref(self, isa, os):
-        self.simpoint = 458*100E6
-        self.args = [ 'input.program', '58' ]
+        self.simpoint = 458 * 100e6
+        self.args = ["input.program", "58"]
 
     def lgred(self, isa, os):
-        self.args = [ 'input.program', '1' ]
+        self.args = ["input.program", "1"]
+
 
 class exchange(DefaultBenchmark):
-    name = 'exchange'
-    lang = 'C++'
+    name = "exchange"
+    lang = "C++"
 
     def ref(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/exchange/ref/input/control']
-        self.output = 'test.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/exchange/ref/input/control",
+        ]
+        self.output = "test.out"
 
     def test(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/exchange/test/input/control']
-        self.output = 'ref.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/exchange/test/input/control",
+        ]
+        self.output = "ref.out"
 
     def train(self, isa, os):
-        self.args = ['-m1200','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/exchange/train/input/control']
-        self.output = 'train.out' 
+        self.args = [
+            "-m1200",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/exchange/train/input/control",
+        ]
+        self.output = "train.out"
+
 
 class leela(DefaultBenchmark):
-    name = 'leela'
-    lang = 'C++'
+    name = "leela"
+    lang = "C++"
 
     def ref(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/leela/ref/input/ref.sgf']
-        self.output = 'test.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/leela/ref/input/ref.sgf",
+        ]
+        self.output = "test.out"
 
     def test(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/leela/test/input/test.sgf']
-        self.output = 'ref.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/leela/test/input/test.sgf",
+        ]
+        self.output = "ref.out"
 
     def train(self, isa, os):
-        self.args = ['-m1200','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/leela/train/input/train.sgf']
-        self.output = 'train.out' 
+        self.args = [
+            "-m1200",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/leela/train/input/train.sgf",
+        ]
+        self.output = "train.out"
+
+
 class imagick(DefaultBenchmark):
-    name = 'imagick'
-    lang = 'C++'
+    name = "imagick"
+    lang = "C++"
 
     def ref(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/imagick/ref/input/control']
-        self.output = 'test.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/imagick/ref/input/control",
+        ]
+        self.output = "test.out"
 
     def test(self, isa, os):
-        self.args = ['--input','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/imagick/ref/input/control']
-        self.output = 'ref.out'  
+        self.args = [
+            "--input",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/imagick/ref/input/control",
+        ]
+        self.output = "ref.out"
 
     def train(self, isa, os):
-        self.args = ['-m1200','/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/imagick/ref/input/control']
-        self.output = 'train.out' 
+        self.args = [
+            "-m1200",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/imagick/ref/input/control",
+        ]
+        self.output = "train.out"
+
+
 class mcf(DefaultBenchmark):
-    name = 'mcf'
+    name = "mcf"
     number = 181
-    lang = 'C'
+    lang = "C"
 
     def test(self, isa, os):
-    	self.args = [ '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/mcf/test/input/inp.in' ]
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/mcf/test/input/inp.in"
+        ]
 
     def ref(self, isa, os):
-    	self.args = [ '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/mcf/ref/input/inp.in' ]
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/mcf/ref/input/inp.in"
+        ]
 
     def train(self, isa, os):
-    	self.args = [ '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/mcf/train/input/inp.in' ]
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/mcf/train/input/inp.in"
+        ]
+
+
 class omnetpp(DefaultBenchmark):
-     name = 'omnetpp'
-     lang = 'C++'
-     def all(self, isa, os):
-         self.args =  ['/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/omnetpp/ref/input/omnetpp.ini',
-                     '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/omnetpp/ref/output/omnetpp.log']
-class parest(DefaultBenchmark):
-     name = 'parest'
-     lang = 'C++'
-     def all(self, isa, os):
-         self.args =  ['/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/parest/ref/input/ref.prm',
-                     '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/parest/ref/output/log']
-class perlbench(DefaultBenchmark):
-    name = 'perlbench'
-    number = 400 
-    lang = 'C'
+    name = "omnetpp"
+    lang = "C++"
 
     def all(self, isa, os):
-        self.args = ['-I./lib', '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/perlbench/ref/input/ref.prm',
-                     '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/perlbench/ref/output/log']
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/omnetpp/ref/input/omnetpp.ini",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/omnetpp/ref/output/omnetpp.log",
+        ]
+
+
+class parest(DefaultBenchmark):
+    name = "parest"
+    lang = "C++"
+
+    def all(self, isa, os):
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/parest/ref/input/ref.prm",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/parest/ref/output/log",
+        ]
+
+
+class perlbench(DefaultBenchmark):
+    name = "perlbench"
+    number = 400
+    lang = "C"
+
+    def all(self, isa, os):
+        self.args = [
+            "-I./lib",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/perlbench/ref/input/ref.prm",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/perlbench/ref/output/log",
+        ]
+
 
 class povray(DefaultBenchmark):
-    name = 'povray'
-    number = 453 
-    lang = 'C++'
+    name = "povray"
+    number = 453
+    lang = "C++"
 
     def ref(self, isa, os):
-        self.args = ['/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/povray/ref/input/SPEC-benchmark-ref.ini'
-                     '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/povray/ref/output/povray.out']
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/povray/ref/input/SPEC-benchmark-ref.ini"
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/povray/ref/output/povray.out"
+        ]
+
 
 class sjeng(DefaultBenchmark):
-    name = 'sjeng'
-    lang = 'C'
-    
+    name = "sjeng"
+    lang = "C"
+
     def test(self, isa, os):
-    	self.args = [ '//home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/sjeng/test/input/test.txt']
+        self.args = [
+            "//home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/sjeng/test/input/test.txt"
+        ]
 
     def train(self, isa, os):
-    	self.args = [ '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/sjeng/train/input/train.txt']
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/sjeng/train/input/train.txt"
+        ]
 
     def ref(self, isa, os):
-    	self.args = [ '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/sjeng/ref/input/ref.txt']
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/sjeng/ref/input/ref.txt"
+        ]
+
 
 class x264(DefaultBenchmark):
-    name = 'x264'
-    number = '464'
-    lang = 'C'
+    name = "x264"
+    number = "464"
+    lang = "C"
 
     def ref(self, isa, os):
-        self.args = [ '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/x264/ref/input/control']
-        
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/x264/ref/input/control"
+        ]
+
 
 class xz(DefaultBenchmark):
-    name = 'xz'
-    number = '464'
-    lang = 'C'
+    name = "xz"
+    number = "464"
+    lang = "C"
 
     def ref(self, isa, os):
-        self.args = [ '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xz/ref/input/control']
-        
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xz/ref/input/control"
+        ]
+
     def all(self, isa, os):
-        self.args = [ '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xz/all/input/input.combined.xz']
-        
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xz/all/input/input.combined.xz"
+        ]
+
     def test(self, isa, os):
-        self.args = [ '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xz/test/input/control']       
+        self.args = [
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xz/test/input/control"
+        ]
 
 
 class ammp(MinneDefaultBenchmark):
-    name = 'ammp'
+    name = "ammp"
     number = 188
-    lang = 'C'
-    simpoint = 108*100E6
+    lang = "C"
+    simpoint = 108 * 100e6
+
 
 class applu(MinneDefaultBenchmark):
-    name = 'applu'
+    name = "applu"
     number = 173
-    lang = 'F77'
-    simpoint = 2179*100E6
+    lang = "F77"
+    simpoint = 2179 * 100e6
+
 
 class apsi(MinneDefaultBenchmark):
-    name = 'apsi'
+    name = "apsi"
     number = 301
-    lang = 'F77'
-    simpoint = 3408*100E6
+    lang = "F77"
+    simpoint = 3408 * 100e6
+
 
 class art(DefaultBenchmark):
-    name = 'art'
+    name = "art"
     number = 179
-    lang = 'C'
+    lang = "C"
 
     def test(self, isa, os):
-        self.args = [ '-scanfile', 'c756hel.in',
-                      '-trainfile1', 'a10.img',
-                      '-stride', '2',
-                      '-startx', '134',
-                      '-starty', '220',
-                      '-endx', '139',
-                      '-endy', '225',
-                      '-objects', '1' ]
-        self.output = 'test.out'
+        self.args = [
+            "-scanfile",
+            "c756hel.in",
+            "-trainfile1",
+            "a10.img",
+            "-stride",
+            "2",
+            "-startx",
+            "134",
+            "-starty",
+            "220",
+            "-endx",
+            "139",
+            "-endy",
+            "225",
+            "-objects",
+            "1",
+        ]
+        self.output = "test.out"
 
     def train(self, isa, os):
-        self.args = [ '-scanfile', 'c756hel.in',
-                      '-trainfile1', 'a10.img',
-                      '-stride', '2',
-                      '-startx', '134',
-                      '-starty', '220',
-                      '-endx', '184',
-                      '-endy', '240',
-                      '-objects', '3' ]
-        self.output = 'train.out'
+        self.args = [
+            "-scanfile",
+            "c756hel.in",
+            "-trainfile1",
+            "a10.img",
+            "-stride",
+            "2",
+            "-startx",
+            "134",
+            "-starty",
+            "220",
+            "-endx",
+            "184",
+            "-endy",
+            "240",
+            "-objects",
+            "3",
+        ]
+        self.output = "train.out"
 
     def lgred(self, isa, os):
-        self.args = ['-scanfile', 'c756hel.in',
-                     '-trainfile1', 'a10.img',
-                     '-stride', '5',
-                     '-startx', '134',
-                     '-starty', '220',
-                     '-endx', '184',
-                     '-endy', '240',
-                     '-objects', '1' ]
-        self.output = 'lgred.out'
+        self.args = [
+            "-scanfile",
+            "c756hel.in",
+            "-trainfile1",
+            "a10.img",
+            "-stride",
+            "5",
+            "-startx",
+            "134",
+            "-starty",
+            "220",
+            "-endx",
+            "184",
+            "-endy",
+            "240",
+            "-objects",
+            "1",
+        ]
+        self.output = "lgred.out"
 
 
 class art110(art):
     def ref(self, isa, os):
-        self.args = [ '-scanfile', 'c756hel.in',
-                      '-trainfile1', 'a10.img',
-                      '-trainfile2', 'hc.img',
-                      '-stride', '2',
-                      '-startx', '110',
-                      '-starty', '200',
-                      '-endx', '160',
-                      '-endy', '240',
-                      '-objects', '10' ]
-        self.output = 'ref.1.out'
-        self.simpoint = 340*100E6
+        self.args = [
+            "-scanfile",
+            "c756hel.in",
+            "-trainfile1",
+            "a10.img",
+            "-trainfile2",
+            "hc.img",
+            "-stride",
+            "2",
+            "-startx",
+            "110",
+            "-starty",
+            "200",
+            "-endx",
+            "160",
+            "-endy",
+            "240",
+            "-objects",
+            "10",
+        ]
+        self.output = "ref.1.out"
+        self.simpoint = 340 * 100e6
+
 
 class art470(art):
     def ref(self, isa, os):
-        self.args = [ '-scanfile', 'c756hel.in',
-                      '-trainfile1', 'a10.img',
-                      '-trainfile2', 'hc.img',
-                      '-stride', '2',
-                      '-startx', '470',
-                      '-starty', '140',
-                      '-endx', '520',
-                      '-endy', '180',
-                      '-objects', '10' ]
-        self.output = 'ref.2.out'
-        self.simpoint = 365*100E6
+        self.args = [
+            "-scanfile",
+            "c756hel.in",
+            "-trainfile1",
+            "a10.img",
+            "-trainfile2",
+            "hc.img",
+            "-stride",
+            "2",
+            "-startx",
+            "470",
+            "-starty",
+            "140",
+            "-endx",
+            "520",
+            "-endy",
+            "180",
+            "-objects",
+            "10",
+        ]
+        self.output = "ref.2.out"
+        self.simpoint = 365 * 100e6
+
 
 class equake(DefaultBenchmark):
-    name = 'equake'
+    name = "equake"
     number = 183
-    lang = 'C'
-    simpoint = 812*100E6
+    lang = "C"
+    simpoint = 812 * 100e6
 
-    def lgred(self, isa, os): pass
+    def lgred(self, isa, os):
+        pass
+
 
 class facerec(MinneDefaultBenchmark):
-    name = 'facerec'
+    name = "facerec"
     number = 187
-    lang = 'F'
-    simpoint = 375*100E6
+    lang = "F"
+    simpoint = 375 * 100e6
+
 
 class fma3d(MinneDefaultBenchmark):
-    name = 'fma3d'
+    name = "fma3d"
     number = 191
-    lang = 'F'
-    simpoint = 2541*100E6
+    lang = "F"
+    simpoint = 2541 * 100e6
+
 
 class galgel(MinneDefaultBenchmark):
-    name = 'galgel'
+    name = "galgel"
     number = 178
-    lang = 'F'
-    simpoint = 2491*100E6
+    lang = "F"
+    simpoint = 2491 * 100e6
+
 
 class lucas(MinneDefaultBenchmark):
-    name = 'lucas'
+    name = "lucas"
     number = 189
-    lang = 'F'
-    simpoint = 545*100E6
+    lang = "F"
+    simpoint = 545 * 100e6
+
 
 class mesa(Benchmark):
-    name = 'mesa'
+    name = "mesa"
     number = 177
-    lang = 'C'
+    lang = "C"
     stdin = None
 
     def __set_args(self, frames):
-        self.args = [ '-frames', frames, '-meshfile', '%s.in' % self.name,
-                      '-ppmfile', '%s.ppm' % self.name ]
+        self.args = [
+            "-frames",
+            frames,
+            "-meshfile",
+            "%s.in" % self.name,
+            "-ppmfile",
+            "%s.ppm" % self.name,
+        ]
 
     def test(self, isa, os):
-        self.__set_args('10')
+        self.__set_args("10")
 
     def train(self, isa, os):
-        self.__set_args('500')
+        self.__set_args("500")
 
     def ref(self, isa, os):
-        self.__set_args('1000')
-        self.simpoint = 1135*100E6
+        self.__set_args("1000")
+        self.simpoint = 1135 * 100e6
 
     def lgred(self, isa, os):
-        self.__set_args('1')
+        self.__set_args("1")
+
 
 class mgrid(MinneDefaultBenchmark):
-    name = 'mgrid'
+    name = "mgrid"
     number = 172
-    lang = 'F77'
-    simpoint = 3292*100E6
+    lang = "F77"
+    simpoint = 3292 * 100e6
+
 
 class sixtrack(DefaultBenchmark):
-    name = 'sixtrack'
+    name = "sixtrack"
     number = 200
-    lang = 'F77'
-    simpoint = 3043*100E6
+    lang = "F77"
+    simpoint = 3043 * 100e6
 
-    def lgred(self, isa, os): pass
+    def lgred(self, isa, os):
+        pass
+
 
 class swim(MinneDefaultBenchmark):
-    name = 'swim'
+    name = "swim"
     number = 171
-    lang = 'F77'
-    simpoint = 2079*100E6
+    lang = "F77"
+    simpoint = 2079 * 100e6
+
 
 class wupwise(DefaultBenchmark):
-    name = 'wupwise'
+    name = "wupwise"
     number = 168
-    lang = 'F77'
-    simpoint = 3237*100E6
+    lang = "F77"
+    simpoint = 3237 * 100e6
 
-    def lgred(self, isa, os): pass
+    def lgred(self, isa, os):
+        pass
+
 
 class bzip2(DefaultBenchmark):
-    name = 'bzip2'
+    name = "bzip2"
     number = 256
-    lang = 'C'
+    lang = "C"
 
     def test(self, isa, os):
-        self.args = [ 'input.random' ]
+        self.args = ["input.random"]
 
     def train(self, isa, os):
-        self.args = [ 'input.compressed' ]
+        self.args = ["input.compressed"]
+
 
 class bzip2_source(bzip2):
     def ref(self, isa, os):
-        self.simpoint = 977*100E6
-        self.args = [ 'input.source', '58' ]
+        self.simpoint = 977 * 100e6
+        self.args = ["input.source", "58"]
 
     def lgred(self, isa, os):
-        self.args = [ 'input.source', '1' ]
+        self.args = ["input.source", "1"]
+
 
 class bzip2_graphic(bzip2):
     def ref(self, isa, os):
-        self.simpoint = 718*100E6
-        self.args = [ 'input.graphic', '58' ]
+        self.simpoint = 718 * 100e6
+        self.args = ["input.graphic", "58"]
 
     def lgred(self, isa, os):
-        self.args = [ 'input.graphic', '1' ]
+        self.args = ["input.graphic", "1"]
+
 
 class bzip2_program(bzip2):
     def ref(self, isa, os):
-        self.simpoint = 458*100E6
-        self.args = [ 'input.program', '58' ]
+        self.simpoint = 458 * 100e6
+        self.args = ["input.program", "58"]
 
     def lgred(self, isa, os):
-        self.args = [ 'input.program', '1' ]
+        self.args = ["input.program", "1"]
+
+
 class lbm(DefaultBenchmark):
-    name  = 'lbm'
-    lang = 'C'
-    
+    name = "lbm"
+    lang = "C"
+
     def test(self, isa, os):
-         self.args = ['20', 'reference.dat', '0', '1' , '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/lbm/test/input/100_100_130_cf_a.of']
+        self.args = [
+            "20",
+            "reference.dat",
+            "0",
+            "1",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/lbm/test/input/100_100_130_cf_a.of",
+        ]
 
     def train(self, isa, os):
-         self.args = ['300', 'reference.dat', '0', '1' , '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/lbm/train/input/100_100_130_cf_b.of']
+        self.args = [
+            "300",
+            "reference.dat",
+            "0",
+            "1",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/lbm/train/input/100_100_130_cf_b.of",
+        ]
 
     def ref(self, isa, os):
-         self.args = ['3000', 'reference.dat', '0', '0' , '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/lbm/ref/input/100_100_130_ldc.of']
+        self.args = [
+            "3000",
+            "reference.dat",
+            "0",
+            "0",
+            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/lbm/ref/input/100_100_130_ldc.of",
+        ]
+
 
 class crafty(MinneDefaultBenchmark):
-    name = 'crafty'
+    name = "crafty"
     number = 186
-    lang = 'C'
-    simpoint = 774*100E6
+    lang = "C"
+    simpoint = 774 * 100e6
+
 
 class eon(MinneDefaultBenchmark):
-    name = 'eon'
+    name = "eon"
     number = 252
-    lang = 'CXX'
+    lang = "CXX"
     stdin = None
 
+
 class eon_kajiya(eon):
-    args = [ 'chair.control.kajiya', 'chair.camera', 'chair.surfaces',
-             'chair.kajiya.ppm', 'ppm', 'pixels_out.kajiya']
-    output = 'kajiya_log.out'
+    args = [
+        "chair.control.kajiya",
+        "chair.camera",
+        "chair.surfaces",
+        "chair.kajiya.ppm",
+        "ppm",
+        "pixels_out.kajiya",
+    ]
+    output = "kajiya_log.out"
 
 
 class eon_cook(eon):
-    args = [ 'chair.control.cook', 'chair.camera', 'chair.surfaces',
-             'chair.cook.ppm', 'ppm', 'pixels_out.cook' ]
-    output = 'cook_log.out'
+    args = [
+        "chair.control.cook",
+        "chair.camera",
+        "chair.surfaces",
+        "chair.cook.ppm",
+        "ppm",
+        "pixels_out.cook",
+    ]
+    output = "cook_log.out"
+
 
 class eon_rushmeier(eon):
-    args = [ 'chair.control.rushmeier', 'chair.camera', 'chair.surfaces',
-             'chair.rushmeier.ppm', 'ppm', 'pixels_out.rushmeier' ]
-    output = 'rushmeier_log.out'
-    simpoint = 403*100E6
+    args = [
+        "chair.control.rushmeier",
+        "chair.camera",
+        "chair.surfaces",
+        "chair.rushmeier.ppm",
+        "ppm",
+        "pixels_out.rushmeier",
+    ]
+    output = "rushmeier_log.out"
+    simpoint = 403 * 100e6
+
 
 class gap(DefaultBenchmark):
-    name = 'gap'
+    name = "gap"
     number = 254
-    lang = 'C'
+    lang = "C"
 
     def __set_args(self, size):
-        self.args = [ '-l', './', '-q', '-m', size ]
+        self.args = ["-l", "./", "-q", "-m", size]
 
     def test(self, isa, os):
-        self.__set_args('64M')
+        self.__set_args("64M")
 
     def train(self, isa, os):
-        self.__set_args('128M')
+        self.__set_args("128M")
 
     def ref(self, isa, os):
-        self.__set_args('192M')
-        self.simpoint = 674*100E6
+        self.__set_args("192M")
+        self.simpoint = 674 * 100e6
 
     def lgred(self, isa, os):
-        self.__set_args('64M')
+        self.__set_args("64M")
 
     def mdred(self, isa, os):
-        self.__set_args('64M')
+        self.__set_args("64M")
 
     def smred(self, isa, os):
-        self.__set_args('64M')
+        self.__set_args("64M")
+
 
 class gcc(DefaultBenchmark):
-    name = 'gcc'
+    name = "gcc"
     number = 176
-    lang = 'C'
+    lang = "C"
 
     def test(self, isa, os):
-        self.args = [ 'cccp.i', '-o', 'cccp.s' ]
+        self.args = ["cccp.i", "-o", "cccp.s"]
 
     def train(self, isa, os):
-        self.args = [ 'cp-decl.i', '-o', 'cp-decl.s' ]
+        self.args = ["cp-decl.i", "-o", "cp-decl.s"]
 
     def smred(self, isa, os):
-        self.args = [ 'c-iterate.i', '-o', 'c-iterate.s' ]
+        self.args = ["c-iterate.i", "-o", "c-iterate.s"]
 
     def mdred(self, isa, os):
-        self.args = [ 'rdlanal.i', '-o', 'rdlanal.s' ]
+        self.args = ["rdlanal.i", "-o", "rdlanal.s"]
 
     def lgred(self, isa, os):
-        self.args = [ 'cp-decl.i', '-o', 'cp-decl.s' ]
+        self.args = ["cp-decl.i", "-o", "cp-decl.s"]
+
 
 class gcc_166(gcc):
     def ref(self, isa, os):
-        self.simpoint = 389*100E6
-        self.args = [ '166.i', '-o', '166.s' ]
+        self.simpoint = 389 * 100e6
+        self.args = ["166.i", "-o", "166.s"]
+
 
 class gcc_200(gcc):
     def ref(self, isa, os):
-        self.simpoint = 736*100E6
-        self.args = [ '200.i', '-o', '200.s' ]
+        self.simpoint = 736 * 100e6
+        self.args = ["200.i", "-o", "200.s"]
+
 
 class gcc_expr(gcc):
     def ref(self, isa, os):
-        self.simpoint = 36*100E6
-        self.args = [ 'expr.i', '-o', 'expr.s' ]
+        self.simpoint = 36 * 100e6
+        self.args = ["expr.i", "-o", "expr.s"]
+
 
 class gcc_integrate(gcc):
     def ref(self, isa, os):
-        self.simpoint = 4*100E6
-        self.args = [ 'integrate.i', '-o', 'integrate.s' ]
+        self.simpoint = 4 * 100e6
+        self.args = ["integrate.i", "-o", "integrate.s"]
+
 
 class gcc_scilab(gcc):
     def ref(self, isa, os):
-        self.simpoint = 207*100E6
-        self.args = [ 'scilab.i', '-o', 'scilab.s' ]
+        self.simpoint = 207 * 100e6
+        self.args = ["scilab.i", "-o", "scilab.s"]
+
 
 class gzip(DefaultBenchmark):
-    name = 'gzip'
+    name = "gzip"
     number = 164
-    lang = 'C'
+    lang = "C"
 
     def test(self, isa, os):
-        self.args = [ 'input.compressed', '2' ]
+        self.args = ["input.compressed", "2"]
 
     def train(self, isa, os):
-        self.args = [ 'input.combined', '32' ]
+        self.args = ["input.combined", "32"]
+
 
 class gzip_source(gzip):
     def ref(self, isa, os):
-        self.simpoint = 334*100E6
-        self.args = [ 'input.source', '1' ]
+        self.simpoint = 334 * 100e6
+        self.args = ["input.source", "1"]
+
     def smred(self, isa, os):
-        self.args = [ 'input.source', '1' ]
+        self.args = ["input.source", "1"]
+
     def mdred(self, isa, os):
-        self.args = [ 'input.source', '1' ]
+        self.args = ["input.source", "1"]
+
     def lgred(self, isa, os):
-        self.args = [ 'input.source', '1' ]
+        self.args = ["input.source", "1"]
+
 
 class gzip_log(gzip):
     def ref(self, isa, os):
-        self.simpoint = 265*100E6
-        self.args = [ 'input.log', '60' ]
+        self.simpoint = 265 * 100e6
+        self.args = ["input.log", "60"]
+
     def smred(self, isa, os):
-        self.args = [ 'input.log', '1' ]
+        self.args = ["input.log", "1"]
+
     def mdred(self, isa, os):
-        self.args = [ 'input.log', '1' ]
+        self.args = ["input.log", "1"]
+
     def lgred(self, isa, os):
-        self.args = [ 'input.log', '1' ]
+        self.args = ["input.log", "1"]
+
 
 class gzip_graphic(gzip):
     def ref(self, isa, os):
-        self.simpoint = 653*100E6
-        self.args = [ 'input.graphic', '60' ]
+        self.simpoint = 653 * 100e6
+        self.args = ["input.graphic", "60"]
+
     def smred(self, isa, os):
-        self.args = [ 'input.graphic', '1' ]
+        self.args = ["input.graphic", "1"]
+
     def mdred(self, isa, os):
-        self.args = [ 'input.graphic', '1' ]
+        self.args = ["input.graphic", "1"]
+
     def lgred(self, isa, os):
-        self.args = [ 'input.graphic', '1' ]
+        self.args = ["input.graphic", "1"]
+
 
 class gzip_random(gzip):
     def ref(self, isa, os):
-        self.simpoint = 623*100E6
-        self.args = [ 'input.random', '60' ]
+        self.simpoint = 623 * 100e6
+        self.args = ["input.random", "60"]
+
     def smred(self, isa, os):
-        self.args = [ 'input.random', '1' ]
+        self.args = ["input.random", "1"]
+
     def mdred(self, isa, os):
-        self.args = [ 'input.random', '1' ]
+        self.args = ["input.random", "1"]
+
     def lgred(self, isa, os):
-        self.args = [ 'input.random', '1' ]
+        self.args = ["input.random", "1"]
+
 
 class gzip_program(gzip):
     def ref(self, isa, os):
-        self.simpoint = 1189*100E6
-        self.args = [ 'input.program', '60' ]
+        self.simpoint = 1189 * 100e6
+        self.args = ["input.program", "60"]
+
     def smred(self, isa, os):
-        self.args = [ 'input.program', '1' ]
+        self.args = ["input.program", "1"]
+
     def mdred(self, isa, os):
-        self.args = [ 'input.program', '1' ]
+        self.args = ["input.program", "1"]
+
     def lgred(self, isa, os):
-        self.args = [ 'input.program', '1' ]
+        self.args = ["input.program", "1"]
+
 
 class mcf(MinneDefaultBenchmark):
-    name = 'mcf'
+    name = "mcf"
     number = 181
-    lang = 'C'
-    args = [ 'mcf.in' ]
-    simpoint = 553*100E6
+    lang = "C"
+    args = ["mcf.in"]
+    simpoint = 553 * 100e6
+
 
 class parser(MinneDefaultBenchmark):
-    name = 'parser'
+    name = "parser"
     number = 197
-    lang = 'C'
-    args = [ '2.1.dict', '-batch' ]
-    simpoint = 1146*100E6
+    lang = "C"
+    args = ["2.1.dict", "-batch"]
+    simpoint = 1146 * 100e6
+
 
 class perlbmk(DefaultBenchmark):
-    name = 'perlbmk'
+    name = "perlbmk"
     number = 253
-    lang = 'C'
+    lang = "C"
 
     def test(self, isa, os):
-        self.args = [ '-I.', '-I', 'lib', 'test.pl' ]
-        self.stdin = 'test.in'
+        self.args = ["-I.", "-I", "lib", "test.pl"]
+        self.stdin = "test.in"
+
 
 class perlbmk_diffmail(perlbmk):
     def ref(self, isa, os):
-        self.simpoint = 141*100E6
-        self.args = [ '-I', 'lib', 'diffmail.pl', '2', '550', '15', '24',
-                      '23', '100' ]
+        self.simpoint = 141 * 100e6
+        self.args = [
+            "-I",
+            "lib",
+            "diffmail.pl",
+            "2",
+            "550",
+            "15",
+            "24",
+            "23",
+            "100",
+        ]
 
     def train(self, isa, os):
-        self.args = [ '-I', 'lib', 'diffmail.pl', '2', '350', '15', '24',
-                      '23', '150' ]
+        self.args = [
+            "-I",
+            "lib",
+            "diffmail.pl",
+            "2",
+            "350",
+            "15",
+            "24",
+            "23",
+            "150",
+        ]
+
 
 class perlbmk_scrabbl(perlbmk):
     def train(self, isa, os):
-        self.args = [ '-I.', '-I', 'lib', 'scrabbl.pl' ]
-        self.stdin = 'scrabbl.in'
+        self.args = ["-I.", "-I", "lib", "scrabbl.pl"]
+        self.stdin = "scrabbl.in"
+
 
 class perlbmk_makerand(perlbmk):
     def ref(self, isa, os):
-        self.simpoint = 11*100E6
-        self.args = [ '-I', 'lib',  'makerand.pl' ]
+        self.simpoint = 11 * 100e6
+        self.args = ["-I", "lib", "makerand.pl"]
 
     def lgred(self, isa, os):
-        self.args = [ '-I.', '-I', 'lib', 'lgred.makerand.pl' ]
+        self.args = ["-I.", "-I", "lib", "lgred.makerand.pl"]
 
     def mdred(self, isa, os):
-        self.args = [ '-I.', '-I', 'lib', 'mdred.makerand.pl' ]
+        self.args = ["-I.", "-I", "lib", "mdred.makerand.pl"]
 
     def smred(self, isa, os):
-        self.args = [ '-I.', '-I', 'lib', 'smred.makerand.pl' ]
+        self.args = ["-I.", "-I", "lib", "smred.makerand.pl"]
+
 
 class perlbmk_perfect(perlbmk):
     def ref(self, isa, os):
-        self.simpoint = 5*100E6
-        self.args = [ '-I', 'lib',  'perfect.pl', 'b', '3', 'm', '4' ]
+        self.simpoint = 5 * 100e6
+        self.args = ["-I", "lib", "perfect.pl", "b", "3", "m", "4"]
 
     def train(self, isa, os):
-        self.args = [ '-I', 'lib', 'perfect.pl', 'b',  '3' ]
+        self.args = ["-I", "lib", "perfect.pl", "b", "3"]
+
 
 class perlbmk_splitmail1(perlbmk):
     def ref(self, isa, os):
-        self.simpoint = 405*100E6
-        self.args = [ '-I', 'lib', 'splitmail.pl', '850', '5', '19',
-                      '18', '1500' ]
+        self.simpoint = 405 * 100e6
+        self.args = [
+            "-I",
+            "lib",
+            "splitmail.pl",
+            "850",
+            "5",
+            "19",
+            "18",
+            "1500",
+        ]
+
 
 class perlbmk_splitmail2(perlbmk):
     def ref(self, isa, os):
-        self.args = [ '-I', 'lib', 'splitmail.pl', '704', '12', '26',
-                      '16', '836' ]
+        self.args = [
+            "-I",
+            "lib",
+            "splitmail.pl",
+            "704",
+            "12",
+            "26",
+            "16",
+            "836",
+        ]
+
 
 class perlbmk_splitmail3(perlbmk):
     def ref(self, isa, os):
-        self.args = [ '-I', 'lib', 'splitmail.pl', '535', '13', '25',
-                      '24', '1091' ]
+        self.args = [
+            "-I",
+            "lib",
+            "splitmail.pl",
+            "535",
+            "13",
+            "25",
+            "24",
+            "1091",
+        ]
+
 
 class perlbmk_splitmail4(perlbmk):
     def ref(self, isa, os):
-        self.args = [ '-I', 'lib', 'splitmail.pl', '957', '12', '23',
-                      '26', '1014' ]
+        self.args = [
+            "-I",
+            "lib",
+            "splitmail.pl",
+            "957",
+            "12",
+            "23",
+            "26",
+            "1014",
+        ]
+
 
 class twolf(Benchmark):
-    name = 'twolf'
+    name = "twolf"
     number = 300
-    lang = 'C'
+    lang = "C"
     stdin = None
 
     def test(self, isa, os):
-        self.args = [ 'test' ]
+        self.args = ["test"]
 
     def train(self, isa, os):
-        self.args = [ 'train' ]
+        self.args = ["train"]
 
     def ref(self, isa, os):
-        self.simpoint = 1066*100E6
-        self.args = [ 'ref' ]
+        self.simpoint = 1066 * 100e6
+        self.args = ["ref"]
 
     def smred(self, isa, os):
-        self.args = [ 'smred' ]
+        self.args = ["smred"]
 
     def mdred(self, isa, os):
-        self.args = [ 'mdred' ]
+        self.args = ["mdred"]
 
     def lgred(self, isa, os):
-        self.args = [ 'lgred' ]
+        self.args = ["lgred"]
+
 
 class vortex(Benchmark):
-    name = 'vortex'
+    name = "vortex"
     number = 255
-    lang = 'C'
+    lang = "C"
     stdin = None
 
     def __init__(self, isa, os, input_set):
-        if (isa in ('arm', 'thumb', 'aarch64')):
-            self.endian = 'lendian'
-        elif (isa == 'sparc' or isa == 'sparc32'):
-            self.endian = 'bendian'
+        if isa in ("arm", "thumb", "aarch64"):
+            self.endian = "lendian"
+        elif isa == "sparc" or isa == "sparc32":
+            self.endian = "bendian"
         else:
             raise AttributeError("unknown ISA %s" % isa)
 
         super(vortex, self).__init__(isa, os, input_set)
 
     def test(self, isa, os):
-        self.args = [ '%s.raw' % self.endian ]
-        self.output = 'vortex.out'
+        self.args = ["%s.raw" % self.endian]
+        self.output = "vortex.out"
 
     def train(self, isa, os):
-        self.args = [ '%s.raw' % self.endian ]
-        self.output = 'vortex.out'
+        self.args = ["%s.raw" % self.endian]
+        self.output = "vortex.out"
 
     def smred(self, isa, os):
-        self.args = [ '%s.raw' % self.endian ]
-        self.output = 'vortex.out'
+        self.args = ["%s.raw" % self.endian]
+        self.output = "vortex.out"
 
     def mdred(self, isa, os):
-        self.args = [ '%s.raw' % self.endian ]
-        self.output = 'vortex.out'
+        self.args = ["%s.raw" % self.endian]
+        self.output = "vortex.out"
 
     def lgred(self, isa, os):
-        self.args = [ '%s.raw' % self.endian ]
-        self.output = 'vortex.out'
+        self.args = ["%s.raw" % self.endian]
+        self.output = "vortex.out"
+
 
 class vortex1(vortex):
     def ref(self, isa, os):
-        self.args = [ '%s1.raw' % self.endian ]
-        self.output = 'vortex1.out'
-        self.simpoint = 271*100E6
+        self.args = ["%s1.raw" % self.endian]
+        self.output = "vortex1.out"
+        self.simpoint = 271 * 100e6
 
 
 class vortex2(vortex):
     def ref(self, isa, os):
-        self.simpoint = 1024*100E6
-        self.args = [ '%s2.raw' % self.endian ]
-        self.output = 'vortex2.out'
+        self.simpoint = 1024 * 100e6
+        self.args = ["%s2.raw" % self.endian]
+        self.output = "vortex2.out"
+
 
 class vortex3(vortex):
     def ref(self, isa, os):
-        self.simpoint = 564*100E6
-        self.args = [ '%s3.raw' % self.endian ]
-        self.output = 'vortex3.out'
+        self.simpoint = 564 * 100e6
+        self.args = ["%s3.raw" % self.endian]
+        self.output = "vortex3.out"
+
 
 class vpr(MinneDefaultBenchmark):
-    name = 'vpr'
+    name = "vpr"
     number = 175
-    lang = 'C'
+    lang = "C"
+
 
 # not sure about vpr minnespec place.in
 class vpr_place(vpr):
-    args = [ 'net.in', 'arch.in', 'place.out', 'dum.out', '-nodisp',
-             '-place_only', '-init_t', '5', '-exit_t', '0.005',
-             '-alpha_t', '0.9412', '-inner_num', '2' ]
-    output = 'place_log.out'
+    args = [
+        "net.in",
+        "arch.in",
+        "place.out",
+        "dum.out",
+        "-nodisp",
+        "-place_only",
+        "-init_t",
+        "5",
+        "-exit_t",
+        "0.005",
+        "-alpha_t",
+        "0.9412",
+        "-inner_num",
+        "2",
+    ]
+    output = "place_log.out"
+
 
 class vpr_route(vpr):
-    simpoint = 476*100E6
-    args = [ 'net.in', 'arch.in', 'place.in', 'route.out', '-nodisp',
-             '-route_only', '-route_chan_width', '15',
-             '-pres_fac_mult', '2', '-acc_fac', '1',
-             '-first_iter_pres_fac', '4', '-initial_pres_fac', '8' ]
-    output = 'route_log.out'
+    simpoint = 476 * 100e6
+    args = [
+        "net.in",
+        "arch.in",
+        "place.in",
+        "route.out",
+        "-nodisp",
+        "-route_only",
+        "-route_chan_width",
+        "15",
+        "-pres_fac_mult",
+        "2",
+        "-acc_fac",
+        "1",
+        "-first_iter_pres_fac",
+        "4",
+        "-initial_pres_fac",
+        "8",
+    ]
+    output = "route_log.out"
 
-all = [namd,blender,fotonik,roms,wrf,nab,bwaves,cactus,xalancbmk,exchange,gcc,lbm,imagick,leela,mcf,omnetpp,parest,perlbench,povray,sjeng,x264,xz]
 
-__all__ = [ x.__name__ for x in all ]
+all = [
+    namd,
+    blender,
+    fotonik,
+    roms,
+    wrf,
+    nab,
+    bwaves,
+    cactus,
+    xalancbmk,
+    exchange,
+    gcc,
+    lbm,
+    imagick,
+    leela,
+    mcf,
+    omnetpp,
+    parest,
+    perlbench,
+    povray,
+    sjeng,
+    x264,
+    xz,
+]
 
-if __name__ == '__main__':
+__all__ = [x.__name__ for x in all]
+
+if __name__ == "__main__":
     from pprint import pprint
+
     for bench in all:
-        for input_set in 'ref', 'test', 'train':
-            print('class: %s' % bench.__name__)
-            x = bench('x86', 'linux', input_set)
-            print('%s: %s' % (x, input_set))
+        for input_set in "ref", "test", "train":
+            print("class: %s" % bench.__name__)
+            x = bench("x86", "linux", input_set)
+            print("%s: %s" % (x, input_set))
             pprint(x.makeProcessArgs())
             print()

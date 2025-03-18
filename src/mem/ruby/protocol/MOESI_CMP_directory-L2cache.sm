@@ -1474,6 +1474,7 @@ machine(MachineType:L2Cache, "Token protocol")
       out_msg.Requestor := machineID;
       out_msg.RequestorMachine := MachineType:L2Cache;
       out_msg.Destination.add(mapAddressToMachine(address, MachineType:Directory));
+      // out_msg.Store := true;
       if (tbe.Dirty) {
         out_msg.Type := CoherenceRequestType:WRITEBACK_DIRTY_DATA;
         out_msg.DataBlk := tbe.DataBlk;
@@ -1635,6 +1636,7 @@ machine(MachineType:L2Cache, "Token protocol")
 
   transition({IFGX, IFGS, ISFGS, IFGXX, IFGXXD, IFLXO, ILOW, ILOXW, ILOSW, ILOSXW, SLSW, OLSW, ILSW, IW, ILXW, OW, SW, OXW, OLSXW, IFLS, IFLO, IFLOX, IFLOXX, IFLOSX,OLSXS,  IGS, IGM, IGMLS, IGMO, IGMOU, MM, SS, OO, OI, MI, MII, OLSI, ILSI, SLSS, OLSS, OLSF, IGMIOFS, ILOSD, ILOSXD, ILOD, ILXD, ILOXD}, L2_Replacement) {
     zz_recycleL1RequestQueue;
+    // This is L2 replacement ?
   }
 
   transition({IFGX, IFGS, ISFGS, IFGXX, IFGXXD, IFLXO, ILOW, ILOXW, ILOSW, ILOSXW, SLSW, OLSW, ILSW, IW, OW, SW, OXW, OLSXW, ILXW, IFLS, IFLO, IFLOX, IFLOXX, IFLOSX,OLSXS, IGS, IGM, MM, SS, OO, SLSS, OLSS, OLSF, IGMIOFS, ILOSD, ILOSXD, ILOD, ILXD, ILOXD}, {Fwd_GETX, Fwd_GETS, Fwd_DMA}) {

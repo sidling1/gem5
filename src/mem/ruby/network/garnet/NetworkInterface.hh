@@ -279,12 +279,16 @@ class NetworkInterface : public ClockedObject, public Consumer
     int m_deadlock_threshold;
     std::vector<OutVcState> outVcState;
 
+    std::set<int> vcs_blocked;
+
     std::vector<int> m_stall_count;
 
     // Input Flit Buffers
     // The flit buffers which will serve the Consumer
     std::vector<flitBuffer>  niOutVcs;
     std::vector<Tick> m_ni_out_vcs_enqueue_time;
+
+    std::set<std::pair<int, flit*>> localStoredFlits;
 
     // The Message buffers that takes messages from the protocol
     std::vector<MessageBuffer *> inNode_ptr;

@@ -72,6 +72,30 @@ class Message
 
     virtual ~Message() { }
 
+    virtual bool get_dirty_bit(){
+      return false;
+    }
+
+    
+
+    virtual Addr get_physical_address(){
+      return 0;
+    }
+
+    virtual void set_store_bit(bool val){}
+
+    virtual bool get_read_bit(){
+      return false;
+    }
+
+    virtual bool get_write_bit(){
+      return false;
+    }
+    virtual bool get_store_bit() {
+      // std::cout << "Not Implemented Error" << std::endl;
+      return false;
+    }
+
     virtual MsgPtr clone() const = 0;
     virtual void print(std::ostream& out) const = 0;
 

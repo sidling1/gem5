@@ -78,11 +78,22 @@ InputUnit::wakeup()
 {
     flit *t_flit;
     if (m_in_link->isReady(curTick())) {
+        
+        t_flit = m_in_link->peekLink();
+        if(t_flit->m_isStore && (curTick() <= t_flit->m_StoreTillTime)){
+            // Can we print the message here ?
+            // std::cout << "Message contained in the flit : " << *(t_flit->get_msg_ptr()) << std::endl;
+            // std::cout << "Something is Stored Here :) !" << std::endl;
+            return;
+        }else if(t_flit->m_isStore){
+            // std::cout << "Time Out, The flit will start to move !" << std::endl;
+        }
 
+
+
+        
         t_flit = m_in_link->consumeLink();
-        DPRINTF(RubyNetwork, "Router[%d] Consuming:%s Width: %d Flit:%s\n",
-        m_router->get_id(), m_in_link->name(),
-        m_router->getBitWidth(), *t_flit);
+        
         assert(t_flit->m_width == m_router->getBitWidth());
         int vc = t_flit->get_vc();
         t_flit->increment_hops(); // for stats

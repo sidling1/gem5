@@ -107,6 +107,38 @@ structure(RequestMsg, desc="...", interface="Message") {
   RubyAccessMode AccessMode,    desc="user/supervisor access type";
   PrefetchBit Prefetch,         desc="Is this a prefetch request";
 
+  bool Store, default=0 , desc="Is this a store request ?";
+  bool isReadReq, default=0, desc="Is this a read request ?";
+  bool isWriteReq, default=0, desc="Is this a write request ?";
+  // Look into if these get their getter and setter methods generated or not ?
+
+  void set_store_bit(bool val){
+    Store := val;
+  }
+
+  bool get_dirty_bit(){
+    if(Type == CoherenceRequestType:WRITEBACK_DIRTY_DATA){
+      return true;
+    }
+    return false;
+  }
+
+  Addr get_physical_address(){
+    return addr;
+  }
+
+  bool get_read_bit(){
+    return isReadReq;
+  }
+
+  bool get_write_bit(){
+    return isWriteReq;
+  }
+
+  bool get_store_bit(){
+    return Store;
+  }
+
   bool functionalRead(Packet *pkt) {
     // Read only those messages that contain the data
     if (Type == CoherenceRequestType:WRITEBACK_CLEAN_DATA ||
@@ -133,6 +165,9 @@ structure(ResponseMsg, desc="...", interface="Message") {
   bool Dirty,                  desc="Is the data dirty (different than memory)?";
   int Acks,                    desc="How many acks to expect";
   MessageSizeType MessageSize, desc="size category of the message";
+
+
+  
 
   bool functionalRead(Packet *pkt) {
     // Read only those messages that contain the data

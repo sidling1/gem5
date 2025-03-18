@@ -200,6 +200,14 @@ NetworkInterface::wakeup()
     assert(curTick() == clockEdge());
     MsgPtr msg_ptr;
     Tick curTime = clockEdge();
+    
+    for(auto it = localStoredFlits.begin();it != localStoredFlits.end();){
+        if(it->second->m_StoreTillTime <= curTick()){
+            it = localStoredFlits.erase(it);
+        }else{
+            it++;
+        }
+    }
 
     // Checking for messages coming from the protocol
     // can pick up a message/cycle for each virtual net
@@ -221,7 +229,7 @@ NetworkInterface::wakeup()
 
     // Check if there are flits stalling a virtual channel. Track if a
     // message is enqueued to restrict ejection to one message per cycle.
-    checkStallQueue();
+    checkStallQueue(); /// sussy
 
     /*********** Check the incoming flit link **********/
     DPRINTF(RubyNetwork, "Number of input ports: %d\n", inPorts.size());
@@ -242,6 +250,21 @@ NetworkInterface::wakeup()
                 t_flit->get_type() == HEAD_TAIL_) {
                 if (!iPort->messageEnqueuedThisCycle &&
                     outNode_ptr[vnet]->areNSlotsAvailable(1, curTime)) {
+
+                    /*
+                        Here there is some message ptr,
+                        that is being sent into the outNode_ptr 
+                        i guess this is it, this is where the message is being sent,
+                        so probably yaha reply packet banana rahega and bhejna rahega.    
+                        ----->
+                    */
+
+                    // Check the local VC's for the data
+                    // outNode_ptr[vnet]->equeue(Pointer, curTime, cyclesToTicks(Cycles(1)));
+                    // Credit *cFlit = new Credit(t_flit->get_vc(), true, curTick());
+                    // iPort->sendCredit(cFlit);
+                    // incrementStats(t_flit);
+
                     // Space is available. Enqueue to protocol buffer.
                     outNode_ptr[vnet]->enqueue(t_flit->get_msg_ptr(), curTime,
                                                cyclesToTicks(Cycles(1)));
@@ -392,7 +415,7 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         int vc = calculateVC(vnet);
 
         if (vc == -1) {
-            return false ;
+            return false;
         }
         MsgPtr new_msg_ptr = msg_ptr->clone();
         NodeID destID = dest_nodes[ctr];
@@ -439,14 +462,43 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         int packet_id = m_net_ptr->getNextPacketID();
         for (int i = 0; i < num_flits; i++) {
             m_net_ptr->increment_injected_flits(vnet);
+            
             flit *fl = new flit(packet_id,
                 i, vc, vnet, route, num_flits, new_msg_ptr,
                 m_net_ptr->MessageSizeType_to_int(
                 net_msg_ptr->getMessageSize()),
-                oPort->bitWidth(), curTick());
+                oPort->bitWidth(), curTick(), (i == 0 ? msg_ptr->get_store_bit() : false), msg_ptr->get_read_bit(), msg_ptr->get_write_bit());
 
             fl->set_src_delay(curTick() - msg_ptr->getTime());
+
+            if(fl->m_isReadReq || fl->m_isWriteReq){
+                // std::cout << "Read / Write Request" << std::endl;
+                // we need to look for local reply
+                for(auto stored : localStoredFlits){
+                    // check for local reply between fl->get_msg_ptr(), stored->get_msg_ptr();
+                    MsgPtr &s_msg = stored.second->get_msg_ptr(), &r_msg = fl->get_msg_ptr();
+                    std::cout << "Stored Address : " << s_msg->get_physical_address() << 
+                    " \n Requested Address : " << r_msg->get_physical_address() << std::endl;
+                    
+                    std::cout << "Stored LineAddress : " << makeLineAddress(s_msg->get_physical_address()) << 
+                    " \n Requested LineAddress : " << makeLineAddress(r_msg->get_physical_address()) << std::endl;
+                    
+                    if(makeLineAddress(s_msg->get_physical_address()) == makeLineAddress(r_msg->get_physical_address())){
+                        // Locally Found
+                        std::cout << "Found in the VC : " << stored.first << std::endl;
+                    }
+                }
+            }
+
+            if(fl->m_isStore && fl->m_StoreTillTime == 0){
+                fl->set_store_time(curTick() + INFINITE_);
+                localStoredFlits.insert({vc, fl});
+                std::cout << "Local Store in VC "<< this->m_id << " : " << vc << "with id : " << fl->get_id() << std::endl;
+            }
+            
             niOutVcs[vc].insert(fl);
+            // If it is stuck here only, then it is much easier to control the movement right ?
+            // And when we want to free some vc, we can setState to IDLE_
         }
 
         m_ni_out_vcs_enqueue_time[vc] = curTick();
