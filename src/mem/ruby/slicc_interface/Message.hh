@@ -76,7 +76,7 @@ class Message
       return false;
     }
 
-    
+
 
     virtual Addr get_physical_address(){
       return 0;

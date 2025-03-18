@@ -78,7 +78,7 @@ InputUnit::wakeup()
 {
     flit *t_flit;
     if (m_in_link->isReady(curTick())) {
-        
+
         t_flit = m_in_link->peekLink();
         if(t_flit->m_isStore && (curTick() <= t_flit->m_StoreTillTime)){
             // Can we print the message here ?
@@ -91,9 +91,9 @@ InputUnit::wakeup()
 
 
 
-        
+
         t_flit = m_in_link->consumeLink();
-        
+
         assert(t_flit->m_width == m_router->getBitWidth());
         int vc = t_flit->get_vc();
         t_flit->increment_hops(); // for stats

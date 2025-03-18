@@ -10,21 +10,21 @@ command line: build/X86_MOESI_CMP_directory/gem5.opt configs/deprecated/example/
 
 Working
 namd ref
-executable= /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/binaries/namd 
-inputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/input 
-outputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/output 
+executable= /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/binaries/namd
+inputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/input
+outputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/output
 namd ref
-executable= /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/binaries/namd 
-inputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/input 
-outputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/output 
+executable= /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/binaries/namd
+inputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/input
+outputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/output
 namd ref
-executable= /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/binaries/namd 
-inputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/input 
-outputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/output 
+executable= /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/binaries/namd
+inputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/input
+outputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/output
 namd ref
-executable= /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/binaries/namd 
-inputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/input 
-outputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/output 
+executable= /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/binaries/namd
+inputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/input
+outputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/ref/output
 Switch at instruction count:100000
 Switched CPUS @ tick 117248000
 switching cpus

@@ -200,7 +200,7 @@ NetworkInterface::wakeup()
     assert(curTick() == clockEdge());
     MsgPtr msg_ptr;
     Tick curTime = clockEdge();
-    
+
     for(auto it = localStoredFlits.begin();it != localStoredFlits.end();){
         if(it->second->m_StoreTillTime <= curTick()){
             it = localStoredFlits.erase(it);
@@ -253,9 +253,9 @@ NetworkInterface::wakeup()
 
                     /*
                         Here there is some message ptr,
-                        that is being sent into the outNode_ptr 
+                        that is being sent into the outNode_ptr
                         i guess this is it, this is where the message is being sent,
-                        so probably yaha reply packet banana rahega and bhejna rahega.    
+                        so probably yaha reply packet banana rahega and bhejna rahega.
                         ----->
                     */
 
@@ -462,7 +462,7 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         int packet_id = m_net_ptr->getNextPacketID();
         for (int i = 0; i < num_flits; i++) {
             m_net_ptr->increment_injected_flits(vnet);
-            
+
             flit *fl = new flit(packet_id,
                 i, vc, vnet, route, num_flits, new_msg_ptr,
                 m_net_ptr->MessageSizeType_to_int(
@@ -477,12 +477,12 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
                 for(auto stored : localStoredFlits){
                     // check for local reply between fl->get_msg_ptr(), stored->get_msg_ptr();
                     MsgPtr &s_msg = stored.second->get_msg_ptr(), &r_msg = fl->get_msg_ptr();
-                    std::cout << "Stored Address : " << s_msg->get_physical_address() << 
+                    std::cout << "Stored Address : " << s_msg->get_physical_address() <<
                     " \n Requested Address : " << r_msg->get_physical_address() << std::endl;
-                    
-                    std::cout << "Stored LineAddress : " << makeLineAddress(s_msg->get_physical_address()) << 
+
+                    std::cout << "Stored LineAddress : " << makeLineAddress(s_msg->get_physical_address()) <<
                     " \n Requested LineAddress : " << makeLineAddress(r_msg->get_physical_address()) << std::endl;
-                    
+
                     if(makeLineAddress(s_msg->get_physical_address()) == makeLineAddress(r_msg->get_physical_address())){
                         // Locally Found
                         std::cout << "Found in the VC : " << stored.first << std::endl;
@@ -495,7 +495,7 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
                 localStoredFlits.insert({vc, fl});
                 std::cout << "Local Store in VC "<< this->m_id << " : " << vc << "with id : " << fl->get_id() << std::endl;
             }
-            
+
             niOutVcs[vc].insert(fl);
             // If it is stuck here only, then it is much easier to control the movement right ?
             // And when we want to free some vc, we can setState to IDLE_

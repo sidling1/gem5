@@ -167,7 +167,7 @@ structure(ResponseMsg, desc="...", interface="Message") {
   MessageSizeType MessageSize, desc="size category of the message";
 
 
-  
+
 
   bool functionalRead(Packet *pkt) {
     // Read only those messages that contain the data

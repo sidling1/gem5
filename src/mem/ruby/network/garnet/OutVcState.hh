@@ -58,7 +58,7 @@ class OutVcState
     {
         return ((m_vc_state == state) && (request_time >= m_time) );
     }
-    
+
     inline void
     setState(VC_state_type state, Tick time)
     {
