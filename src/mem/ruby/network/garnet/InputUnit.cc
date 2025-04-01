@@ -80,19 +80,20 @@ InputUnit::wakeup()
     if (m_in_link->isReady(curTick())) {
 
         t_flit = m_in_link->peekLink();
-        if(t_flit->m_isStore && (curTick() <= t_flit->m_StoreTillTime)){
+        if(t_flit->m_isStore && (t_flit->m_StoreTillTime > curTick())){
             // Can we print the message here ?
             // std::cout << "Message contained in the flit : " << *(t_flit->get_msg_ptr()) << std::endl;
             // std::cout << "Something is Stored Here :) !" << std::endl;
+
             return;
         }else if(t_flit->m_isStore){
             // std::cout << "Time Out, The flit will start to move !" << std::endl;
         }
 
-
-
-
         t_flit = m_in_link->consumeLink();
+        if(t_flit->m_isStore && t_flit->get_route().dest_router == m_router->get_id()){
+            std::cout << "Local Reply Reached The Local Router" << std::endl;
+        }
 
         assert(t_flit->m_width == m_router->getBitWidth());
         int vc = t_flit->get_vc();
@@ -117,6 +118,9 @@ InputUnit::wakeup()
             assert(virtualChannels[vc].get_state() == ACTIVE_);
         }
 
+        if(t_flit->m_isStore && t_flit->get_route().dest_router == m_router->get_id()){
+            std::cout << "Outport Assigned to Local Reply" << std::endl;
+        }
 
         // Buffer the flit
         virtualChannels[vc].insertFlit(t_flit);
@@ -142,6 +146,10 @@ InputUnit::wakeup()
 
             // Wakeup the router in that cycle to perform SA
             m_router->schedule_wakeup(Cycles(wait_time));
+        }
+
+        if(t_flit->m_isStore && t_flit->get_route().dest_router == m_router->get_id()){
+            std::cout << "SA / VC allocation turned on for Local Reply" << std::endl;
         }
 
         if (m_in_link->isReady(curTick())) {

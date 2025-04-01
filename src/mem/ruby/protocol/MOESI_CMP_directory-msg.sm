@@ -166,9 +166,6 @@ structure(ResponseMsg, desc="...", interface="Message") {
   int Acks,                    desc="How many acks to expect";
   MessageSizeType MessageSize, desc="size category of the message";
 
-
-
-
   bool functionalRead(Packet *pkt) {
     // Read only those messages that contain the data
     if (Type == CoherenceResponseType:DATA ||

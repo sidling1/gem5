@@ -91,6 +91,8 @@ class NetworkInterface : public ClockedObject, public Consumer
         return oPort->routerID();
     }
 
+    void RemoveStoredFlits(bool force);
+
     class OutputPort
     {
       public:
@@ -305,7 +307,8 @@ class NetworkInterface : public ClockedObject, public Consumer
     void scheduleOutputPort(OutputPort *oPort);
     void scheduleOutputLink();
     void checkReschedule();
-
+    
+    void makeLocalReply(flit *t_flit);
     void incrementStats(flit *t_flit);
 
     InputPort *getInportForVnet(int vnet);

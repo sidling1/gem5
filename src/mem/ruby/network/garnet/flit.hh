@@ -117,6 +117,15 @@ class flit
         m_StoreTillTime = time;
     }
 
+    void localReply(){
+        RouteInfo& t_route = this->m_route;
+
+        // How to update the netdest
+        std::swap(t_route.dest_ni, t_route.src_ni);
+        std::swap(t_route.dest_router, t_route.src_router);
+        // t_route.vnet = DATA_VNET_;
+    }
+
     uint32_t m_width;
     int msgSize;
     bool m_isStore;

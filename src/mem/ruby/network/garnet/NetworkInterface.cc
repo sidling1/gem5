@@ -187,6 +187,16 @@ NetworkInterface::incrementStats(flit *t_flit)
  * downstream router.
  */
 
+void NetworkInterface::RemoveStoredFlits(bool force){
+    for(auto it = localStoredFlits.begin();it != localStoredFlits.end();){
+        if(it->second->m_StoreTillTime > curTick() && !force){continue;}
+        it->second->get_msg_ptr()->setLastEnqueueTime(curTick());
+        std::cout << "Removing : " << makeLineAddress(it->second->get_msg_ptr()->get_physical_address()) << std::endl;
+        it->second->set_store_time(curTick());
+        it = localStoredFlits.erase(it);
+    }
+}
+
 void
 NetworkInterface::wakeup()
 {
@@ -194,6 +204,7 @@ NetworkInterface::wakeup()
     for (auto &oPort: outPorts) {
         oss << oPort->routerID() << "[" << oPort->printVnets() << "] ";
     }
+    
     DPRINTF(RubyNetwork, "Network Interface %d connected to router:%s "
             "woke up. Period: %ld\n", m_id, oss.str(), clockPeriod());
 
@@ -201,13 +212,7 @@ NetworkInterface::wakeup()
     MsgPtr msg_ptr;
     Tick curTime = clockEdge();
 
-    for(auto it = localStoredFlits.begin();it != localStoredFlits.end();){
-        if(it->second->m_StoreTillTime <= curTick()){
-            it = localStoredFlits.erase(it);
-        }else{
-            it++;
-        }
-    }
+    RemoveStoredFlits(false);
 
     // Checking for messages coming from the protocol
     // can pick up a message/cycle for each virtual net
@@ -387,6 +392,16 @@ NetworkInterface::checkStallQueue()
     }
 }
 
+void NetworkInterface::makeLocalReply(flit* t_flit){
+    std::cout << "Handling Local Reply" << std::endl;
+
+    // Send more flits to this thing ?
+    // Kya kiya jaaye yar :(
+    t_flit->localReply(); // How to do this properly :(
+
+    t_flit->get_msg_ptr()->setLastEnqueueTime(curTick());
+}
+
 // Embed the protocol message into flits
 bool
 NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
@@ -415,6 +430,7 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         int vc = calculateVC(vnet);
 
         if (vc == -1) {
+            // RemoveStoredFlits(true);
             return false;
         }
         MsgPtr new_msg_ptr = msg_ptr->clone();
@@ -472,26 +488,32 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
             fl->set_src_delay(curTick() - msg_ptr->getTime());
 
             if(fl->m_isReadReq || fl->m_isWriteReq){
-                // std::cout << "Read / Write Request" << std::endl;
+                // std::cout << "Read / Write Request for : " << makeLineAddress(fl->get_msg_ptr()->get_physical_address()) << std::endl;
                 // we need to look for local reply
                 for(auto stored : localStoredFlits){
                     // check for local reply between fl->get_msg_ptr(), stored->get_msg_ptr();
                     MsgPtr &s_msg = stored.second->get_msg_ptr(), &r_msg = fl->get_msg_ptr();
                     std::cout << "Stored Address : " << s_msg->get_physical_address() <<
                     " \n Requested Address : " << r_msg->get_physical_address() << std::endl;
-
                     std::cout << "Stored LineAddress : " << makeLineAddress(s_msg->get_physical_address()) <<
                     " \n Requested LineAddress : " << makeLineAddress(r_msg->get_physical_address()) << std::endl;
-
                     if(makeLineAddress(s_msg->get_physical_address()) == makeLineAddress(r_msg->get_physical_address())){
                         // Locally Found
                         std::cout << "Found in the VC : " << stored.first << std::endl;
+                        makeLocalReply(stored.second);
+                        stored.second->set_store_time(curTick());
+                        localStoredFlits.erase(stored);
+                        std::cout << "Deleted From Local Store List" << std::endl;
+                        // delete fl;
+                        return true;
                     }
                 }
             }
 
-            if(fl->m_isStore && fl->m_StoreTillTime == 0){
-                fl->set_store_time(curTick() + INFINITE_);
+
+            if(fl->m_isStore){
+                fl->set_store_time(curTick() + Cycles(512));
+                std::cout << "Stored flit : " << makeLineAddress(fl->get_msg_ptr()->get_physical_address()) << std::endl;
                 localStoredFlits.insert({vc, fl});
                 std::cout << "Local Store in VC "<< this->m_id << " : " << vc << "with id : " << fl->get_id() << std::endl;
             }

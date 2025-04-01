@@ -76,8 +76,6 @@ class Message
       return false;
     }
 
-
-
     virtual Addr get_physical_address(){
       return 0;
     }
@@ -140,12 +138,13 @@ class Message
     virtual NetDest& getDestination()
     { panic("getDestination() called on wrong message!"); }
 
+    
     int getIncomingLink() const { return incoming_link; }
     void setIncomingLink(int link) { incoming_link = link; }
     int getVnet() const { return vnet; }
     void setVnet(int net) { vnet = net; }
-
   private:
+    bool localReply = false;
     Tick m_time;
     Tick m_LastEnqueueTime; // my last enqueue time
     Tick m_DelayedTicks; // my delayed cycles
@@ -167,6 +166,8 @@ operator>(const MsgPtr &lhs, const MsgPtr &rhs)
     }
     return l->getLastEnqueueTime() > r->getLastEnqueueTime();
 }
+
+
 
 inline std::ostream&
 operator<<(std::ostream& out, const Message& obj)

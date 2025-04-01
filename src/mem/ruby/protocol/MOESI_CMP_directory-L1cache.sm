@@ -327,6 +327,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
   in_port(responseToL1Cache_in, ResponseMsg, responseToL1Cache, rank=2) {
     if (responseToL1Cache_in.isReady(clockEdge())) {
       peek(responseToL1Cache_in, ResponseMsg, block_on="addr") {
+        // DPRINTF(RubyCustom, "Recieved Message : %s \n", in_msg);
         if (in_msg.Type == CoherenceResponseType:ACK) {
           trigger(Event:Ack, in_msg.addr,
                   getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
@@ -360,7 +361,11 @@ machine(MachineType:L1Cache, "L1 cache protocol")
         assert(in_msg.Destination.isElement(machineID));
         DPRINTF(RubySlicc, "L1 received: %s\n", in_msg.Type);
 
-        if (in_msg.Type == CoherenceRequestType:GETX || in_msg.Type == CoherenceRequestType:DMA_WRITE) {
+        if(in_msg.Type == CoherenceRequestType:WRITEBACK_CLEAN_DATA){
+          DPRINTF(RubyCustom, "Local Reply Initiated");
+          trigger(Event:Data, in_msg.addr,
+                  getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
+        }else if (in_msg.Type == CoherenceRequestType:GETX || in_msg.Type == CoherenceRequestType:DMA_WRITE) {
           if (in_msg.Requestor == machineID && in_msg.RequestorMachine == MachineType:L1Cache) {
             trigger(Event:Own_GETX, in_msg.addr,
                     getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
@@ -510,6 +515,8 @@ machine(MachineType:L1Cache, "L1 cache protocol")
         }else if ((in_msg.Type == RubyRequestType:ST) || (in_msg.Type == RubyRequestType:ATOMIC)){
           out_msg.isWriteReq := true;
         }
+        // out_msg.print(std::cout);
+        // DPRINTF(RubyCustom, "Issue GETX for : %s", out_msg);
       }
     }
   }
@@ -876,6 +883,18 @@ machine(MachineType:L1Cache, "L1 cache protocol")
       out_msg.DataBlk := tbe.DataBlk; // This is the data block present in our flit
       out_msg.MessageSize := MessageSizeType:Writeback_Data;
       out_msg.Store := true;
+
+      // ResponseMsg res_msg(clockEdge());
+      // res_msg.addr := address;
+      // res_msg.Type := CoherenceResponseType:DATA;
+      // res_msg.Sender := mapAddressToMachine(address, MachineType:L2Cache);
+      // res_msg.SenderMachine := MachineType:L2Cache;
+      // // res_msg.Destination.add();
+      // res_msg.DataBlk := tbe.DataBlk;
+      // res_msg.MessageSize := MessageSizeType:Response_Data;
+      
+      // DPRINTF(RubyCustom, "Stored Message : %s \n", out_msg);
+      
     }
   }
 
