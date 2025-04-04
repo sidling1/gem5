@@ -109,6 +109,8 @@ machine(MachineType:L1Cache, "L1 cache protocol")
     Ack,             desc="Received an ack message";
     Data,            desc="Received a data message, responder has a shared copy";
     Exclusive_Data,  desc="Received a data message";
+    Stored_Data,    desc="Received a data message, that was stored in the VCs";
+    Stored_Data_Clean, desc="Recieved a data message, that was clean and was stored in the VCs";
 
     Writeback_Ack,   desc="Writeback O.K. from directory";
     Writeback_Ack_Data,   desc="Writeback O.K. from directory";
@@ -358,32 +360,37 @@ machine(MachineType:L1Cache, "L1 cache protocol")
   in_port(requestNetwork_in, RequestMsg, requestToL1Cache, rank=1) {
     if (requestNetwork_in.isReady(clockEdge())) {
       peek(requestNetwork_in, RequestMsg, block_on="addr") {
-        assert(in_msg.Destination.isElement(machineID));
-        DPRINTF(RubySlicc, "L1 received: %s\n", in_msg.Type);
+        if(in_msg.Store == true){
+          DPRINTF(RubyCustom, "[PROTOCOL] : Local Reply Initiated\n");
+          if(in_msg.Type == CoherenceRequestType:WRITEBACK_CLEAN_DATA){
+            trigger(Event:Stored_Data_Clean, in_msg.addr, getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
+          }else{
+            trigger(Event:Stored_Data, in_msg.addr, getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
+          }
+        }else{
+          assert(in_msg.Destination.isElement(machineID));
+          DPRINTF(RubySlicc, "L1 received: %s\n", in_msg.Type);
 
-        if(in_msg.Type == CoherenceRequestType:WRITEBACK_CLEAN_DATA){
-          DPRINTF(RubyCustom, "Local Reply Initiated");
-          trigger(Event:Data, in_msg.addr,
-                  getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
-        }else if (in_msg.Type == CoherenceRequestType:GETX || in_msg.Type == CoherenceRequestType:DMA_WRITE) {
-          if (in_msg.Requestor == machineID && in_msg.RequestorMachine == MachineType:L1Cache) {
-            trigger(Event:Own_GETX, in_msg.addr,
+          if (in_msg.Type == CoherenceRequestType:GETX || in_msg.Type == CoherenceRequestType:DMA_WRITE) {
+            if (in_msg.Requestor == machineID && in_msg.RequestorMachine == MachineType:L1Cache) {
+              trigger(Event:Own_GETX, in_msg.addr,
+                      getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
+            } else {
+              trigger(Event:Fwd_GETX, in_msg.addr,
+                      getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
+            }
+          } else if (in_msg.Type == CoherenceRequestType:GETS) {
+            trigger(Event:Fwd_GETS, in_msg.addr,
+                    getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
+          } else if (in_msg.Type == CoherenceRequestType:DMA_READ) {
+            trigger(Event:Fwd_DMA, in_msg.addr,
+                    getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
+          } else if (in_msg.Type == CoherenceRequestType:INV) {
+            trigger(Event:Inv, in_msg.addr,
                     getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
           } else {
-            trigger(Event:Fwd_GETX, in_msg.addr,
-                    getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
+            error("Unexpected message");
           }
-        } else if (in_msg.Type == CoherenceRequestType:GETS) {
-          trigger(Event:Fwd_GETS, in_msg.addr,
-                  getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
-        } else if (in_msg.Type == CoherenceRequestType:DMA_READ) {
-          trigger(Event:Fwd_DMA, in_msg.addr,
-                  getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
-        } else if (in_msg.Type == CoherenceRequestType:INV) {
-          trigger(Event:Inv, in_msg.addr,
-                  getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
-        } else {
-          error("Unexpected message");
         }
       }
     }
@@ -880,21 +887,10 @@ machine(MachineType:L1Cache, "L1 cache protocol")
       } else {
         out_msg.Type := CoherenceRequestType:WRITEBACK_CLEAN_DATA;
       }
+
       out_msg.DataBlk := tbe.DataBlk; // This is the data block present in our flit
       out_msg.MessageSize := MessageSizeType:Writeback_Data;
       out_msg.Store := true;
-
-      // ResponseMsg res_msg(clockEdge());
-      // res_msg.addr := address;
-      // res_msg.Type := CoherenceResponseType:DATA;
-      // res_msg.Sender := mapAddressToMachine(address, MachineType:L2Cache);
-      // res_msg.SenderMachine := MachineType:L2Cache;
-      // // res_msg.Destination.add();
-      // res_msg.DataBlk := tbe.DataBlk;
-      // res_msg.MessageSize := MessageSizeType:Response_Data;
-      
-      // DPRINTF(RubyCustom, "Stored Message : %s \n", out_msg);
-      
     }
   }
 
@@ -912,8 +908,36 @@ machine(MachineType:L1Cache, "L1 cache protocol")
       if (in_msg.Type == CoherenceResponseType:DATA) {
         //assert(in_msg.Dirty == false);
       }
+
+      DPRINTF(RubyCustom, "Normal Write : %s\n", cache_entry);
     }
   }
+
+  action(u_writeDataToCache_Stored, "u_s", desc="Write data to cache from the VCs"){
+    peek(requestNetwork_in, RequestMsg) {
+      assert(is_valid(cache_entry));
+      cache_entry.DataBlk := in_msg.DataBlk;
+      cache_entry.Dirty := false;
+      if(in_msg.Type == CoherenceRequestType:WRITEBACK_DIRTY_DATA){
+        cache_entry.Dirty := true;
+      }
+      DPRINTF(RubyCustom, "Stored Write : %s\n", cache_entry);
+      DPRINTF(RubyCustom, "[PROTOCOL] : Local Reply Done !\n");
+    }
+  }
+
+  // action(u_writeDataToCache_StoredClean, "u_s", desc="Write data to cache from the VCs"){
+  //   peek(requestNetwork_in, RequestMsg) {
+  //     assert(is_valid(cache_entry));
+  //     cache_entry.DataBlk := in_msg.DataBlk;
+  //     cache_entry.Dirty := false;
+  //     if(in_msg.Type == CoherenceRequestType:WRITEBACK_DIRTY_DATA){
+  //       cache_entry.Dirty := true;
+  //     }
+  //     DPRINTF(RubyCustom, "Stored Write : %s\n", cache_entry);
+  //     DPRINTF(RubyCustom, "[PROTOCOL] : Local Reply Done !\n");
+  //   }
+  // }
 
   action(kk_deallocateL1CacheBlock, "\k", desc="Deallocate cache block.  Sets the cache to invalid, allowing a replacement in parallel with a fetch.") {
     if (L1Dcache.isTagPresent(address)) {
@@ -1181,6 +1205,13 @@ machine(MachineType:L1Cache, "L1 cache protocol")
     n_popResponseQueue;
   }
 
+  transition(IM, {Stored_Data}, OM){
+    u_writeDataToCache_Stored;
+    m_decrementNumberOfMessages;
+    o_checkForCompletion;
+    n_popResponseQueue;
+  }
+
   transition(IM, {Exclusive_Data, Data}, OM) {
     u_writeDataToCache;
     m_decrementNumberOfMessages;
@@ -1276,6 +1307,25 @@ machine(MachineType:L1Cache, "L1 cache protocol")
     m_decrementNumberOfMessages;
     hx_load_hit;
     g_sendUnblock;
+    s_deallocateTBE;
+    n_popResponseQueue;
+  }
+
+  transition(IS, Stored_Data_Clean, S){
+    u_writeDataToCache_Stored;
+    m_decrementNumberOfMessages;
+    hx_load_hit;
+    g_sendUnblock;
+    s_deallocateTBE;
+    n_popResponseQueue;
+  }
+
+  transition(IS, Stored_Data, M_W) {
+    u_writeDataToCache_Stored;
+    m_decrementNumberOfMessages;
+    hx_load_hit;
+    gg_sendUnblockExclusive;
+    o_scheduleUseTimeout;
     s_deallocateTBE;
     n_popResponseQueue;
   }

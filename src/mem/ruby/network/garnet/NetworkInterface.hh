@@ -270,6 +270,8 @@ class NetworkInterface : public ClockedObject, public Consumer
     };
 
 
+    std::set<int> vcs_blocked;
+
   private:
     GarnetNetwork *m_net_ptr;
     const NodeID m_id;
@@ -280,8 +282,6 @@ class NetworkInterface : public ClockedObject, public Consumer
     std::vector<InputPort *> inPorts;
     int m_deadlock_threshold;
     std::vector<OutVcState> outVcState;
-
-    std::set<int> vcs_blocked;
 
     std::vector<int> m_stall_count;
 
@@ -307,7 +307,7 @@ class NetworkInterface : public ClockedObject, public Consumer
     void scheduleOutputPort(OutputPort *oPort);
     void scheduleOutputLink();
     void checkReschedule();
-    
+
     void makeLocalReply(flit *t_flit);
     void incrementStats(flit *t_flit);
 

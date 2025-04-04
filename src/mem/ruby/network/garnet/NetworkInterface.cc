@@ -37,6 +37,7 @@
 
 #include "base/cast.hh"
 #include "debug/RubyNetwork.hh"
+#include "debug/RubyCustom.hh"
 #include "mem/ruby/network/MessageBuffer.hh"
 #include "mem/ruby/network/garnet/Credit.hh"
 #include "mem/ruby/network/garnet/flitBuffer.hh"
@@ -204,15 +205,13 @@ NetworkInterface::wakeup()
     for (auto &oPort: outPorts) {
         oss << oPort->routerID() << "[" << oPort->printVnets() << "] ";
     }
-    
+
     DPRINTF(RubyNetwork, "Network Interface %d connected to router:%s "
             "woke up. Period: %ld\n", m_id, oss.str(), clockPeriod());
 
     assert(curTick() == clockEdge());
     MsgPtr msg_ptr;
     Tick curTime = clockEdge();
-
-    RemoveStoredFlits(false);
 
     // Checking for messages coming from the protocol
     // can pick up a message/cycle for each virtual net
@@ -222,8 +221,10 @@ NetworkInterface::wakeup()
             continue;
         }
 
+
         if (b->isReady(curTime)) { // Is there a message waiting
             msg_ptr = b->peekMsgPtr();
+
             if (flitisizeMessage(msg_ptr, vnet)) {
                 b->dequeue(curTime);
             }
@@ -423,6 +424,63 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         m_net_ptr->MessageSizeType_to_int(net_msg_ptr->getMessageSize()),
         vnet, oPort->bitWidth());
 
+    if(msg_ptr->get_read_bit() || msg_ptr->get_write_bit()){
+        // Check for local reply
+        for(int vc=0;vc<niOutVcs.size();vc++){
+            if(outVcState[vc].isInState(IDLE_, curTick()))continue;
+            if((!niOutVcs[vc].isReady(curTick())) || niOutVcs[vc].getSize() == 0)continue;
+
+            MsgPtr stored = niOutVcs[vc].peekTopFlit()->get_msg_ptr();
+
+            if(!stored->get_store_bit())continue;
+
+            DPRINTF(RubyCustom, "Comparing Read/Write Request to Stored One \n Requested : %d, Stored : %d\n", 
+                makeLineAddress(msg_ptr->get_physical_address()), 
+                makeLineAddress(stored->get_physical_address()));
+
+
+            if(makeLineAddress(msg_ptr->get_physical_address()) == makeLineAddress(stored->get_physical_address())){
+                if((!stored->get_dirty_bit()) && msg_ptr->get_write_bit()){
+                    outVcState[vc].setState(ACTIVE_, clockEdge());
+
+                    break;
+                }
+                // Local Reply is DoAble
+                DPRINTF(RubyCustom, "Local Reply Starting\n");
+
+                // outVcState[vc].setState(ACTIVE_, clockEdge());
+
+                // // Do Local Reply
+                Tick curTime = clockEdge();
+                int n = niOutVcs[vc].getSize();
+                if (outNode_ptr[vnet]->areNSlotsAvailable(1, curTime)) {
+                    // Remove the Buffered Stuff, because it is successfull
+                    for(int i=0;i<n;i++){
+                        flit* t_flit = niOutVcs[vc].getTopFlit();
+                        if(t_flit->get_type() == TAIL_ || t_flit->get_type() == HEAD_TAIL_){
+                            outVcState[vc].setState(IDLE_, curTime);
+                            outNode_ptr[vnet]->enqueue(stored, curTime, cyclesToTicks(Cycles(1)));
+                            delete t_flit;
+                            DPRINTF(RubyCustom, "Local Reply Sent to the Protocol Handler \n");
+                            return true;
+                        }
+                        delete t_flit;
+                    }
+                    
+                    return false;
+                } else {
+                    // This is very Sussy
+                    DPRINTF(RubyCustom, "Beware !, Entered Sussy Area !");
+                    // Assuming this will have wakeup called again
+                    outNode_ptr[vnet]->registerDequeueCallback([this]() {
+                        dequeueCallback(); });
+                    return false;
+                }
+            }
+        }
+    }
+
+
     // loop to convert all multicast messages into unicast messages
     for (int ctr = 0; ctr < dest_nodes.size(); ctr++) {
 
@@ -431,6 +489,14 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
 
         if (vc == -1) {
             // RemoveStoredFlits(true);
+            for(int vc=0;vc<niOutVcs.size();vc++){
+                if((!niOutVcs[vc].isReady(curTick())) || niOutVcs[vc].getSize() == 0)continue;
+                MsgPtr stored = niOutVcs[vc].peekTopFlit()->get_msg_ptr();
+                if(!stored->get_store_bit())continue;
+                // Remove the Buffered Stuff
+                DPRINTF(RubyCustom, "Removing Stored Flits\n");
+                outVcState[vc].setState(ACTIVE_, curTick());
+            }
             return false;
         }
         MsgPtr new_msg_ptr = msg_ptr->clone();
@@ -487,44 +553,20 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
 
             fl->set_src_delay(curTick() - msg_ptr->getTime());
 
-            if(fl->m_isReadReq || fl->m_isWriteReq){
-                // std::cout << "Read / Write Request for : " << makeLineAddress(fl->get_msg_ptr()->get_physical_address()) << std::endl;
-                // we need to look for local reply
-                for(auto stored : localStoredFlits){
-                    // check for local reply between fl->get_msg_ptr(), stored->get_msg_ptr();
-                    MsgPtr &s_msg = stored.second->get_msg_ptr(), &r_msg = fl->get_msg_ptr();
-                    std::cout << "Stored Address : " << s_msg->get_physical_address() <<
-                    " \n Requested Address : " << r_msg->get_physical_address() << std::endl;
-                    std::cout << "Stored LineAddress : " << makeLineAddress(s_msg->get_physical_address()) <<
-                    " \n Requested LineAddress : " << makeLineAddress(r_msg->get_physical_address()) << std::endl;
-                    if(makeLineAddress(s_msg->get_physical_address()) == makeLineAddress(r_msg->get_physical_address())){
-                        // Locally Found
-                        std::cout << "Found in the VC : " << stored.first << std::endl;
-                        makeLocalReply(stored.second);
-                        stored.second->set_store_time(curTick());
-                        localStoredFlits.erase(stored);
-                        std::cout << "Deleted From Local Store List" << std::endl;
-                        // delete fl;
-                        return true;
-                    }
-                }
-            }
-
-
-            if(fl->m_isStore){
-                fl->set_store_time(curTick() + Cycles(512));
-                std::cout << "Stored flit : " << makeLineAddress(fl->get_msg_ptr()->get_physical_address()) << std::endl;
-                localStoredFlits.insert({vc, fl});
-                std::cout << "Local Store in VC "<< this->m_id << " : " << vc << "with id : " << fl->get_id() << std::endl;
-            }
 
             niOutVcs[vc].insert(fl);
             // If it is stuck here only, then it is much easier to control the movement right ?
             // And when we want to free some vc, we can setState to IDLE_
         }
 
+        if(msg_ptr->get_store_bit()){
+            DPRINTF(RubyCustom, "Storing Flits\n");
+            outVcState[vc].setState(ACTIVE_, clockEdge(Cycles(256)));
+        }else{
+            outVcState[vc].setState(ACTIVE_, curTick());
+        }
+
         m_ni_out_vcs_enqueue_time[vc] = curTick();
-        outVcState[vc].setState(ACTIVE_, curTick());
     }
     return true ;
 }
@@ -535,6 +577,7 @@ NetworkInterface::calculateVC(int vnet)
 {
     for (int i = 0; i < m_vc_per_vnet; i++) {
         int delta = m_vc_allocator[vnet];
+        
         m_vc_allocator[vnet]++;
         if (m_vc_allocator[vnet] == m_vc_per_vnet)
             m_vc_allocator[vnet] = 0;

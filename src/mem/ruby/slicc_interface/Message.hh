@@ -72,7 +72,7 @@ class Message
 
     virtual ~Message() { }
 
-    virtual bool get_dirty_bit(){
+    virtual bool get_dirty_bit() {
       return false;
     }
 
@@ -138,7 +138,7 @@ class Message
     virtual NetDest& getDestination()
     { panic("getDestination() called on wrong message!"); }
 
-    
+
     int getIncomingLink() const { return incoming_link; }
     void setIncomingLink(int link) { incoming_link = link; }
     int getVnet() const { return vnet; }
