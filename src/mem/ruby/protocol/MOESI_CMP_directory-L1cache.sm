@@ -1207,9 +1207,9 @@ machine(MachineType:L1Cache, "L1 cache protocol")
 
   transition(IM, {Stored_Data}, OM){
     u_writeDataToCache_Stored;
-    m_decrementNumberOfMessages;
+    mm_decrementNumberOfMessages
     o_checkForCompletion;
-    n_popResponseQueue;
+    l_popForwardQueue;
   }
 
   transition(IM, {Exclusive_Data, Data}, OM) {
@@ -1313,21 +1313,19 @@ machine(MachineType:L1Cache, "L1 cache protocol")
 
   transition(IS, Stored_Data_Clean, S){
     u_writeDataToCache_Stored;
-    m_decrementNumberOfMessages;
+    mm_decrementNumberOfMessages;
     hx_load_hit;
-    g_sendUnblock;
     s_deallocateTBE;
-    n_popResponseQueue;
+    l_popForwardQueue;
   }
 
   transition(IS, Stored_Data, M_W) {
     u_writeDataToCache_Stored;
-    m_decrementNumberOfMessages;
+    mm_decrementNumberOfMessages;
     hx_load_hit;
-    gg_sendUnblockExclusive;
     o_scheduleUseTimeout;
     s_deallocateTBE;
-    n_popResponseQueue;
+    l_popForwardQueue;
   }
 
   transition(IS, Exclusive_Data, M_W) {

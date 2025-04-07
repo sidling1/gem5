@@ -32,6 +32,7 @@
 #include "mem/ruby/network/garnet/InputUnit.hh"
 
 #include "debug/RubyNetwork.hh"
+#include "debug/RubyCustom.hh"
 #include "mem/ruby/network/garnet/Credit.hh"
 #include "mem/ruby/network/garnet/Router.hh"
 
@@ -80,13 +81,18 @@ InputUnit::wakeup()
     if (m_in_link->isReady(curTick())) {
 
         t_flit = m_in_link->consumeLink();
-    
+
         assert(t_flit->m_width == m_router->getBitWidth());
         int vc = t_flit->get_vc();
         t_flit->increment_hops(); // for stats
 
         if ((t_flit->get_type() == HEAD_) ||
             (t_flit->get_type() == HEAD_TAIL_)) {
+            if(virtualChannels[vc].get_state() != IDLE_){
+                DPRINTF(RubyCustom, "%s , Flit Causing Issue : %s \n containing message : %s \n", virtualChannels[vc].get_state(), *t_flit, *(t_flit->get_msg_ptr()));
+                if(virtualChannels[vc].isReady(curTick()))
+                    DPRINTF(RubyCustom, "Idle Because of Flit : %s \n Message : %s \n", *virtualChannels[vc].peekTopFlit(), *(virtualChannels[vc].peekTopFlit()->get_msg_ptr()));
+            }
 
             assert(virtualChannels[vc].get_state() == IDLE_);
             set_vc_active(vc, curTick());
@@ -105,7 +111,7 @@ InputUnit::wakeup()
 
         // Buffer the flit
         virtualChannels[vc].insertFlit(t_flit);
-        
+
         int vnet = vc/m_vc_per_vnet;
         // number of writes same as reads
         // any flit that is written will be read only once

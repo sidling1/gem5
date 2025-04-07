@@ -32,6 +32,7 @@
 #include "mem/ruby/network/garnet/SwitchAllocator.hh"
 
 #include "debug/RubyNetwork.hh"
+#include "debug/RubyCustom.hh"
 #include "mem/ruby/network/garnet/GarnetNetwork.hh"
 #include "mem/ruby/network/garnet/InputUnit.hh"
 #include "mem/ruby/network/garnet/OutputUnit.hh"

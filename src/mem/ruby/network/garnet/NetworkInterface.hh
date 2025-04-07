@@ -290,6 +290,8 @@ class NetworkInterface : public ClockedObject, public Consumer
     std::vector<flitBuffer>  niOutVcs;
     std::vector<Tick> m_ni_out_vcs_enqueue_time;
 
+    std::vector<std::pair<MsgPtr, Tick>> local_stored_messages;
+
     std::set<std::pair<int, flit*>> localStoredFlits;
 
     // The Message buffers that takes messages from the protocol

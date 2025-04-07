@@ -424,49 +424,64 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         m_net_ptr->MessageSizeType_to_int(net_msg_ptr->getMessageSize()),
         vnet, oPort->bitWidth());
 
-    if(msg_ptr->get_read_bit() || msg_ptr->get_write_bit()){
+    if((msg_ptr->get_read_bit() || msg_ptr->get_write_bit())){ // and This should be of the local processor
         // Check for local reply
         for(int vc=0;vc<niOutVcs.size();vc++){
-            if(outVcState[vc].isInState(IDLE_, curTick()))continue;
-            if((!niOutVcs[vc].isReady(curTick())) || niOutVcs[vc].getSize() == 0)continue;
+            // if(outVcState[vc].isInState(IDLE_, curTick()))continue;
+            if(niOutVcs[vc].isReady(curTick()) || niOutVcs[vc].getSize() == 0)continue;
 
             MsgPtr stored = niOutVcs[vc].peekTopFlit()->get_msg_ptr();
 
             if(!stored->get_store_bit())continue;
 
-            DPRINTF(RubyCustom, "Comparing Read/Write Request to Stored One \n Requested : %d, Stored : %d\n", 
-                makeLineAddress(msg_ptr->get_physical_address()), 
+            DPRINTF(RubyCustom, "Comparing Read/Write Request to Stored One \n Requested : %d, Stored : %d\n",
+                makeLineAddress(msg_ptr->get_physical_address()),
                 makeLineAddress(stored->get_physical_address()));
 
 
             if(makeLineAddress(msg_ptr->get_physical_address()) == makeLineAddress(stored->get_physical_address())){
                 if((!stored->get_dirty_bit()) && msg_ptr->get_write_bit()){
+                    DPRINTF(RubyCustom, "Cannot Local Reply, Block is Dirty can only be sent for writes");
+                    
+                    int n = niOutVcs[vc].getSize();
+                    for(int i=0;i<n;i++){
+                        flit *fl = niOutVcs[vc].getTopFlit();
+                        fl->set_time(curTick());
+                        niOutVcs[vc].insert(fl);
+                    }
+                    
+                    scheduleEventAbsolute(clockEdge(Cycles(1)));
                     outVcState[vc].setState(ACTIVE_, clockEdge());
-
-                    break;
+                    return false;
                 }
                 // Local Reply is DoAble
                 DPRINTF(RubyCustom, "Local Reply Starting\n");
 
                 // outVcState[vc].setState(ACTIVE_, clockEdge());
 
-                // // Do Local Reply
+                // Do Local Reply 
                 Tick curTime = clockEdge();
                 int n = niOutVcs[vc].getSize();
                 if (outNode_ptr[vnet]->areNSlotsAvailable(1, curTime)) {
                     // Remove the Buffered Stuff, because it is successfull
                     for(int i=0;i<n;i++){
+                        // Is this getting empty ?
                         flit* t_flit = niOutVcs[vc].getTopFlit();
                         if(t_flit->get_type() == TAIL_ || t_flit->get_type() == HEAD_TAIL_){
-                            outVcState[vc].setState(IDLE_, curTime);
+                            if(niOutVcs[vc].getSize() == 0);
+                                outVcState[vc].setState(IDLE_, curTime);
                             outNode_ptr[vnet]->enqueue(stored, curTime, cyclesToTicks(Cycles(1)));
+                            // Making sure that the inserted message will get outed ?
+                            outNode_ptr[vnet]->registerDequeueCallback([this]() {
+                                dequeueCallback(); });
                             delete t_flit;
                             DPRINTF(RubyCustom, "Local Reply Sent to the Protocol Handler \n");
+                            scheduleEventAbsolute(clockEdge(Cycles(1)));
                             return true;
                         }
                         delete t_flit;
                     }
-                    
+
                     return false;
                 } else {
                     // This is very Sussy
@@ -480,7 +495,6 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         }
     }
 
-
     // loop to convert all multicast messages into unicast messages
     for (int ctr = 0; ctr < dest_nodes.size(); ctr++) {
 
@@ -489,14 +503,27 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
 
         if (vc == -1) {
             // RemoveStoredFlits(true);
+            
             for(int vc=0;vc<niOutVcs.size();vc++){
-                if((!niOutVcs[vc].isReady(curTick())) || niOutVcs[vc].getSize() == 0)continue;
+                if(niOutVcs[vc].isReady(curTick()))continue;
+                if(niOutVcs[vc].getSize() == 0)continue;
                 MsgPtr stored = niOutVcs[vc].peekTopFlit()->get_msg_ptr();
                 if(!stored->get_store_bit())continue;
+                
+                // Even if it is stored , but the time has increase to bhi usko to normal he treat karna haina ?
+                int n = niOutVcs[vc].getSize();
+                for(int i=0;i<n;i++){
+                    flit *fl = niOutVcs[vc].getTopFlit();
+                    if(fl->get_type() == TAIL_ || fl->get_type() == HEAD_TAIL_)
+                        DPRINTF(RubyCustom, "Removing Stored Flit : %s \n", *(fl->get_msg_ptr()));
+                    fl->set_time(curTick());
+                    niOutVcs[vc].insert(fl);
+                }
+                
                 // Remove the Buffered Stuff
-                DPRINTF(RubyCustom, "Removing Stored Flits\n");
                 outVcState[vc].setState(ACTIVE_, curTick());
             }
+            scheduleEventAbsolute(clockEdge(Cycles(1)));
             return false;
         }
         MsgPtr new_msg_ptr = msg_ptr->clone();
@@ -545,13 +572,21 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         for (int i = 0; i < num_flits; i++) {
             m_net_ptr->increment_injected_flits(vnet);
 
+            Tick enqueTime = curTick();
+            if(msg_ptr->get_store_bit()){
+                enqueTime = clockEdge(Cycles(256));
+            }
+
+            // How to schedule wakeup call to self in certain amount of time ?
+            
+            // Cannot Make sure that this is the only message at that time for this VC ....
             flit *fl = new flit(packet_id,
                 i, vc, vnet, route, num_flits, new_msg_ptr,
                 m_net_ptr->MessageSizeType_to_int(
                 net_msg_ptr->getMessageSize()),
-                oPort->bitWidth(), curTick(), (i == 0 ? msg_ptr->get_store_bit() : false), msg_ptr->get_read_bit(), msg_ptr->get_write_bit());
+                oPort->bitWidth(), enqueTime, (i == 0 ? msg_ptr->get_store_bit() : false), msg_ptr->get_read_bit(), msg_ptr->get_write_bit());
 
-            fl->set_src_delay(curTick() - msg_ptr->getTime());
+            fl->set_src_delay(enqueTime - msg_ptr->getTime());
 
 
             niOutVcs[vc].insert(fl);
@@ -560,8 +595,9 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         }
 
         if(msg_ptr->get_store_bit()){
-            DPRINTF(RubyCustom, "Storing Flits\n");
-            outVcState[vc].setState(ACTIVE_, clockEdge(Cycles(256)));
+            DPRINTF(RubyCustom, "Storing Flit : %s\n", *msg_ptr);
+            scheduleEventAbsolute(clockEdge(Cycles(256))); // Maybe ...?
+            outVcState[vc].setState(ACTIVE_, curTick());
         }else{
             outVcState[vc].setState(ACTIVE_, curTick());
         }
@@ -577,7 +613,7 @@ NetworkInterface::calculateVC(int vnet)
 {
     for (int i = 0; i < m_vc_per_vnet; i++) {
         int delta = m_vc_allocator[vnet];
-        
+
         m_vc_allocator[vnet]++;
         if (m_vc_allocator[vnet] == m_vc_per_vnet)
             m_vc_allocator[vnet] = 0;
