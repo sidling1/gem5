@@ -442,14 +442,14 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
             if(makeLineAddress(msg_ptr->get_physical_address()) == makeLineAddress(stored->get_physical_address())){
                 if((!stored->get_dirty_bit()) && msg_ptr->get_write_bit()){
                     DPRINTF(RubyCustom, "Cannot Local Reply, Block is Dirty can only be sent for writes");
-                    
+
                     int n = niOutVcs[vc].getSize();
                     for(int i=0;i<n;i++){
                         flit *fl = niOutVcs[vc].getTopFlit();
                         fl->set_time(curTick());
                         niOutVcs[vc].insert(fl);
                     }
-                    
+
                     scheduleEventAbsolute(clockEdge(Cycles(1)));
                     outVcState[vc].setState(ACTIVE_, clockEdge());
                     return false;
@@ -459,7 +459,7 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
 
                 // outVcState[vc].setState(ACTIVE_, clockEdge());
 
-                // Do Local Reply 
+                // Do Local Reply
                 Tick curTime = clockEdge();
                 int n = niOutVcs[vc].getSize();
                 if (outNode_ptr[vnet]->areNSlotsAvailable(1, curTime)) {
@@ -503,13 +503,13 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
 
         if (vc == -1) {
             // RemoveStoredFlits(true);
-            
+
             for(int vc=0;vc<niOutVcs.size();vc++){
                 if(niOutVcs[vc].isReady(curTick()))continue;
                 if(niOutVcs[vc].getSize() == 0)continue;
                 MsgPtr stored = niOutVcs[vc].peekTopFlit()->get_msg_ptr();
                 if(!stored->get_store_bit())continue;
-                
+
                 // Even if it is stored , but the time has increase to bhi usko to normal he treat karna haina ?
                 int n = niOutVcs[vc].getSize();
                 for(int i=0;i<n;i++){
@@ -519,7 +519,7 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
                     fl->set_time(curTick());
                     niOutVcs[vc].insert(fl);
                 }
-                
+
                 // Remove the Buffered Stuff
                 outVcState[vc].setState(ACTIVE_, curTick());
             }
@@ -578,7 +578,7 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
             }
 
             // How to schedule wakeup call to self in certain amount of time ?
-            
+
             // Cannot Make sure that this is the only message at that time for this VC ....
             flit *fl = new flit(packet_id,
                 i, vc, vnet, route, num_flits, new_msg_ptr,
