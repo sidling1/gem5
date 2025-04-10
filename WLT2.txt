@@ -1,0 +1,16 @@
+Global frequency set at 1000000000000 ticks per second
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.1.0
+gem5 compiled Apr  7 2025 23:37:23
+gem5 started Apr  8 2025 11:37:36
+gem5 executing on siddhant-IdeaPad-Gaming-3-15ACH6, pid 6157
+command line: build/X86_MOESI_CMP_directory/gem5.opt configs/deprecated/example/se.py --num-cpus=1 --num-dirs=1 --sys-clock=2GHz --topology=Mesh_XY --mesh-rows=1 --ruby --num-l2caches=1 --network=garnet --mem-size=8GB --caches --l2cache --routing-algorithm=1 --router-latency=1 --bench=gcc
+
+Working
+gcc ref
+executable= /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/binaries/gcc
+inputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/gcc/ref/input
+outputs_dir = /home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/gcc/ref/output
+**** REAL SIMULATION ****

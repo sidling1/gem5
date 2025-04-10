@@ -47,6 +47,8 @@ machine(MachineType:L1Cache, "L1 cache protocol")
    Cycles use_timeout_latency := 50;
    bool send_evictions;
 
+   bool evicted_store_enable := "False";
+
    // Message Queues
    // From this node's L1 cache TO the network
    // a local L1 -> this L2 bank, currently ordered with directory forwarded requests
@@ -887,12 +889,34 @@ machine(MachineType:L1Cache, "L1 cache protocol")
       } else {
         out_msg.Type := CoherenceRequestType:WRITEBACK_CLEAN_DATA;
       }
-
       out_msg.DataBlk := tbe.DataBlk; // This is the data block present in our flit
       out_msg.MessageSize := MessageSizeType:Writeback_Data;
-      out_msg.Store := true;
     }
   }
+
+
+  action(qq_sendWBDataFromTBEToL2_store, "\qs", desc="Send data from TBE to L2 which is to be stored") {
+    enqueue(requestNetwork_out, RequestMsg, request_latency) {
+      assert(is_valid(tbe));
+      out_msg.addr := address;
+      out_msg.Requestor := machineID;
+      out_msg.RequestorMachine := MachineType:L1Cache;
+      out_msg.Destination.add(mapAddressToMachine(address,
+                                                  MachineType:L2Cache));
+      if (tbe.Dirty) {
+        out_msg.Type := CoherenceRequestType:WRITEBACK_DIRTY_DATA;
+      } else {
+        out_msg.Type := CoherenceRequestType:WRITEBACK_CLEAN_DATA;
+      }
+      out_msg.DataBlk := tbe.DataBlk; // This is the data block present in our flit
+      out_msg.MessageSize := MessageSizeType:Writeback_Data;
+
+      if(evicted_store_enable){
+        out_msg.Store := true;
+      }
+    }
+  }
+
 
   action(s_deallocateTBE, "s", desc="Deallocate TBE") {
     TBEs.deallocate(address);
@@ -1205,10 +1229,11 @@ machine(MachineType:L1Cache, "L1 cache protocol")
     n_popResponseQueue;
   }
 
-  transition(IM, {Stored_Data}, OM){
+  // Is this state correct ?
+  transition(IM, {Stored_Data}, MM_W){
     u_writeDataToCache_Stored;
-    mm_decrementNumberOfMessages
-    o_checkForCompletion;
+    xx_store_hit;
+    s_deallocateTBE;
     l_popForwardQueue;
   }
 
@@ -1311,7 +1336,8 @@ machine(MachineType:L1Cache, "L1 cache protocol")
     n_popResponseQueue;
   }
 
-  transition(IS, Stored_Data_Clean, S){
+  // Look at this transition
+  transition(IS, Stored_Data_Clean, M_W){
     u_writeDataToCache_Stored;
     mm_decrementNumberOfMessages;
     hx_load_hit;
@@ -1319,11 +1345,11 @@ machine(MachineType:L1Cache, "L1 cache protocol")
     l_popForwardQueue;
   }
 
+  // Also Look at this transition
   transition(IS, Stored_Data, M_W) {
     u_writeDataToCache_Stored;
     mm_decrementNumberOfMessages;
     hx_load_hit;
-    o_scheduleUseTimeout;
     s_deallocateTBE;
     l_popForwardQueue;
   }
@@ -1376,7 +1402,13 @@ machine(MachineType:L1Cache, "L1 cache protocol")
     l_popForwardQueue;
   }
 
-  transition({SI, OI, MI}, Writeback_Ack_Data, I) {
+  transition(MI, Writeback_Ack_Data, I) {
+    qq_sendWBDataFromTBEToL2_store;  // always send data
+    s_deallocateTBE;
+    n_popResponseQueue;
+  }
+
+  transition({SI, OI}, Writeback_Ack_Data, I) {
     qq_sendWBDataFromTBEToL2;  // always send data
     s_deallocateTBE;
     n_popResponseQueue;

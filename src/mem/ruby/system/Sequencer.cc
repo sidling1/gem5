@@ -52,6 +52,7 @@
 #include "debug/RubyHitMiss.hh"
 #include "debug/RubySequencer.hh"
 #include "debug/RubyStats.hh"
+#include "debug/RubyCustom.hh"
 #include "mem/packet.hh"
 #include "mem/ruby/profiler/Profiler.hh"
 #include "mem/ruby/protocol/PrefetchBit.hh"
@@ -234,7 +235,7 @@ Sequencer::wakeup()
 
     for (const auto &table_entry : m_RequestTable) {
         for (const auto &seq_req : table_entry.second) {
-            if (current_time - seq_req.issue_time < m_deadlock_threshold)
+            if (current_time - seq_req.issue_time < Cycles(INT_MAX));
                 continue;
 
             panic("Possible Deadlock detected. Aborting!\n version: %d "

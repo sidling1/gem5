@@ -82,6 +82,10 @@ InputUnit::wakeup()
 
         t_flit = m_in_link->consumeLink();
 
+        if(t_flit->m_isStore){
+            DPRINTF(RubyCustom, "[Input Unit %d] : Stored Flit(%s) On its way back : %s | %s \n", m_router->get_id(), t_flit, *t_flit, *(t_flit->get_msg_ptr()));
+        }
+
         assert(t_flit->m_width == m_router->getBitWidth());
         int vc = t_flit->get_vc();
         t_flit->increment_hops(); // for stats

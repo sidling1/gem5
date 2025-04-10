@@ -58,6 +58,13 @@ class L2Cache(RubyCache):
 
 
 def define_options(parser):
+    parser.add_argument(
+        "--enable-eviction-store",
+        action="store_true",
+        default=False,
+        help="Enable Router Buffer Caching of Evicted Block optimization",
+    )
+
     return
 
 
@@ -114,6 +121,7 @@ def create_system(
             transitions_per_cycle=options.ports,
             clk_domain=clk_domain,
             ruby_system=ruby_system,
+            evicted_store_enable=options.enable_eviction_store,
         )
 
         cpu_seq = RubySequencer(
