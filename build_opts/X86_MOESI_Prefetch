@@ -1,0 +1,4 @@
+USE_X86_ISA = True
+PROTOCOL = 'MOESI_Prefetch'
+NUMBER_BITS_PER_SET = '128'
+RUBY=True

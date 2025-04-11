@@ -1,0 +1,7 @@
+protocol "MOESI_Prefetch";
+include "RubySlicc_interfaces.slicc";
+include "MOESI_Prefetch-msg.sm";
+include "MOESI_Prefetch-L1cache.sm";
+include "MOESI_Prefetch-L2cache.sm";
+include "MOESI_Prefetch-dma.sm";
+include "MOESI_Prefetch-dir.sm";
