@@ -553,6 +553,8 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
             Tick enqueTime = curTick();
             if(msg_ptr->get_store_bit()){
                 // isko parameter banana hai ?
+                // Kya karun iska bhai exact implement karun kya :(
+
                 enqueTime = clockEdge(Cycles(256));
             }
 
