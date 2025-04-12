@@ -47,6 +47,9 @@ machine(MachineType:L1Cache, "L1 cache protocol")
    Cycles use_timeout_latency := 50;
    bool send_evictions;
 
+   RubyPrefetcher * prefetcher;
+   bool enable_prefetch := "False";
+
    // Message Queues
    // From this node's L1 cache TO the network
    // a local L1 -> this L2 bank, currently ordered with directory forwarded requests
@@ -67,6 +70,9 @@ machine(MachineType:L1Cache, "L1 cache protocol")
    MessageBuffer * triggerQueue;
 
    MessageBuffer * mandatoryQueue;
+
+   // Request Buffer for prefetches
+   MessageBuffer * prefetchQueue;
 {
   // STATES
   state_declaration(State, desc="Cache states", default="L1Cache_State_I") {
@@ -89,6 +95,10 @@ machine(MachineType:L1Cache, "L1 cache protocol")
     OI, AccessPermission:Read_Only, "OI", desc="Issued PutO, waiting for ack";
     MI, AccessPermission:Read_Write, "MI", desc="Issued PutX, waiting for ack";
     II, AccessPermission:Busy, "II", desc="Issued PutX/O, saw Fwd_GETS or Fwd_GETX, waiting for ack";
+
+    // Transient States Regarding Prefetching ?
+    PF_IS, AccessPermission:Busy, desc="Issued GETS, have not seen response yet";
+    PF_IM, AccessPermission:Busy, desc="Issued GETX, have not seen response yet";
   }
 
   // EVENTS
@@ -119,6 +129,13 @@ machine(MachineType:L1Cache, "L1 cache protocol")
 
     // Timeouts
     Use_Timeout, desc="lockout period ended";
+
+    // Prefetch Events
+    PF_L1_Replacement, desc="L1 Replacement caused by pretcher", format="!pr";
+    PF_Load,         desc="Load request from prefetcher";
+    PF_Ifetch,       desc="Instruction fetch request from prefetcher";
+    PF_Store,        desc="Exclusive load request from prefetcher";
+    PF_Bad_Addr,     desc="Throw away prefetch request due to bad address generation";
   }
 
   // TYPES
@@ -156,6 +173,8 @@ machine(MachineType:L1Cache, "L1 cache protocol")
 
   TBETable TBEs, template="<L1Cache_TBE>", constructor="m_number_of_TBEs";
   TimerTable useTimerTable;
+
+  // prefetch_request_type_to_event Function Create
 
   Entry getCacheEntry(Addr addr), return_by_pointer="yes" {
     Entry L1Dcache_entry := static_cast(Entry, "pointer", L1Dcache.lookup(addr));
@@ -290,13 +309,135 @@ machine(MachineType:L1Cache, "L1 cache protocol")
     }
   }
 
+  Event prefetch_request_type_to_event(RubyRequestType type) {
+    if (type == RubyRequestType:LD) {
+      return Event:PF_Load;
+    } else if (type == RubyRequestType:IFETCH) {
+      return Event:PF_Ifetch;
+    } else if (type == RubyRequestType:ST) {
+      return Event:PF_Store;
+    } else {
+      error("Invalid RubyRequestType");
+    }
+  }
+
   // ** OUT_PORTS **
 
   out_port(requestNetwork_out, RequestMsg, requestFromL1Cache);
   out_port(responseNetwork_out, ResponseMsg, responseFromL1Cache);
   out_port(triggerQueue_out, TriggerMsg, triggerQueue);
 
+
+  out_port(optionalQueue_out, RubyRequest, prefetchQueue);
+
+  void enqueuePrefetch(Addr address, RubyRequestType type) {
+    enqueue(optionalQueue_out, RubyRequest, 1) {
+      out_msg.LineAddress := address;
+      out_msg.Type := type;
+      out_msg.Prefetch := PrefetchBit:Yes;
+      out_msg.AccessMode := RubyAccessMode:Supervisor;
+    }
+  }
+
+
   // ** IN_PORTS **
+
+  // Prefetch queue between the controller and the prefetcher
+  // As per Spracklen et al. (HPCA 2005), the prefetch queue should be
+  // implemented as a LIFO structure.  The structure would allow for fast
+  // searches of all entries in the queue, not just the head msg. All
+  // msgs in the structure can be invalidated if a demand miss matches.
+  in_port(optionalQueue_in, RubyRequest, prefetchQueue, desc="...", rank = 2) {
+    if (optionalQueue_in.isReady(clockEdge())) {
+      peek(optionalQueue_in, RubyRequest) {
+        // first check for valid address
+        MachineID mid := mapAddressToMachine(in_msg.LineAddress, MachineType:Directory);
+        NodeID nid := machineIDToNodeID(mid);
+        int nidint := IDToInt(nid);
+        int numDirs := machineCount(MachineType:Directory);
+        if (nidint >= numDirs) {
+          Entry cache_entry := static_cast(Entry, "pointer", Dcache.getNullEntry());
+          TBE tbe := TBEs.getNullEntry();
+          trigger(Event:PF_Bad_Addr, in_msg.LineAddress, cache_entry, tbe);
+        } else if (in_msg.Type == RubyRequestType:IFETCH) {
+          // Instruction Prefetch
+          Entry icache_entry := getICacheEntry(in_msg.LineAddress);
+          if (is_valid(icache_entry)) {
+            // The block to be prefetched is already present in the
+            // cache. This request will be made benign and cause the
+            // prefetch queue to be popped.
+            trigger(prefetch_request_type_to_event(in_msg.Type),
+                    in_msg.LineAddress,
+                    icache_entry, TBEs[in_msg.LineAddress]);
+          }
+
+          // Check to see if it is in the L0-D
+          Entry cache_entry := getDCacheEntry(in_msg.LineAddress);
+          if (is_valid(cache_entry)) {
+            // The block is in the wrong L0 cache. We should drop
+            // this request.
+            trigger(prefetch_request_type_to_event(in_msg.Type),
+                    in_msg.LineAddress,
+                    cache_entry, TBEs[in_msg.LineAddress]);
+          }
+
+          if (Icache.cacheAvail(in_msg.LineAddress)) {
+            // L0-I does't have the line, but we have space for it
+            // in the L0-I so let's see if the L1 has it
+            trigger(prefetch_request_type_to_event(in_msg.Type),
+                    in_msg.LineAddress,
+                    icache_entry, TBEs[in_msg.LineAddress]);
+          } else {
+            // No room in the L1-I, so we need to make room in the L1-I
+            Addr addr := Icache.cacheProbe(in_msg.LineAddress);
+            check_on_cache_probe(optionalQueue_in, addr);
+
+            trigger(Event:PF_L1_Replacement, addr,
+                    getICacheEntry(addr),
+                    TBEs[addr]);
+          }
+        } else {
+          // Data prefetch
+          Entry cache_entry := getDCacheEntry(in_msg.LineAddress);
+          if (is_valid(cache_entry)) {
+            // The block to be prefetched is already present in the
+            // cache. This request will be made benign and cause the
+            // prefetch queue to be popped.
+            trigger(prefetch_request_type_to_event(in_msg.Type),
+                    in_msg.LineAddress,
+                    cache_entry, TBEs[in_msg.LineAddress]);
+          }
+
+          // Check to see if it is in the L0-I
+          Entry icache_entry := getICacheEntry(in_msg.LineAddress);
+          if (is_valid(icache_entry)) {
+            // The block is in the wrong L0. Just drop the prefetch
+            // request.
+            trigger(prefetch_request_type_to_event(in_msg.Type),
+                    in_msg.LineAddress,
+                    icache_entry, TBEs[in_msg.LineAddress]);
+          }
+
+          if (Dcache.cacheAvail(in_msg.LineAddress)) {
+            // L0-D does't have the line, but we have space for it in
+            // the L0-D let's see if the L1 has it
+            trigger(prefetch_request_type_to_event(in_msg.Type),
+                    in_msg.LineAddress,
+                    cache_entry, TBEs[in_msg.LineAddress]);
+          } else {
+            // No room in the L0-D, so we need to make room in the L0-D
+            Addr addr := Dcache.cacheProbe(in_msg.LineAddress);
+            check_on_cache_probe(optionalQueue_in, addr);
+
+            trigger(Event:PF_L1_Replacement, addr,
+                    getDCacheEntry(addr),
+                    TBEs[addr]);
+          }
+        }
+      }
+    }
+  }
+
 
   // Use Timer
   in_port(useTimerTable_in, Addr, useTimerTable, rank=4) {

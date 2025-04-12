@@ -148,3 +148,5 @@ structure(ResponseMsg, desc="...", interface="Message") {
     return testAndWrite(addr, DataBlk, pkt);
   }
 }
+
+// PrefetchRequest Message OR just integrate it in the existing Request Message
