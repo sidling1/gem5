@@ -82,8 +82,13 @@ RubyPrefetcherStats::RubyPrefetcherStats(statistics::Group *parent)
                                "prefetched"),
       ADD_STAT(numPagesCrossed, "Number of prefetches across pages"),
       ADD_STAT(numMissedPrefetchedBlocks, "Number of misses for blocks that "
-                                          "were prefetched, yet missed")
+                                          "were prefetched, yet missed"),
+      ADD_STAT(numEvictionsDueToPrefetchBlocks, "Number of Evictions caused due to blocks that were prefetched.")
 {
+}
+
+void RubyPrefetcher::addEvictionDueToPrefetch(){
+    rubyPrefetcherStats.numEvictionsDueToPrefetchBlocks++;
 }
 
 void

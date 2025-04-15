@@ -1,0 +1,1292 @@
+
+=== Summary ===
+run_0:
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numMissObserved        46184                       # Number of misses observed (Unspecified)
+: 46184
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numAllocatedStreams          251                       # Number of streams allocated for prefetching (Unspecified)
+: 251
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPrefetchRequested         2415                       # Number of prefetch requests made (Unspecified)
+: 2415
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numHits         1357                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1357
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPartialHits           61                       # Number of misses observed for a block being prefetched (Unspecified)
+: 61
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPagesCrossed           59                       # Number of prefetches across pages (Unspecified)
+: 59
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2184                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2184
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numMissObserved        46743                       # Number of misses observed (Unspecified)
+: 46743
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numAllocatedStreams          259                       # Number of streams allocated for prefetching (Unspecified)
+: 259
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPrefetchRequested         2456                       # Number of prefetch requests made (Unspecified)
+: 2456
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numHits         1360                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1360
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPartialHits           67                       # Number of misses observed for a block being prefetched (Unspecified)
+: 67
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPagesCrossed           66                       # Number of prefetches across pages (Unspecified)
+: 66
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2235                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2235
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numMissObserved        46719                       # Number of misses observed (Unspecified)
+: 46719
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numAllocatedStreams          254                       # Number of streams allocated for prefetching (Unspecified)
+: 254
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPrefetchRequested         2436                       # Number of prefetch requests made (Unspecified)
+: 2436
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numHits         1362                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1362
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPartialHits           65                       # Number of misses observed for a block being prefetched (Unspecified)
+: 65
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPagesCrossed           66                       # Number of prefetches across pages (Unspecified)
+: 66
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2216                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2216
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numMissObserved        46805                       # Number of misses observed (Unspecified)
+: 46805
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numAllocatedStreams          259                       # Number of streams allocated for prefetching (Unspecified)
+: 259
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPrefetchRequested         2459                       # Number of prefetch requests made (Unspecified)
+: 2459
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numHits         1365                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1365
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPartialHits           65                       # Number of misses observed for a block being prefetched (Unspecified)
+: 65
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPagesCrossed           66                       # Number of prefetches across pages (Unspecified)
+: 66
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2224                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2224
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numMissObserved        46715                       # Number of misses observed (Unspecified)
+: 46715
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numAllocatedStreams          255                       # Number of streams allocated for prefetching (Unspecified)
+: 255
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPrefetchRequested         2440                       # Number of prefetch requests made (Unspecified)
+: 2440
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numHits         1354                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1354
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPartialHits           74                       # Number of misses observed for a block being prefetched (Unspecified)
+: 74
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPagesCrossed           66                       # Number of prefetches across pages (Unspecified)
+: 66
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2206                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2206
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numMissObserved        46621                       # Number of misses observed (Unspecified)
+: 46621
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numAllocatedStreams          256                       # Number of streams allocated for prefetching (Unspecified)
+: 256
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPrefetchRequested         2444                       # Number of prefetch requests made (Unspecified)
+: 2444
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numHits         1359                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1359
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPartialHits           68                       # Number of misses observed for a block being prefetched (Unspecified)
+: 68
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPagesCrossed           66                       # Number of prefetches across pages (Unspecified)
+: 66
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2225                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2225
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numMissObserved        46753                       # Number of misses observed (Unspecified)
+: 46753
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numAllocatedStreams          258                       # Number of streams allocated for prefetching (Unspecified)
+: 258
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPrefetchRequested         2456                       # Number of prefetch requests made (Unspecified)
+: 2456
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numHits         1360                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1360
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPartialHits           71                       # Number of misses observed for a block being prefetched (Unspecified)
+: 71
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPagesCrossed           66                       # Number of prefetches across pages (Unspecified)
+: 66
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2221                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2221
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numMissObserved        46803                       # Number of misses observed (Unspecified)
+: 46803
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numAllocatedStreams          262                       # Number of streams allocated for prefetching (Unspecified)
+: 262
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPrefetchRequested         2468                       # Number of prefetch requests made (Unspecified)
+: 2468
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numHits         1356                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1356
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPartialHits           71                       # Number of misses observed for a block being prefetched (Unspecified)
+: 71
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPagesCrossed           66                       # Number of prefetches across pages (Unspecified)
+: 66
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2222                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2222
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numMissObserved        46691                       # Number of misses observed (Unspecified)
+: 46691
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numAllocatedStreams          255                       # Number of streams allocated for prefetching (Unspecified)
+: 255
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPrefetchRequested         2438                       # Number of prefetch requests made (Unspecified)
+: 2438
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numHits         1356                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1356
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPartialHits           69                       # Number of misses observed for a block being prefetched (Unspecified)
+: 69
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPagesCrossed           66                       # Number of prefetches across pages (Unspecified)
+: 66
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2223                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2223
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numMissObserved        46735                       # Number of misses observed (Unspecified)
+: 46735
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numAllocatedStreams          261                       # Number of streams allocated for prefetching (Unspecified)
+: 261
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPrefetchRequested         2461                       # Number of prefetch requests made (Unspecified)
+: 2461
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numHits         1358                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1358
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPartialHits           66                       # Number of misses observed for a block being prefetched (Unspecified)
+: 66
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPagesCrossed           66                       # Number of prefetches across pages (Unspecified)
+: 66
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2222                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2222
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numMissObserved        46728                       # Number of misses observed (Unspecified)
+: 46728
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numAllocatedStreams          253                       # Number of streams allocated for prefetching (Unspecified)
+: 253
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPrefetchRequested         2435                       # Number of prefetch requests made (Unspecified)
+: 2435
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numHits         1352                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1352
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPartialHits           78                       # Number of misses observed for a block being prefetched (Unspecified)
+: 78
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPagesCrossed           66                       # Number of prefetches across pages (Unspecified)
+: 66
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2213                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2213
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numMissObserved        46562                       # Number of misses observed (Unspecified)
+: 46562
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numAllocatedStreams          264                       # Number of streams allocated for prefetching (Unspecified)
+: 264
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPrefetchRequested         2480                       # Number of prefetch requests made (Unspecified)
+: 2480
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numHits         1362                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1362
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPartialHits           69                       # Number of misses observed for a block being prefetched (Unspecified)
+: 69
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPagesCrossed           67                       # Number of prefetches across pages (Unspecified)
+: 67
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2253                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2253
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numMissObserved        47254                       # Number of misses observed (Unspecified)
+: 47254
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numAllocatedStreams          257                       # Number of streams allocated for prefetching (Unspecified)
+: 257
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPrefetchRequested         2450                       # Number of prefetch requests made (Unspecified)
+: 2450
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numHits         1362                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1362
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPartialHits           67                       # Number of misses observed for a block being prefetched (Unspecified)
+: 67
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPagesCrossed           64                       # Number of prefetches across pages (Unspecified)
+: 64
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2209                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2209
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numMissObserved        46622                       # Number of misses observed (Unspecified)
+: 46622
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numAllocatedStreams          260                       # Number of streams allocated for prefetching (Unspecified)
+: 260
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPrefetchRequested         2463                       # Number of prefetch requests made (Unspecified)
+: 2463
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numHits         1366                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1366
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPartialHits           64                       # Number of misses observed for a block being prefetched (Unspecified)
+: 64
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPagesCrossed           66                       # Number of prefetches across pages (Unspecified)
+: 66
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2226                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2226
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numMissObserved        46833                       # Number of misses observed (Unspecified)
+: 46833
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numAllocatedStreams          258                       # Number of streams allocated for prefetching (Unspecified)
+: 258
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPrefetchRequested         2441                       # Number of prefetch requests made (Unspecified)
+: 2441
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numHits         1350                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1350
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPartialHits           66                       # Number of misses observed for a block being prefetched (Unspecified)
+: 66
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPagesCrossed           67                       # Number of prefetches across pages (Unspecified)
+: 67
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2220                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2220
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numMissObserved        46729                       # Number of misses observed (Unspecified)
+: 46729
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numAllocatedStreams          258                       # Number of streams allocated for prefetching (Unspecified)
+: 258
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPrefetchRequested         2448                       # Number of prefetch requests made (Unspecified)
+: 2448
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numHits         1355                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1355
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPartialHits           68                       # Number of misses observed for a block being prefetched (Unspecified)
+: 68
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPagesCrossed           66                       # Number of prefetches across pages (Unspecified)
+: 66
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2214                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2214
+
+run_1:
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numMissObserved        51592                       # Number of misses observed (Unspecified)
+: 51592
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numAllocatedStreams          622                       # Number of streams allocated for prefetching (Unspecified)
+: 622
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPrefetchRequested        20444                       # Number of prefetch requests made (Unspecified)
+: 20444
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numHits        16534                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16534
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPartialHits         1428                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1428
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPagesCrossed          343                       # Number of prefetches across pages (Unspecified)
+: 343
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19797                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19797
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numMissObserved        51730                       # Number of misses observed (Unspecified)
+: 51730
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numAllocatedStreams          623                       # Number of streams allocated for prefetching (Unspecified)
+: 623
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPrefetchRequested        20456                       # Number of prefetch requests made (Unspecified)
+: 20456
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numHits        16575                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16575
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPartialHits         1395                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1395
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPagesCrossed          340                       # Number of prefetches across pages (Unspecified)
+: 340
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19827                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19827
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numMissObserved        52183                       # Number of misses observed (Unspecified)
+: 52183
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numAllocatedStreams          620                       # Number of streams allocated for prefetching (Unspecified)
+: 620
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPrefetchRequested        20443                       # Number of prefetch requests made (Unspecified)
+: 20443
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numHits        16628                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16628
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPartialHits         1341                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1341
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19791                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19791
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numMissObserved        52039                       # Number of misses observed (Unspecified)
+: 52039
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numAllocatedStreams          627                       # Number of streams allocated for prefetching (Unspecified)
+: 627
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPrefetchRequested        20478                       # Number of prefetch requests made (Unspecified)
+: 20478
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numHits        16643                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16643
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPartialHits         1333                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1333
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPagesCrossed          343                       # Number of prefetches across pages (Unspecified)
+: 343
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19828                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19828
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numMissObserved        51552                       # Number of misses observed (Unspecified)
+: 51552
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numAllocatedStreams          628                       # Number of streams allocated for prefetching (Unspecified)
+: 628
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPrefetchRequested        20474                       # Number of prefetch requests made (Unspecified)
+: 20474
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numHits        16585                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16585
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPartialHits         1383                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1383
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPagesCrossed          342                       # Number of prefetches across pages (Unspecified)
+: 342
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19792                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19792
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numMissObserved        51314                       # Number of misses observed (Unspecified)
+: 51314
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numAllocatedStreams          629                       # Number of streams allocated for prefetching (Unspecified)
+: 629
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPrefetchRequested        20480                       # Number of prefetch requests made (Unspecified)
+: 20480
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numHits        16596                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16596
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPartialHits         1375                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1375
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPagesCrossed          344                       # Number of prefetches across pages (Unspecified)
+: 344
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19810                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19810
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numMissObserved        52259                       # Number of misses observed (Unspecified)
+: 52259
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numAllocatedStreams          621                       # Number of streams allocated for prefetching (Unspecified)
+: 621
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPrefetchRequested        20441                       # Number of prefetch requests made (Unspecified)
+: 20441
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numHits        16654                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16654
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPartialHits         1310                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1310
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19797                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19797
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numMissObserved        51843                       # Number of misses observed (Unspecified)
+: 51843
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numAllocatedStreams          626                       # Number of streams allocated for prefetching (Unspecified)
+: 626
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPrefetchRequested        20474                       # Number of prefetch requests made (Unspecified)
+: 20474
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numHits        16685                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16685
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPartialHits         1290                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1290
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPagesCrossed          345                       # Number of prefetches across pages (Unspecified)
+: 345
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19808                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19808
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numMissObserved        51652                       # Number of misses observed (Unspecified)
+: 51652
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numAllocatedStreams          620                       # Number of streams allocated for prefetching (Unspecified)
+: 620
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPrefetchRequested        20425                       # Number of prefetch requests made (Unspecified)
+: 20425
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numHits        16581                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16581
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPartialHits         1371                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1371
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPagesCrossed          340                       # Number of prefetches across pages (Unspecified)
+: 340
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19756                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19756
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numMissObserved        51349                       # Number of misses observed (Unspecified)
+: 51349
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numAllocatedStreams          635                       # Number of streams allocated for prefetching (Unspecified)
+: 635
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPrefetchRequested        20452                       # Number of prefetch requests made (Unspecified)
+: 20452
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numHits        16648                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16648
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPartialHits         1270                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1270
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPagesCrossed          342                       # Number of prefetches across pages (Unspecified)
+: 342
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19776                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19776
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numMissObserved        51908                       # Number of misses observed (Unspecified)
+: 51908
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numAllocatedStreams          624                       # Number of streams allocated for prefetching (Unspecified)
+: 624
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPrefetchRequested        20460                       # Number of prefetch requests made (Unspecified)
+: 20460
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numHits        16559                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16559
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPartialHits         1411                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1411
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPagesCrossed          342                       # Number of prefetches across pages (Unspecified)
+: 342
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19823                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19823
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numMissObserved        52038                       # Number of misses observed (Unspecified)
+: 52038
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numAllocatedStreams          624                       # Number of streams allocated for prefetching (Unspecified)
+: 624
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPrefetchRequested        20463                       # Number of prefetch requests made (Unspecified)
+: 20463
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numHits        16559                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16559
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPartialHits         1414                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1414
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19820                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19820
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numMissObserved        52126                       # Number of misses observed (Unspecified)
+: 52126
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numAllocatedStreams          619                       # Number of streams allocated for prefetching (Unspecified)
+: 619
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPrefetchRequested        20428                       # Number of prefetch requests made (Unspecified)
+: 20428
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numHits        16618                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16618
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPartialHits         1340                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1340
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPagesCrossed          342                       # Number of prefetches across pages (Unspecified)
+: 342
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19791                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19791
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numMissObserved        49624                       # Number of misses observed (Unspecified)
+: 49624
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numAllocatedStreams          590                       # Number of streams allocated for prefetching (Unspecified)
+: 590
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPrefetchRequested        20268                       # Number of prefetch requests made (Unspecified)
+: 20268
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numHits        16617                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16617
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPartialHits         1296                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1296
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPagesCrossed          340                       # Number of prefetches across pages (Unspecified)
+: 340
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19650                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19650
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numMissObserved        52161                       # Number of misses observed (Unspecified)
+: 52161
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numAllocatedStreams          626                       # Number of streams allocated for prefetching (Unspecified)
+: 626
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPrefetchRequested        20470                       # Number of prefetch requests made (Unspecified)
+: 20470
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numHits        16595                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16595
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPartialHits         1377                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1377
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19818                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19818
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numMissObserved        52105                       # Number of misses observed (Unspecified)
+: 52105
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numAllocatedStreams          620                       # Number of streams allocated for prefetching (Unspecified)
+: 620
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPrefetchRequested        20433                       # Number of prefetch requests made (Unspecified)
+: 20433
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numHits        16655                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16655
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPartialHits         1304                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1304
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPagesCrossed          342                       # Number of prefetches across pages (Unspecified)
+: 342
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19796                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19796
+
+run_2:
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numMissObserved        50739                       # Number of misses observed (Unspecified)
+: 50739
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numAllocatedStreams          623                       # Number of streams allocated for prefetching (Unspecified)
+: 623
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPrefetchRequested        20448                       # Number of prefetch requests made (Unspecified)
+: 20448
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numHits        16559                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16559
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPartialHits         1404                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1404
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPagesCrossed          343                       # Number of prefetches across pages (Unspecified)
+: 343
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19826                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19826
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numMissObserved        46462                       # Number of misses observed (Unspecified)
+: 46462
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numAllocatedStreams          260                       # Number of streams allocated for prefetching (Unspecified)
+: 260
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPrefetchRequested         2474                       # Number of prefetch requests made (Unspecified)
+: 2474
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numHits         1377                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1377
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPartialHits           64                       # Number of misses observed for a block being prefetched (Unspecified)
+: 64
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2235                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2235
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numMissObserved        51595                       # Number of misses observed (Unspecified)
+: 51595
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numAllocatedStreams          626                       # Number of streams allocated for prefetching (Unspecified)
+: 626
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPrefetchRequested        20415                       # Number of prefetch requests made (Unspecified)
+: 20415
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numHits        16588                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16588
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPartialHits         1329                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1329
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPagesCrossed          337                       # Number of prefetches across pages (Unspecified)
+: 337
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19751                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19751
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numMissObserved        46602                       # Number of misses observed (Unspecified)
+: 46602
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numAllocatedStreams          261                       # Number of streams allocated for prefetching (Unspecified)
+: 261
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPrefetchRequested         2474                       # Number of prefetch requests made (Unspecified)
+: 2474
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numHits         1366                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1366
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPartialHits           71                       # Number of misses observed for a block being prefetched (Unspecified)
+: 71
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2237                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2237
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numMissObserved        50795                       # Number of misses observed (Unspecified)
+: 50795
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numAllocatedStreams          640                       # Number of streams allocated for prefetching (Unspecified)
+: 640
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPrefetchRequested        20466                       # Number of prefetch requests made (Unspecified)
+: 20466
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numHits        16594                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16594
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPartialHits         1317                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1317
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19792                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19792
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numMissObserved        46772                       # Number of misses observed (Unspecified)
+: 46772
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numAllocatedStreams          258                       # Number of streams allocated for prefetching (Unspecified)
+: 258
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPrefetchRequested         2456                       # Number of prefetch requests made (Unspecified)
+: 2456
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numHits         1367                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1367
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPartialHits           64                       # Number of misses observed for a block being prefetched (Unspecified)
+: 64
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2237                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2237
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numMissObserved        50373                       # Number of misses observed (Unspecified)
+: 50373
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numAllocatedStreams          622                       # Number of streams allocated for prefetching (Unspecified)
+: 622
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPrefetchRequested        20419                       # Number of prefetch requests made (Unspecified)
+: 20419
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numHits        16609                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16609
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPartialHits         1327                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1327
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPagesCrossed          340                       # Number of prefetches across pages (Unspecified)
+: 340
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19776                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19776
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numMissObserved        46832                       # Number of misses observed (Unspecified)
+: 46832
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numAllocatedStreams          254                       # Number of streams allocated for prefetching (Unspecified)
+: 254
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPrefetchRequested         2445                       # Number of prefetch requests made (Unspecified)
+: 2445
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numHits         1366                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1366
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPartialHits           70                       # Number of misses observed for a block being prefetched (Unspecified)
+: 70
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPagesCrossed           68                       # Number of prefetches across pages (Unspecified)
+: 68
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2221                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2221
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numMissObserved        50937                       # Number of misses observed (Unspecified)
+: 50937
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numAllocatedStreams          633                       # Number of streams allocated for prefetching (Unspecified)
+: 633
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPrefetchRequested        20504                       # Number of prefetch requests made (Unspecified)
+: 20504
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numHits        16538                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16538
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPartialHits         1440                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1440
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPagesCrossed          342                       # Number of prefetches across pages (Unspecified)
+: 342
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19814                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19814
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numMissObserved        46192                       # Number of misses observed (Unspecified)
+: 46192
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numAllocatedStreams          260                       # Number of streams allocated for prefetching (Unspecified)
+: 260
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPrefetchRequested         2470                       # Number of prefetch requests made (Unspecified)
+: 2470
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numHits         1372                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1372
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPartialHits           65                       # Number of misses observed for a block being prefetched (Unspecified)
+: 65
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2242                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2242
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numMissObserved        51015                       # Number of misses observed (Unspecified)
+: 51015
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numAllocatedStreams          618                       # Number of streams allocated for prefetching (Unspecified)
+: 618
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPrefetchRequested        20429                       # Number of prefetch requests made (Unspecified)
+: 20429
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numHits        16580                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16580
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPartialHits         1384                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1384
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19797                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19797
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numMissObserved        46931                       # Number of misses observed (Unspecified)
+: 46931
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numAllocatedStreams          257                       # Number of streams allocated for prefetching (Unspecified)
+: 257
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPrefetchRequested         2454                       # Number of prefetch requests made (Unspecified)
+: 2454
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numHits         1372                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1372
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPartialHits           61                       # Number of misses observed for a block being prefetched (Unspecified)
+: 61
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPagesCrossed           68                       # Number of prefetches across pages (Unspecified)
+: 68
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2216                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2216
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numMissObserved        51713                       # Number of misses observed (Unspecified)
+: 51713
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numAllocatedStreams          634                       # Number of streams allocated for prefetching (Unspecified)
+: 634
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPrefetchRequested        20447                       # Number of prefetch requests made (Unspecified)
+: 20447
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numHits        16567                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16567
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPartialHits         1350                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1350
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPagesCrossed          337                       # Number of prefetches across pages (Unspecified)
+: 337
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19788                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19788
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numMissObserved        46624                       # Number of misses observed (Unspecified)
+: 46624
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numAllocatedStreams          259                       # Number of streams allocated for prefetching (Unspecified)
+: 259
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPrefetchRequested         2464                       # Number of prefetch requests made (Unspecified)
+: 2464
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numHits         1369                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1369
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPartialHits           66                       # Number of misses observed for a block being prefetched (Unspecified)
+: 66
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2240                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2240
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numMissObserved        51727                       # Number of misses observed (Unspecified)
+: 51727
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numAllocatedStreams          620                       # Number of streams allocated for prefetching (Unspecified)
+: 620
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPrefetchRequested        20440                       # Number of prefetch requests made (Unspecified)
+: 20440
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numHits        16622                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16622
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPartialHits         1344                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1344
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPagesCrossed          340                       # Number of prefetches across pages (Unspecified)
+: 340
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19796                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19796
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numMissObserved        46710                       # Number of misses observed (Unspecified)
+: 46710
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numAllocatedStreams          258                       # Number of streams allocated for prefetching (Unspecified)
+: 258
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPrefetchRequested         2460                       # Number of prefetch requests made (Unspecified)
+: 2460
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numHits         1370                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1370
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPartialHits           65                       # Number of misses observed for a block being prefetched (Unspecified)
+: 65
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2223                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2223
+
+run_3:
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numMissObserved        46718                       # Number of misses observed (Unspecified)
+: 46718
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numAllocatedStreams          257                       # Number of streams allocated for prefetching (Unspecified)
+: 257
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPrefetchRequested         2460                       # Number of prefetch requests made (Unspecified)
+: 2460
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numHits         1360                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1360
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPartialHits           79                       # Number of misses observed for a block being prefetched (Unspecified)
+: 79
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2237                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2237
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numMissObserved        46616                       # Number of misses observed (Unspecified)
+: 46616
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numAllocatedStreams          262                       # Number of streams allocated for prefetching (Unspecified)
+: 262
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPrefetchRequested         2479                       # Number of prefetch requests made (Unspecified)
+: 2479
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numHits         1356                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1356
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPartialHits           82                       # Number of misses observed for a block being prefetched (Unspecified)
+: 82
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2256                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2256
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numMissObserved        49784                       # Number of misses observed (Unspecified)
+: 49784
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numAllocatedStreams          610                       # Number of streams allocated for prefetching (Unspecified)
+: 610
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPrefetchRequested        20368                       # Number of prefetch requests made (Unspecified)
+: 20368
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numHits        16588                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16588
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPartialHits         1346                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1346
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPagesCrossed          342                       # Number of prefetches across pages (Unspecified)
+: 342
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19750                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19750
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numMissObserved        51285                       # Number of misses observed (Unspecified)
+: 51285
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numAllocatedStreams          625                       # Number of streams allocated for prefetching (Unspecified)
+: 625
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPrefetchRequested        20469                       # Number of prefetch requests made (Unspecified)
+: 20469
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numHits        16682                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16682
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPartialHits         1294                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1294
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPagesCrossed          340                       # Number of prefetches across pages (Unspecified)
+: 340
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19795                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19795
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numMissObserved        51436                       # Number of misses observed (Unspecified)
+: 51436
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numAllocatedStreams          625                       # Number of streams allocated for prefetching (Unspecified)
+: 625
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPrefetchRequested        20455                       # Number of prefetch requests made (Unspecified)
+: 20455
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numHits        16577                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16577
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPartialHits         1384                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1384
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19775                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19775
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numMissObserved        51500                       # Number of misses observed (Unspecified)
+: 51500
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numAllocatedStreams          623                       # Number of streams allocated for prefetching (Unspecified)
+: 623
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPrefetchRequested        20443                       # Number of prefetch requests made (Unspecified)
+: 20443
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numHits        16594                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16594
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPartialHits         1363                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1363
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19805                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19805
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numMissObserved        51526                       # Number of misses observed (Unspecified)
+: 51526
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numAllocatedStreams          626                       # Number of streams allocated for prefetching (Unspecified)
+: 626
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPrefetchRequested        20477                       # Number of prefetch requests made (Unspecified)
+: 20477
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numHits        16649                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16649
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPartialHits         1330                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1330
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19802                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19802
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numMissObserved        50476                       # Number of misses observed (Unspecified)
+: 50476
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numAllocatedStreams          627                       # Number of streams allocated for prefetching (Unspecified)
+: 627
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPrefetchRequested        20483                       # Number of prefetch requests made (Unspecified)
+: 20483
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numHits        16682                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16682
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPartialHits         1299                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1299
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19823                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19823
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numMissObserved        46536                       # Number of misses observed (Unspecified)
+: 46536
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numAllocatedStreams          253                       # Number of streams allocated for prefetching (Unspecified)
+: 253
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPrefetchRequested         2439                       # Number of prefetch requests made (Unspecified)
+: 2439
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numHits         1369                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1369
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPartialHits           65                       # Number of misses observed for a block being prefetched (Unspecified)
+: 65
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPagesCrossed           68                       # Number of prefetches across pages (Unspecified)
+: 68
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2210                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2210
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numMissObserved        46604                       # Number of misses observed (Unspecified)
+: 46604
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numAllocatedStreams          265                       # Number of streams allocated for prefetching (Unspecified)
+: 265
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPrefetchRequested         2493                       # Number of prefetch requests made (Unspecified)
+: 2493
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numHits         1373                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1373
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPartialHits           67                       # Number of misses observed for a block being prefetched (Unspecified)
+: 67
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPagesCrossed           69                       # Number of prefetches across pages (Unspecified)
+: 69
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2244                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2244
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numMissObserved        46760                       # Number of misses observed (Unspecified)
+: 46760
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numAllocatedStreams          260                       # Number of streams allocated for prefetching (Unspecified)
+: 260
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPrefetchRequested         2475                       # Number of prefetch requests made (Unspecified)
+: 2475
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numHits         1366                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1366
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPartialHits           78                       # Number of misses observed for a block being prefetched (Unspecified)
+: 78
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPagesCrossed           69                       # Number of prefetches across pages (Unspecified)
+: 69
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2252                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2252
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numMissObserved        46766                       # Number of misses observed (Unspecified)
+: 46766
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numAllocatedStreams          260                       # Number of streams allocated for prefetching (Unspecified)
+: 260
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPrefetchRequested         2469                       # Number of prefetch requests made (Unspecified)
+: 2469
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numHits         1362                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1362
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPartialHits           74                       # Number of misses observed for a block being prefetched (Unspecified)
+: 74
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2237                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2237
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numMissObserved        46861                       # Number of misses observed (Unspecified)
+: 46861
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numAllocatedStreams          267                       # Number of streams allocated for prefetching (Unspecified)
+: 267
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPrefetchRequested         2499                       # Number of prefetch requests made (Unspecified)
+: 2499
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numHits         1371                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1371
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPartialHits           67                       # Number of misses observed for a block being prefetched (Unspecified)
+: 67
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPagesCrossed           72                       # Number of prefetches across pages (Unspecified)
+: 72
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2255                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2255
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numMissObserved        46434                       # Number of misses observed (Unspecified)
+: 46434
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numAllocatedStreams          259                       # Number of streams allocated for prefetching (Unspecified)
+: 259
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPrefetchRequested         2492                       # Number of prefetch requests made (Unspecified)
+: 2492
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numHits         1390                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1390
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPartialHits           73                       # Number of misses observed for a block being prefetched (Unspecified)
+: 73
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPagesCrossed           69                       # Number of prefetches across pages (Unspecified)
+: 69
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2252                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2252
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numMissObserved        50957                       # Number of misses observed (Unspecified)
+: 50957
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numAllocatedStreams          625                       # Number of streams allocated for prefetching (Unspecified)
+: 625
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPrefetchRequested        20459                       # Number of prefetch requests made (Unspecified)
+: 20459
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numHits        16632                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16632
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPartialHits         1333                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1333
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPagesCrossed          345                       # Number of prefetches across pages (Unspecified)
+: 345
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19833                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19833
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numMissObserved        51234                       # Number of misses observed (Unspecified)
+: 51234
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numAllocatedStreams          624                       # Number of streams allocated for prefetching (Unspecified)
+: 624
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPrefetchRequested        20446                       # Number of prefetch requests made (Unspecified)
+: 20446
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numHits        16581                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16581
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPartialHits         1375                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1375
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPagesCrossed          344                       # Number of prefetches across pages (Unspecified)
+: 344
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19777                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19777
+
+run_4:
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numMissObserved        50360                       # Number of misses observed (Unspecified)
+: 50360
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numAllocatedStreams          624                       # Number of streams allocated for prefetching (Unspecified)
+: 624
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPrefetchRequested        20457                       # Number of prefetch requests made (Unspecified)
+: 20457
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numHits        16564                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16564
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPartialHits         1402                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1402
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numPagesCrossed          340                       # Number of prefetches across pages (Unspecified)
+: 340
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl0.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19819                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19819
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numMissObserved        51559                       # Number of misses observed (Unspecified)
+: 51559
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numAllocatedStreams          628                       # Number of streams allocated for prefetching (Unspecified)
+: 628
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPrefetchRequested        20476                       # Number of prefetch requests made (Unspecified)
+: 20476
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numHits        16599                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16599
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPartialHits         1371                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1371
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numPagesCrossed          340                       # Number of prefetches across pages (Unspecified)
+: 340
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl1.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19828                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19828
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numMissObserved        46716                       # Number of misses observed (Unspecified)
+: 46716
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numAllocatedStreams          264                       # Number of streams allocated for prefetching (Unspecified)
+: 264
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPrefetchRequested         2488                       # Number of prefetch requests made (Unspecified)
+: 2488
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numHits         1376                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1376
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPartialHits           63                       # Number of misses observed for a block being prefetched (Unspecified)
+: 63
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numPagesCrossed           69                       # Number of prefetches across pages (Unspecified)
+: 69
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl10.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2242                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2242
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numMissObserved        46558                       # Number of misses observed (Unspecified)
+: 46558
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numAllocatedStreams          259                       # Number of streams allocated for prefetching (Unspecified)
+: 259
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPrefetchRequested         2471                       # Number of prefetch requests made (Unspecified)
+: 2471
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numHits         1381                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1381
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPartialHits           61                       # Number of misses observed for a block being prefetched (Unspecified)
+: 61
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl11.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2231                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2231
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numMissObserved        46625                       # Number of misses observed (Unspecified)
+: 46625
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numAllocatedStreams          269                       # Number of streams allocated for prefetching (Unspecified)
+: 269
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPrefetchRequested         2512                       # Number of prefetch requests made (Unspecified)
+: 2512
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numHits         1363                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1363
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPartialHits           82                       # Number of misses observed for a block being prefetched (Unspecified)
+: 82
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numPagesCrossed           69                       # Number of prefetches across pages (Unspecified)
+: 69
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl12.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2250                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2250
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numMissObserved        46652                       # Number of misses observed (Unspecified)
+: 46652
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numAllocatedStreams          255                       # Number of streams allocated for prefetching (Unspecified)
+: 255
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPrefetchRequested         2454                       # Number of prefetch requests made (Unspecified)
+: 2454
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numHits         1362                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1362
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPartialHits           79                       # Number of misses observed for a block being prefetched (Unspecified)
+: 79
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl13.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2235                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2235
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numMissObserved        46788                       # Number of misses observed (Unspecified)
+: 46788
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numAllocatedStreams          266                       # Number of streams allocated for prefetching (Unspecified)
+: 266
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPrefetchRequested         2507                       # Number of prefetch requests made (Unspecified)
+: 2507
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numHits         1391                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1391
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPartialHits           59                       # Number of misses observed for a block being prefetched (Unspecified)
+: 59
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl14.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2250                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2250
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numMissObserved        46518                       # Number of misses observed (Unspecified)
+: 46518
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numAllocatedStreams          256                       # Number of streams allocated for prefetching (Unspecified)
+: 256
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPrefetchRequested         2447                       # Number of prefetch requests made (Unspecified)
+: 2447
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numHits         1357                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1357
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPartialHits           73                       # Number of misses observed for a block being prefetched (Unspecified)
+: 73
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numPagesCrossed           68                       # Number of prefetches across pages (Unspecified)
+: 68
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl15.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2224                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2224
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numMissObserved        51392                       # Number of misses observed (Unspecified)
+: 51392
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numAllocatedStreams          622                       # Number of streams allocated for prefetching (Unspecified)
+: 622
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPrefetchRequested        20419                       # Number of prefetch requests made (Unspecified)
+: 20419
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numHits        16551                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16551
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPartialHits         1385                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1385
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numPagesCrossed          345                       # Number of prefetches across pages (Unspecified)
+: 345
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl2.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19764                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19764
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numMissObserved        50985                       # Number of misses observed (Unspecified)
+: 50985
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numAllocatedStreams          625                       # Number of streams allocated for prefetching (Unspecified)
+: 625
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPrefetchRequested        20461                       # Number of prefetch requests made (Unspecified)
+: 20461
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numHits        16646                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16646
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPartialHits         1320                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1320
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numPagesCrossed          342                       # Number of prefetches across pages (Unspecified)
+: 342
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl3.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19782                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19782
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numMissObserved        51642                       # Number of misses observed (Unspecified)
+: 51642
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numAllocatedStreams          620                       # Number of streams allocated for prefetching (Unspecified)
+: 620
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPrefetchRequested        20444                       # Number of prefetch requests made (Unspecified)
+: 20444
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numHits        16611                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16611
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPartialHits         1359                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1359
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl4.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19787                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19787
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numMissObserved        51463                       # Number of misses observed (Unspecified)
+: 51463
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numAllocatedStreams          631                       # Number of streams allocated for prefetching (Unspecified)
+: 631
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPrefetchRequested        20494                       # Number of prefetch requests made (Unspecified)
+: 20494
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numHits        16581                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16581
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPartialHits         1395                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1395
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl5.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19852                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19852
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numMissObserved        51736                       # Number of misses observed (Unspecified)
+: 51736
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numAllocatedStreams          621                       # Number of streams allocated for prefetching (Unspecified)
+: 621
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPrefetchRequested        20438                       # Number of prefetch requests made (Unspecified)
+: 20438
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numHits        16621                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16621
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPartialHits         1340                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1340
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl6.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19809                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19809
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numMissObserved        51682                       # Number of misses observed (Unspecified)
+: 51682
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numAllocatedStreams          620                       # Number of streams allocated for prefetching (Unspecified)
+: 620
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPrefetchRequested        20435                       # Number of prefetch requests made (Unspecified)
+: 20435
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numHits        16681                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 16681
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPartialHits         1279                       # Number of misses observed for a block being prefetched (Unspecified)
+: 1279
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numPagesCrossed          341                       # Number of prefetches across pages (Unspecified)
+: 341
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl7.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks        19797                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 19797
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numMissObserved        46538                       # Number of misses observed (Unspecified)
+: 46538
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numAllocatedStreams          261                       # Number of streams allocated for prefetching (Unspecified)
+: 261
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPrefetchRequested         2480                       # Number of prefetch requests made (Unspecified)
+: 2480
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numHits         1372                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1372
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPartialHits           71                       # Number of misses observed for a block being prefetched (Unspecified)
+: 71
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl8.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2240                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2240
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numMissObserved        46538                       # Number of misses observed (Unspecified)
+: 46538
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numAllocatedStreams          256                       # Number of streams allocated for prefetching (Unspecified)
+: 256
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPrefetchRequested         2451                       # Number of prefetch requests made (Unspecified)
+: 2451
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numHits         1361                       # Number of prefetched blocks accessed (for the first time) (Unspecified)
+: 1361
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPartialHits           73                       # Number of misses observed for a block being prefetched (Unspecified)
+: 73
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numPagesCrossed           70                       # Number of prefetches across pages (Unspecified)
+: 70
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numMissedPrefetchedBlocks            0                       # Number of misses for blocks that were prefetched, yet missed (Unspecified)
+: 0
+  system.ruby.l0_cntrl9.prefetcher.RubyPrefetcher.numEvictionsDueToPrefetchBlocks         2237                       # Number of Evictions caused due to blocks that were prefetched. (Unspecified)
+: 2237
+

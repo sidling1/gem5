@@ -104,6 +104,9 @@ class RubyPrefetcher : public SimObject
         RubyPrefetcher(const Params &p);
         ~RubyPrefetcher() = default;
 
+
+        void addEvictionDueToPrefetch();
+        
         void issueNextPrefetch(Addr address, PrefetchEntry *stream);
         /**
          * Implement the prefetch hit(miss) callback interface.
@@ -160,6 +163,8 @@ class RubyPrefetcher : public SimObject
                 hits = 0;
             }
         };
+
+        
 
         /**
          * Returns an unused stream buffer (or if all are used, returns the
@@ -257,6 +262,9 @@ class RubyPrefetcher : public SimObject
             statistics::Scalar numPagesCrossed;
             //! Count of misses incurred for blocks that were prefetched
             statistics::Scalar numMissedPrefetchedBlocks;
+            //! Count of evictions in the Cache caused due to some prefetched block
+            statistics::Scalar numEvictionsDueToPrefetchBlocks;
+
         } rubyPrefetcherStats;
 };
 

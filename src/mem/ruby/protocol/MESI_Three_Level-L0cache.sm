@@ -365,7 +365,7 @@ machine(MachineType:L0Cache, "MESI Directory L0 Cache")
             // No room in the L0-I, so we need to make room in the L0-I
             Addr addr := Icache.cacheProbe(in_msg.LineAddress);
             check_on_cache_probe(optionalQueue_in, addr);
-
+            prefetcher.addEvictionDueToPrefetch();
             trigger(Event:PF_L0_Replacement, addr,
                     getICacheEntry(addr),
                     TBEs[addr]);
@@ -402,7 +402,7 @@ machine(MachineType:L0Cache, "MESI Directory L0 Cache")
             // No room in the L0-D, so we need to make room in the L0-D
             Addr addr := Dcache.cacheProbe(in_msg.LineAddress);
             check_on_cache_probe(optionalQueue_in, addr);
-
+            prefetcher.addEvictionDueToPrefetch();
             trigger(Event:PF_L0_Replacement, addr,
                     getDCacheEntry(addr),
                     TBEs[addr]);

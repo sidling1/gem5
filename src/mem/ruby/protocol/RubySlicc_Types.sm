@@ -251,4 +251,5 @@ structure (RubyPrefetcher, external = "yes") {
     void observeMiss(Addr, RubyRequestType);
     void observePfHit(Addr);
     void observePfMiss(Addr);
+    void addEvictionDueToPrefetch();
 }
