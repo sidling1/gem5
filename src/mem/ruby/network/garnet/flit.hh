@@ -118,12 +118,16 @@ class flit
     }
 
     void localReply(){
-        RouteInfo& t_route = this->m_route;
+        // RouteInfo& t_route = this->m_route;
 
         // How to update the netdest
-        std::swap(t_route.dest_ni, t_route.src_ni);
-        std::swap(t_route.dest_router, t_route.src_router);
-        // t_route.vnet = DATA_VNET_;
+        this->m_route.dest_ni = this->m_route.src_ni;
+        this->m_route.dest_router = this->m_route.src_router;
+        this->m_route.net_dest.clear();
+        this->m_route.net_dest.add(this->get_msg_ptr()->get_sender_machine_id());
+        // std::swap(t_route.dest_ni, t_route.src_ni);
+        // std::swap(t_route.dest_router, t_route.src_router);
+        // t_route.vnet = 2;
     }
 
     uint32_t m_width;

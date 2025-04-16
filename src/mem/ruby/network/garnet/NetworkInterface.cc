@@ -410,69 +410,7 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
     DPRINTF(RubyNetwork, "Message Size:%d vnet:%d bitWidth:%d\n",
         m_net_ptr->MessageSizeType_to_int(net_msg_ptr->getMessageSize()),
         vnet, oPort->bitWidth());
-
-    if((msg_ptr->get_read_bit() || msg_ptr->get_write_bit())){ // and This should be of the local processor
-        // Check for local reply
-        for(int vc=0;vc<niOutVcs.size();vc++){
-            // if(outVcState[vc].isInState(IDLE_, curTick()))continue;
-            if(niOutVcs[vc].isReady(curTick()) || niOutVcs[vc].getSize() == 0)continue;
-            MsgPtr stored = niOutVcs[vc].peekTopFlit()->get_msg_ptr();
-            if(!stored->get_store_bit())continue;
-            DPRINTF(RubyCustom, "Comparing Read/Write Request to Stored One \n Requested : %d, Stored : %d\n",
-                makeLineAddress(msg_ptr->get_physical_address()),
-                makeLineAddress(stored->get_physical_address()));
-            if(makeLineAddress(msg_ptr->get_physical_address()) == makeLineAddress(stored->get_physical_address())){
-                if((!stored->get_dirty_bit()) && msg_ptr->get_write_bit()){
-                    DPRINTF(RubyCustom, "Cannot Local Reply, Block is Dirty can only be sent for writes");
-                    int n = niOutVcs[vc].getSize();
-                    for(int i=0;i<n;i++){
-                        flit *fl = niOutVcs[vc].getTopFlit();
-                        fl->set_time(curTick());
-                        niOutVcs[vc].insert(fl);
-                    }
-                    // scheduleEventAbsolute(clockEdge(Cycles(1)));
-                    scheduleEvent(Cycles(1));
-                    outVcState[vc].setState(ACTIVE_, clockEdge());
-                }else{
-                    // Local Reply is DoAble
-                    DPRINTF(RubyCustom, "Local Reply Starting\n");
-                    // Do Local Reply
-                    Tick curTime = clockEdge();
-                    int n = niOutVcs[vc].getSize();
-                    if (outNode_ptr[vnet]->areNSlotsAvailable(1, curTime)) {
-                        // Remove the Buffered Stuff, because it is successfull
-                        for(int i=0;i<n;i++){
-                            // Is this getting empty ?
-                            flit* t_flit = niOutVcs[vc].getTopFlit();
-                            if(t_flit->get_type() == TAIL_ || t_flit->get_type() == HEAD_TAIL_){
-                                if(niOutVcs[vc].getSize() == 0){
-                                    DPRINTF(RubyCustom, "VC %s Empty and IDLE to use !\n", vc);
-                                    outVcState[vc].setState(IDLE_, curTime);
-                                }
-                                outNode_ptr[vnet]->enqueue(stored, curTime, cyclesToTicks(Cycles(1)));
-                                delete t_flit;
-                                DPRINTF(RubyCustom, "Local Reply Sent to the Protocol Handler \n");
-                                // scheduleEventAbsolute(clockEdge(Cycles(1)));
-                                scheduleEvent(Cycles(1));
-                                return true;
-                            }
-                            delete t_flit;
-                        }
-                        DPRINTF(RubyCustom, "Dont have all the flits here yet :( \n");
-                        return false;
-                    } else {
-                        // This is very Sussy
-                        DPRINTF(RubyCustom, "Beware !, Entered Sussy Area !");
-                        // Assuming this will have wakeup called again
-                        outNode_ptr[vnet]->registerDequeueCallback([this]() {
-                            dequeueCallback(); });
-                        return false;
-                    }
-                }
-            }
-        }
-    }
-
+    
     // loop to convert all multicast messages into unicast messages
     for (int ctr = 0; ctr < dest_nodes.size(); ctr++) {
 
@@ -480,27 +418,7 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         int vc = calculateVC(vnet);
 
         if (vc == -1) {
-            for(int vc=0;vc<niOutVcs.size();vc++){
-                if(niOutVcs[vc].isReady(curTick()))continue;
-                if(niOutVcs[vc].getSize() == 0)continue;
-                MsgPtr stored = niOutVcs[vc].peekTopFlit()->get_msg_ptr();
-                if(!stored->get_store_bit())continue;
-
-                // Even if it is stored , but the time has increase to bhi usko to normal he treat karna haina ?
-                int n = niOutVcs[vc].getSize();
-                for(int i=0;i<n;i++){
-                    flit *fl = niOutVcs[vc].getTopFlit();
-                    DPRINTF(RubyCustom, "Removing Stored Flit : %s \n", *(fl->get_msg_ptr()));
-                    fl->set_time(curTick());
-                    niOutVcs[vc].insert(fl);
-                }
-
-                // Remove the Buffered Stuff
-                outVcState[vc].setState(ACTIVE_, curTick());
-            }
-
-            // // scheduleEventAbsolute(clockEdge(Cycles(1)));
-            scheduleEvent(Cycles(1));
+            
             return false;
         }
 
@@ -551,19 +469,19 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
             m_net_ptr->increment_injected_flits(vnet);
 
             Tick enqueTime = curTick();
-            if(msg_ptr->get_store_bit()){
-                // isko parameter banana hai ?
-                // Kya karun iska bhai exact implement karun kya :(
+            // if(msg_ptr->get_store_bit()){
+            //     // isko parameter banana hai ?
+            //     // Kya karun iska bhai exact implement karun kya :(
 
-                enqueTime = clockEdge(Cycles(256));
-            }
+            //     enqueTime = clockEdge(Cycles(256));
+            // }
 
             // Cannot Make sure that this is the only message at that time for this VC ....
             flit *fl = new flit(packet_id,
                 i, vc, vnet, route, num_flits, new_msg_ptr,
                 m_net_ptr->MessageSizeType_to_int(
                 net_msg_ptr->getMessageSize()),
-                oPort->bitWidth(), enqueTime, (i == 0 ? msg_ptr->get_store_bit() : false), msg_ptr->get_read_bit(), msg_ptr->get_write_bit());
+                oPort->bitWidth(), enqueTime, msg_ptr->get_store_bit() , msg_ptr->get_read_bit(), msg_ptr->get_write_bit());
 
             fl->set_src_delay(curTick() - msg_ptr->getTime()); // what is this exactly ?
 
@@ -573,15 +491,8 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
             // And when we want to free some vc, we can setState to IDLE_
         }
 
-        if(msg_ptr->get_store_bit()){
-            DPRINTF(RubyCustom, "Storing Flit : %s\n", *msg_ptr);
-            // scheduleEventAbsolute(clockEdge(Cycles(256))); // Maybe ...?
-            scheduleEvent(Cycles(256));
-            outVcState[vc].setState(ACTIVE_, clockEdge());
-        }else{
-            outVcState[vc].setState(ACTIVE_, curTick());
-        }
-
+        
+        outVcState[vc].setState(ACTIVE_, curTick());
         m_ni_out_vcs_enqueue_time[vc] = curTick();
     }
     return true ;

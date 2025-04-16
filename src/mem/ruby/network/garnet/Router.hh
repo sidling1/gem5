@@ -142,6 +142,9 @@ class Router : public BasicRouter, public Consumer
     bool functionalRead(Packet *pkt, WriteMask &mask);
     uint32_t functionalWrite(Packet *);
 
+    void RemoveStoredPacket(int inport, int vc);
+
+    std::map<int,Cycles> m_timeout;
   private:
     Cycles m_latency;
     uint32_t m_virtual_networks, m_vc_per_vnet, m_num_vcs;
@@ -151,6 +154,7 @@ class Router : public BasicRouter, public Consumer
     RoutingUnit routingUnit;
     SwitchAllocator switchAllocator;
     CrossbarSwitch crossbarSwitch;
+
 
     std::vector<std::shared_ptr<InputUnit>> m_input_unit;
     std::vector<std::shared_ptr<OutputUnit>> m_output_unit;

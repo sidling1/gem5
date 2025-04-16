@@ -97,6 +97,10 @@ class Message
     virtual MsgPtr clone() const = 0;
     virtual void print(std::ostream& out) const = 0;
 
+    virtual MachineID get_sender_machine_id(){
+      panic("get_sender_machine_id() called on wrong message");
+    }
+
     virtual const MessageSizeType& getMessageSize() const
     { panic("MessageSizeType() called on wrong message!"); }
     virtual MessageSizeType& getMessageSize()

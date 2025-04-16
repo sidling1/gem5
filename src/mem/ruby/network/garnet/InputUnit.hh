@@ -147,6 +147,12 @@ class InputUnit : public Consumer
         m_credit_link = credit_link;
     }
 
+    inline void insert_flits(int vc, std::vector<flit *> &stor){
+        for(auto f : stor){
+            virtualChannels[vc].insertFlit(f);
+        }
+    }
+
     double get_buf_read_activity(unsigned int vnet) const
     { return m_num_buffer_reads[vnet]; }
     double get_buf_write_activity(unsigned int vnet) const

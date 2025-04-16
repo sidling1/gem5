@@ -728,6 +728,7 @@ machine(MachineType:L2Cache, "Token protocol")
           }
         } else if (in_msg.Type == CoherenceRequestType:WRITEBACK_DIRTY_DATA) {
           Entry cache_entry := getCacheEntry(in_msg.addr);
+          DPRINTF(RubyCustom, "[L2 Cache Recvd Data : %s] \n", in_msg);
           if (is_invalid(cache_entry) &&
                    L2cache.cacheAvail(in_msg.addr) == false) {
             Addr victim := L2cache.cacheProbe(in_msg.addr);

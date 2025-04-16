@@ -139,6 +139,10 @@ structure(RequestMsg, desc="...", interface="Message") {
     return Store;
   }
 
+  MachineID get_sender_machine_id(){
+    return Requestor;
+  }
+
   bool functionalRead(Packet *pkt) {
     // Read only those messages that contain the data
     if (Type == CoherenceRequestType:WRITEBACK_CLEAN_DATA ||
@@ -165,6 +169,10 @@ structure(ResponseMsg, desc="...", interface="Message") {
   bool Dirty,                  desc="Is the data dirty (different than memory)?";
   int Acks,                    desc="How many acks to expect";
   MessageSizeType MessageSize, desc="size category of the message";
+
+  MachineID get_sender_machine_id(){
+    return Sender;
+  }
 
   bool functionalRead(Packet *pkt) {
     // Read only those messages that contain the data

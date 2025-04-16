@@ -81,25 +81,18 @@ InputUnit::wakeup()
     if (m_in_link->isReady(curTick())) {
 
         t_flit = m_in_link->consumeLink();
-
-        if(t_flit->m_isStore){
-            DPRINTF(RubyCustom, "[Input Unit %d] : Stored Flit(%s) On its way back : %s | %s \n", m_router->get_id(), t_flit, *t_flit, *(t_flit->get_msg_ptr()));
-        }
-
+        
         assert(t_flit->m_width == m_router->getBitWidth());
         int vc = t_flit->get_vc();
         t_flit->increment_hops(); // for stats
 
         if ((t_flit->get_type() == HEAD_) ||
             (t_flit->get_type() == HEAD_TAIL_)) {
-            if(virtualChannels[vc].get_state() != IDLE_){
-                DPRINTF(RubyCustom, "%s , Flit Causing Issue : %s \n containing message : %s \n", virtualChannels[vc].get_state(), *t_flit, *(t_flit->get_msg_ptr()));
-                if(virtualChannels[vc].isReady(curTick()))
-                    DPRINTF(RubyCustom, "Idle Because of Flit : %s \n Message : %s \n", *virtualChannels[vc].peekTopFlit(), *(virtualChannels[vc].peekTopFlit()->get_msg_ptr()));
-            }
 
             assert(virtualChannels[vc].get_state() == IDLE_);
             set_vc_active(vc, curTick());
+
+            m_router->m_timeout[vc] = Cycles(0);
 
             // Route computation for this vc
             int outport = m_router->route_compute(t_flit->get_route(),
@@ -122,23 +115,28 @@ InputUnit::wakeup()
         m_num_buffer_writes[vnet]++;
         m_num_buffer_reads[vnet]++;
 
-        Cycles pipe_stages = m_router->get_pipe_stages();
-        if (pipe_stages == 1) {
-            // 1-cycle router
-            // Flit goes for SA directly
-            t_flit->advance_stage(SA_, curTick());
-        } else {
-            assert(pipe_stages > 1);
-            // Router delay is modeled by making flit wait in buffer for
-            // (pipe_stages cycles - 1) cycles before going for SA
+        if(!t_flit->m_isStore){
+            Cycles pipe_stages = m_router->get_pipe_stages();
+            if (pipe_stages == 1) {
+                // 1-cycle router
+                // Flit goes for SA directly
+                t_flit->advance_stage(SA_, curTick());
+            } else {
+                assert(pipe_stages > 1);
+                // Router delay is modeled by making flit wait in buffer for
+                // (pipe_stages cycles - 1) cycles before going for SA
 
-            Cycles wait_time = pipe_stages - Cycles(1);
-            t_flit->advance_stage(SA_, m_router->clockEdge(wait_time));
+                Cycles wait_time = pipe_stages - Cycles(1);
 
-            // Wakeup the router in that cycle to perform SA
-            m_router->schedule_wakeup(Cycles(wait_time));
+                t_flit->advance_stage(SA_, m_router->clockEdge(wait_time));
+
+                // Wakeup the router in that cycle to perform SA
+                m_router->schedule_wakeup(Cycles(wait_time));
+            }
+        }else{
+            DPRINTF(RubyCustom, "Storing the flit : %s inside the Router : %s with Message : %s \n", *t_flit, m_router->get_id(), *(t_flit->get_msg_ptr()));
         }
-
+        
         if (m_in_link->isReady(curTick())) {
             m_router->schedule_wakeup(Cycles(1));
         }
