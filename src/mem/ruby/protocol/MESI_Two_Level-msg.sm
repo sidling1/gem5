@@ -69,6 +69,18 @@ structure(RequestMsg, desc="...", interface="Message") {
   bool Dirty, default="false",  desc="Dirty bit";
   PrefetchBit Prefetch,         desc="Is this a prefetch request";
 
+  bool Store, default=0 , desc="Is this a store request ?";
+  bool isReadReq, default=0, desc="Is this a read request ?";
+  bool isWriteReq, default=0, desc="Is this a write request ?";
+
+  bool get_read_bit(){
+    return isReadReq;
+  }
+
+  bool get_write_bit(){
+    return isWriteReq;
+  }
+
   Addr get_physical_address(){
     return addr;
   }

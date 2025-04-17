@@ -434,6 +434,11 @@ machine(MachineType:L1Cache, "MESI Directory L1 Cache CMP")
                           l2_select_low_bit, l2_select_num_bits, clusterID));
         DPRINTF(RubySlicc, "address: %#x, destination: %s\n",
                 address, out_msg.Destination);
+        if ((in_msg.Type == RubyRequestType:IFETCH) || (in_msg.Type == RubyRequestType:LD)){
+          out_msg.isReadReq := true;
+        }else if ((in_msg.Type == RubyRequestType:ST) || (in_msg.Type == RubyRequestType:ATOMIC)){
+          out_msg.isWriteReq := true;
+        }
         out_msg.MessageSize := MessageSizeType:Control;
         out_msg.AccessMode := in_msg.AccessMode;
         out_msg.Prefetch := in_msg.Prefetch;

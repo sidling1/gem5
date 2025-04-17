@@ -549,8 +549,6 @@ machine(MachineType:L2Cache, "MESI Directory L2 Cache CMP")
       out_msg.Destination := tbe.L1_GetS_IDs;  // internal nodes
       out_msg.DataBlk := cache_entry.DataBlk;
       out_msg.MessageSize := MessageSizeType:Response_Data;
-
-      out_msg.Store := true;
     }
   }
 
@@ -567,6 +565,7 @@ machine(MachineType:L2Cache, "MESI Directory L2 Cache CMP")
       DPRINTF(RubySlicc, "Address: %#x, Destination: %s, DataBlock: %s\n",
               out_msg.addr, out_msg.Destination, out_msg.DataBlk);
       out_msg.MessageSize := MessageSizeType:Response_Data;
+      out_msg.Store := true;
     }
   }
 

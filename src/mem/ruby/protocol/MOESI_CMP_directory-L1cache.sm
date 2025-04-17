@@ -402,7 +402,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
   in_port(mandatoryQueue_in, RubyRequest, mandatoryQueue, rank=0) {
     if (mandatoryQueue_in.isReady(clockEdge())) {
       peek(mandatoryQueue_in, RubyRequest, block_on="LineAddress") {
-        DPRINTF(RubyCustom, "[Mandatory Queue] : Some Action from the Processor : %s\n", in_msg);
+        // DPRINTF(RubyCustom, "[Mandatory Queue] : Some Action from the Processor : %s\n", in_msg);
         // Check for data access to blocks in I-cache and ifetchs to blocks in D-cache
         if (in_msg.Type == RubyRequestType:IFETCH) {
           // ** INSTRUCTION ACCESS ***
@@ -460,13 +460,13 @@ machine(MachineType:L1Cache, "L1 cache protocol")
                       L1Icache_entry, TBEs[in_msg.LineAddress]);
             }
             if (L1Dcache.cacheAvail(in_msg.LineAddress)) {
-              DPRINTF(RubyCustom, "Some Action from the Processor : %s\n", in_msg);
+              // DPRINTF(RubyCustom, "Some Action from the Processor : %s\n", in_msg);
               // L1 does't have the line, but we have space for it in the L1 let's see if the L2 has it
               trigger(mandatory_request_type_to_event(in_msg.Type),
                       in_msg.LineAddress, L1Dcache_entry,
                       TBEs[in_msg.LineAddress]);
             } else {
-              DPRINTF(RubyCustom, "[L1 Replacement] : Some Action from the Processor : %s\n", in_msg);
+              // DPRINTF(RubyCustom, "[L1 Replacement] : Some Action from the Processor : %s\n", in_msg);
               // Here also we have evictions so Something Interesting !!!
 
               // No room in the L1, so we need to make room in the L1
@@ -541,6 +541,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
       out_msg.Destination.add(mapAddressToMachine(address,
                                                   MachineType:L2Cache));
       out_msg.MessageSize := MessageSizeType:Writeback_Control;
+      // out_msg.isWriteReq := true;
     }
   }
 
@@ -749,9 +750,9 @@ machine(MachineType:L1Cache, "L1 cache protocol")
   }
 
   action(k_popMandatoryQueue, "k", desc="Pop mandatory queue.") {
-    peek(mandatoryQueue_in, RubyRequest){
-      DPRINTF(RubyCustom, "Dequeing The Message : %s\n", in_msg);
-    }
+    // peek(mandatoryQueue_in, RubyRequest){
+    //   DPRINTF(RubyCustom, "Dequeing The Message : %s\n", in_msg);
+    // }
 
     mandatoryQueue_in.dequeue(clockEdge());
   }
