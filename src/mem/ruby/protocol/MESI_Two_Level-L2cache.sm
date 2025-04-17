@@ -500,7 +500,8 @@ machine(MachineType:L2Cache, "MESI Directory L2 Cache CMP")
         out_msg.DataBlk := cache_entry.DataBlk;
         out_msg.MessageSize := MessageSizeType:Response_Data;
 
-        out_msg.AckCount := 0 - cache_entry.Sharers.count();
+        out_msg.AckCount := 0 - cache_entry.Sharers.count(); 
+
         if (cache_entry.Sharers.isElement(in_msg.Requestor)) {
           out_msg.AckCount := out_msg.AckCount + 1;
         }
@@ -548,6 +549,8 @@ machine(MachineType:L2Cache, "MESI Directory L2 Cache CMP")
       out_msg.Destination := tbe.L1_GetS_IDs;  // internal nodes
       out_msg.DataBlk := cache_entry.DataBlk;
       out_msg.MessageSize := MessageSizeType:Response_Data;
+
+      out_msg.Store := true;
     }
   }
 

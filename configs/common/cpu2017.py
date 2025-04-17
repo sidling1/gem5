@@ -29,12 +29,12 @@ import sys
 from os.path import basename, exists, join as joinpath, normpath
 from os.path import isdir, isfile, islink
 
-bench_path = "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017"
+gem5_path = f"/home/siddhant/Desktop/btp/gem5"
 
 
 # '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017'
 spec_dist = os.environ.get(
-    "M5_CPU2017", "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017"
+    "M5_CPU2017", f"{gem5_path}/benchmarks/cpu2017"
 )
 
 
@@ -213,7 +213,7 @@ class namd(DefaultBenchmark):
     def all(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/all/input/namd.input",
+            f"{gem5_path}/benchmarks/cpu2017/data/namd/all/input/namd.input",
             "--iterations",
             "1",
             "--output",
@@ -223,7 +223,7 @@ class namd(DefaultBenchmark):
     def ref(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/namd/all/input/namd.input",
+            f"{gem5_path}/benchmarks/cpu2017/data/namd/all/input/namd.input",
             "--iterations",
             "1",
             "--output",
@@ -238,21 +238,21 @@ class blender(DefaultBenchmark):
     def ref(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/blender/ref/input/sh3_no_char.blend",
+            f"{gem5_path}/benchmarks/cpu2017/data/blender/ref/input/sh3_no_char.blend",
         ]
         self.output = "test.out"
 
     def test(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/blender/test/input/cube.blend",
+            f"{gem5_path}/benchmarks/cpu2017/data/blender/test/input/cube.blend",
         ]
         self.output = "ref.out"
 
     def train(self, isa, os):
         self.args = [
             "-m1200",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/blender/train/input/sh5_reduced.blend",
+            f"{gem5_path}/benchmarks/cpu2017/data/blender/train/input/sh5_reduced.blend",
         ]
         self.output = "train.out"
 
@@ -264,21 +264,21 @@ class fotonik(DefaultBenchmark):
     def ref(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/fortran/ref/input/",
+            f"{gem5_path}/benchmarks/cpu2017/data/fortran/ref/input/",
         ]
         self.output = "test.out"
 
     def test(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/fortran/test/input/",
+            f"{gem5_path}/benchmarks/cpu2017/data/fortran/test/input/",
         ]
         self.output = "ref.out"
 
     def train(self, isa, os):
         self.args = [
             "-m1200",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/fortran/train/input/",
+            f"{gem5_path}/benchmarks/cpu2017/data/fortran/train/input/",
         ]
         self.output = "train.out"
 
@@ -290,21 +290,21 @@ class nab(DefaultBenchmark):
     def ref(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/nab/ref/input/",
+            f"{gem5_path}/benchmarks/cpu2017/data/nab/ref/input/",
         ]
         self.output = "test.out"
 
     def test(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/nab/test/input/",
+            f"{gem5_path}/benchmarks/cpu2017/data/nab/test/input/",
         ]
         self.output = "ref.out"
 
     def train(self, isa, os):
         self.args = [
             "-m1200",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/nab/train/input/",
+            f"{gem5_path}/benchmarks/cpu2017/data/nab/train/input/",
         ]
         self.output = "train.out"
 
@@ -316,21 +316,21 @@ class roms(DefaultBenchmark):
     def ref(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/roms/ref/input/",
+            f"{gem5_path}/benchmarks/cpu2017/data/roms/ref/input/",
         ]
         self.output = "test.out"
 
     def test(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/roms/test/input/",
+            f"{gem5_path}/benchmarks/cpu2017/data/roms/test/input/",
         ]
         self.output = "ref.out"
 
     def train(self, isa, os):
         self.args = [
             "-m1200",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/roms/train/input/",
+            f"{gem5_path}/benchmarks/cpu2017/data/roms/train/input/",
         ]
         self.output = "train.out"
 
@@ -342,21 +342,21 @@ class wrf(DefaultBenchmark):
     def ref(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/wrf/ref/input/",
+            f"{gem5_path}/benchmarks/cpu2017/data/wrf/ref/input/",
         ]
         self.output = "test.out"
 
     def test(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/wrf/test/input/",
+            f"{gem5_path}/benchmarks/cpu2017/data/wrf/test/input/",
         ]
         self.output = "ref.out"
 
     def train(self, isa, os):
         self.args = [
             "-m1200",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/wrf/train/input/",
+            f"{gem5_path}/benchmarks/cpu2017/data/wrf/train/input/",
         ]
         self.output = "train.out"
 
@@ -368,7 +368,7 @@ class bwaves(DefaultBenchmark):
 
     def all(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/bwaves/test/"
+            f"{gem5_path}/benchmarks/cpu2017/data/bwaves/test/"
         ]
 
 
@@ -379,7 +379,7 @@ class cactus(DefaultBenchmark):
 
     def ref(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/cactus/ref/input/spec_ref.par"
+            f"{gem5_path}/benchmarks/cpu2017/data/cactus/ref/input/spec_ref.par"
         ]
         self.output = "spec_ref.out"
 
@@ -392,8 +392,8 @@ class xalancbmk(DefaultBenchmark):
     def ref(self, isa, os):
         self.args = [
             "-v",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xalancbmk/ref/input/t5.xml",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xalancbmk/ref/input/xalanc.xsl",
+            f"{gem5_path}/benchmarks/cpu2017/data/xalancbmk/ref/input/t5.xml",
+            f"{gem5_path}/benchmarks/cpu2017/data/xalancbmk/ref/input/xalanc.xsl",
         ]
 
 
@@ -402,7 +402,7 @@ class milc(DefaultBenchmark):
     lang = "C"
 
     def ref(self, isa, os):
-        self.stdin = "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/milc/ref/input/su3imp.in"
+        self.stdin = f"{gem5_path}/benchmarks/cpu2017//data/milc/ref/input/su3imp.in"
 
 
 class soplex(DefaultBenchmark):
@@ -412,21 +412,21 @@ class soplex(DefaultBenchmark):
     def test(self, isa, os):
         self.args = [
             "-m10000",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/soplex/test/input/test.mps",
+            f"{gem5_path}/benchmarks/cpu2017//data/soplex/test/input/test.mps",
         ]
         self.output = "test.out"
 
     def ref(self, isa, os):
         self.args = [
             "-m3500",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/soplex/ref/input/ref.mps",
+            f"{gem5_path}/benchmarks/cpu2017//data/soplex/ref/input/ref.mps",
         ]
         self.output = "ref.out"
 
     def train(self, isa, os):
         self.args = [
             "-m1200",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/soplex/train/input/train.mps",
+            f"{gem5_path}/benchmarks/cpu2017//data/soplex/train/input/train.mps",
         ]
         self.output = "train.out"
 
@@ -437,7 +437,7 @@ class gamess(DefaultBenchmark):
     lang = "F95"
 
     def ref(self, isa, os):
-        self.stdin = "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/gamess/ref/input/cytosine.2.config"
+        self.stdin = f"{gem5_path}/benchmarks/cpu2017//data/gamess/ref/input/cytosine.2.config"
 
 
 class bzip2(DefaultBenchmark):
@@ -447,25 +447,25 @@ class bzip2(DefaultBenchmark):
 
     def all(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/bzip2/all/input/input.program",
+            f"{gem5_path}/benchmarks/cpu2017//data/bzip2/all/input/input.program",
             "1",
         ]
 
     def test(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/bzip2/test/input/dryer.jpg ",
+            f"{gem5_path}/benchmarks/cpu2017//data/bzip2/test/input/dryer.jpg ",
             "2",
         ]
 
     def train(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/bzip2/train/input/byoudoin.jpg",
+            f"{gem5_path}/benchmarks/cpu2017//data/bzip2/train/input/byoudoin.jpg",
             "5",
         ]
 
     def ref(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017//data/bzip2/ref/input/input.source",
+            f"{gem5_path}/benchmarks/cpu2017//data/bzip2/ref/input/input.source",
             "280",
         ]
 
@@ -504,21 +504,21 @@ class exchange(DefaultBenchmark):
     def ref(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/exchange/ref/input/control",
+            f"{gem5_path}/benchmarks/cpu2017/data/exchange/ref/input/control",
         ]
         self.output = "test.out"
 
     def test(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/exchange/test/input/control",
+            f"{gem5_path}/benchmarks/cpu2017/data/exchange/test/input/control",
         ]
         self.output = "ref.out"
 
     def train(self, isa, os):
         self.args = [
             "-m1200",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/exchange/train/input/control",
+            f"{gem5_path}/benchmarks/cpu2017/data/exchange/train/input/control",
         ]
         self.output = "train.out"
 
@@ -530,21 +530,21 @@ class leela(DefaultBenchmark):
     def ref(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/leela/ref/input/ref.sgf",
+            f"{gem5_path}/benchmarks/cpu2017/data/leela/ref/input/ref.sgf",
         ]
         self.output = "test.out"
 
     def test(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/leela/test/input/test.sgf",
+            f"{gem5_path}/benchmarks/cpu2017/data/leela/test/input/test.sgf",
         ]
         self.output = "ref.out"
 
     def train(self, isa, os):
         self.args = [
             "-m1200",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/leela/train/input/train.sgf",
+            f"{gem5_path}/benchmarks/cpu2017/data/leela/train/input/train.sgf",
         ]
         self.output = "train.out"
 
@@ -556,21 +556,21 @@ class imagick(DefaultBenchmark):
     def ref(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/imagick/ref/input/control",
+            f"{gem5_path}/benchmarks/cpu2017/data/imagick/ref/input/control",
         ]
         self.output = "test.out"
 
     def test(self, isa, os):
         self.args = [
             "--input",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/imagick/ref/input/control",
+            f"{gem5_path}/benchmarks/cpu2017/data/imagick/ref/input/control",
         ]
         self.output = "ref.out"
 
     def train(self, isa, os):
         self.args = [
             "-m1200",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/imagick/ref/input/control",
+            f"{gem5_path}/benchmarks/cpu2017/data/imagick/ref/input/control",
         ]
         self.output = "train.out"
 
@@ -582,17 +582,17 @@ class mcf(DefaultBenchmark):
 
     def test(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/mcf/test/input/inp.in"
+            f"{gem5_path}/benchmarks/cpu2017/data/mcf/test/input/inp.in"
         ]
 
     def ref(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/mcf/ref/input/inp.in"
+            f"{gem5_path}/benchmarks/cpu2017/data/mcf/ref/input/inp.in"
         ]
 
     def train(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/mcf/train/input/inp.in"
+            f"{gem5_path}/benchmarks/cpu2017/data/mcf/train/input/inp.in"
         ]
 
 
@@ -602,8 +602,8 @@ class omnetpp(DefaultBenchmark):
 
     def all(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/omnetpp/ref/input/omnetpp.ini",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/omnetpp/ref/output/omnetpp.log",
+            f"{gem5_path}/benchmarks/cpu2017/data/omnetpp/ref/input/omnetpp.ini",
+            f"{gem5_path}/benchmarks/cpu2017/data/omnetpp/ref/output/omnetpp.log",
         ]
 
 
@@ -613,8 +613,8 @@ class parest(DefaultBenchmark):
 
     def all(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/parest/ref/input/ref.prm",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/parest/ref/output/log",
+            f"{gem5_path}/benchmarks/cpu2017/data/parest/ref/input/ref.prm",
+            f"{gem5_path}/benchmarks/cpu2017/data/parest/ref/output/log",
         ]
 
 
@@ -626,8 +626,8 @@ class perlbench(DefaultBenchmark):
     def all(self, isa, os):
         self.args = [
             "-I./lib",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/perlbench/ref/input/ref.prm",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/perlbench/ref/output/log",
+            f"{gem5_path}/benchmarks/cpu2017/data/perlbench/ref/input/ref.prm",
+            f"{gem5_path}/benchmarks/cpu2017/data/perlbench/ref/output/log",
         ]
 
 
@@ -638,8 +638,8 @@ class povray(DefaultBenchmark):
 
     def ref(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/povray/ref/input/SPEC-benchmark-ref.ini"
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/povray/ref/output/povray.out"
+            f"{gem5_path}/benchmarks/cpu2017/data/povray/ref/input/SPEC-benchmark-ref.ini"
+            f"{gem5_path}/benchmarks/cpu2017/data/povray/ref/output/povray.out"
         ]
 
 
@@ -654,12 +654,12 @@ class sjeng(DefaultBenchmark):
 
     def train(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/sjeng/train/input/train.txt"
+            f"{gem5_path}/benchmarks/cpu2017/data/sjeng/train/input/train.txt"
         ]
 
     def ref(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/sjeng/ref/input/ref.txt"
+            f"{gem5_path}/benchmarks/cpu2017/data/sjeng/ref/input/ref.txt"
         ]
 
 
@@ -670,7 +670,7 @@ class x264(DefaultBenchmark):
 
     def ref(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/x264/ref/input/control"
+            f"{gem5_path}/benchmarks/cpu2017/data/x264/ref/input/control"
         ]
 
 
@@ -681,17 +681,17 @@ class xz(DefaultBenchmark):
 
     def ref(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xz/ref/input/control"
+            f"{gem5_path}/benchmarks/cpu2017/data/xz/ref/input/control"
         ]
 
     def all(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xz/all/input/input.combined.xz"
+            f"{gem5_path}/benchmarks/cpu2017/data/xz/all/input/input.combined.xz"
         ]
 
     def test(self, isa, os):
         self.args = [
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/xz/test/input/control"
+            f"{gem5_path}/benchmarks/cpu2017/data/xz/test/input/control"
         ]
 
 
@@ -988,7 +988,7 @@ class lbm(DefaultBenchmark):
             "reference.dat",
             "0",
             "1",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/lbm/test/input/100_100_130_cf_a.of",
+            f"{gem5_path}/benchmarks/cpu2017/data/lbm/test/input/100_100_130_cf_a.of",
         ]
 
     def train(self, isa, os):
@@ -997,7 +997,7 @@ class lbm(DefaultBenchmark):
             "reference.dat",
             "0",
             "1",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/lbm/train/input/100_100_130_cf_b.of",
+            f"{gem5_path}/benchmarks/cpu2017/data/lbm/train/input/100_100_130_cf_b.of",
         ]
 
     def ref(self, isa, os):
@@ -1006,7 +1006,7 @@ class lbm(DefaultBenchmark):
             "reference.dat",
             "0",
             "0",
-            "/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/lbm/ref/input/100_100_130_ldc.of",
+            f"{gem5_path}/benchmarks/cpu2017/data/lbm/ref/input/100_100_130_ldc.of",
         ]
 
 

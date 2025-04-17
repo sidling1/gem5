@@ -52,6 +52,7 @@
 #include "base/types.hh"
 #include "base/uncontended_mutex.hh"
 #include "debug/Event.hh"
+#include "debug/RubyCustom.hh"
 #include "sim/cur_tick.hh"
 #include "sim/serialize.hh"
 

@@ -3,9 +3,9 @@ gem5 is copyrighted software; use the --copyright option for details.
 
 gem5 version 23.0.1.0
 gem5 compiled Apr 16 2025 15:32:35
-gem5 started Apr 16 2025 16:03:21
-gem5 executing on siddhant-IdeaPad-Gaming-3-15ACH6, pid 28740
-command line: build/X86_MOESI_CMP_directory/gem5.opt configs/deprecated/example/se.py --num-cpus=64 --num-dirs=64 --sys-clock=2GHz --topology=Mesh_XY --mesh-rows=16 --ruby --num-l2caches=64 --network=garnet --mem-size=8GB --caches --l2cache --routing-algorithm=1 --router-latency=1 -I 1000000 --fast-forward=100000 --bench=namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd --enable-eviction-store
+gem5 started Apr 17 2025 13:26:35
+gem5 executing on siddhant-IdeaPad-Gaming-3-15ACH6, pid 22570
+command line: build/X86_MOESI_CMP_directory/gem5.opt -d gem5_outputs/nostore configs/deprecated/example/se.py --num-cpus=64 --num-dirs=64 --sys-clock=2GHz --topology=Mesh_XY --mesh-rows=16 --ruby --num-l2caches=64 --network=garnet --mem-size=8GB --caches --l2cache --routing-algorithm=1 --router-latency=1 -I 1000000 --fast-forward=100000 --bench=namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd
 
 Working
 namd ref
@@ -269,4 +269,3 @@ Switch at instruction count:100000
 Switched CPUS @ tick 117248000
 switching cpus
 **** REAL SIMULATION ****
-Exiting @ tick 2465066500 because a thread reached the max instruction count

@@ -69,6 +69,10 @@ structure(RequestMsg, desc="...", interface="Message") {
   bool Dirty, default="false",  desc="Dirty bit";
   PrefetchBit Prefetch,         desc="Is this a prefetch request";
 
+  Addr get_physical_address(){
+    return addr;
+  }
+
   bool functionalRead(Packet *pkt) {
     // Only PUTX messages contains the data block
     if (Type == CoherenceRequestType:PUTX) {
@@ -95,6 +99,11 @@ structure(ResponseMsg, desc="...", interface="Message") {
   bool Dirty, default="false",  desc="Dirty bit";
   int AckCount, default="0",  desc="number of acks in this message";
   MessageSizeType MessageSize,  desc="size category of the message";
+  bool Store, default="false" , desc = "Is this message is to be stored ?";
+
+  bool get_store_bit(){
+    return Store;
+  }
 
   bool functionalRead(Packet *pkt) {
     // Valid data block is only present in message with following types

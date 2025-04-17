@@ -185,8 +185,9 @@ Router::wakeup()
                                         int outport = this->route_compute(t_flit->get_route(), inport, "Local");
                                         m_input_unit[inport]->grant_outport(cvc, outport);
                                     }
-
+                                    /* Uncomment for Local Eviction Stored Replies */
                                     t_flit->localReply();
+                                    
                                     t_flit->m_isStore = false;
                                     Cycles pipe_stages = this->get_pipe_stages();
                                     if (pipe_stages == 1) {
