@@ -176,6 +176,7 @@ class InputUnit : public Consumer
     std::vector<VirtualChannel> virtualChannels;
 
     // Statistical variables
+    std::int64_t local_replies;
     std::vector<double> m_num_buffer_writes;
     std::vector<double> m_num_buffer_reads;
 };

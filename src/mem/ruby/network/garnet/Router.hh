@@ -144,8 +144,9 @@ class Router : public BasicRouter, public Consumer
 
     void RemoveStoredPacket(int inport, int vc);
 
-    std::map<std::pair<int,int>,Cycles> m_timeout;
-    std::map<std::pair<int,int>,bool> vc_blocked;
+    std::map<MsgPtr, Tick> stored_msgs;
+    statistics::Scalar m_local_replies;
+    Cycles time_to_store = Cycles(0);
     private:
     Cycles m_latency;
     uint32_t m_virtual_networks, m_vc_per_vnet, m_num_vcs;
@@ -161,7 +162,6 @@ class Router : public BasicRouter, public Consumer
     std::vector<std::shared_ptr<OutputUnit>> m_output_unit;
 
 
-    statistics::Scalar m_local_replies;
 
     // Statistical variables required for power computations
     statistics::Scalar m_buffer_reads;

@@ -331,7 +331,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
   in_port(responseToL1Cache_in, ResponseMsg, responseToL1Cache, rank=2) {
     if (responseToL1Cache_in.isReady(clockEdge())) {
       peek(responseToL1Cache_in, ResponseMsg, block_on="addr") {
-        // DPRINTF(RubyCustom, "Recieved Message : %s \n", in_msg);
+        // // DPRINTF(RubyCustom, "Recieved Message : %s \n", in_msg);
         if (in_msg.Type == CoherenceResponseType:ACK) {
           trigger(Event:Ack, in_msg.addr,
                   getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
@@ -363,7 +363,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
     if (requestNetwork_in.isReady(clockEdge())) {
       peek(requestNetwork_in, RequestMsg, block_on="addr") {
         if(in_msg.Store == true){
-          DPRINTF(RubyCustom, "[PROTOCOL] : Local Reply Initiated\n");
+          // DPRINTF(RubyCustom, "[PROTOCOL] : Local Reply Initiated\n");
           if(in_msg.Type == CoherenceRequestType:WRITEBACK_CLEAN_DATA){
             trigger(Event:Stored_Data_Clean, in_msg.addr, getCacheEntry(in_msg.addr), TBEs[in_msg.addr]);
           }else{
@@ -402,7 +402,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
   in_port(mandatoryQueue_in, RubyRequest, mandatoryQueue, rank=0) {
     if (mandatoryQueue_in.isReady(clockEdge())) {
       peek(mandatoryQueue_in, RubyRequest, block_on="LineAddress") {
-        // DPRINTF(RubyCustom, "[Mandatory Queue] : Some Action from the Processor : %s\n", in_msg);
+        // // DPRINTF(RubyCustom, "[Mandatory Queue] : Some Action from the Processor : %s\n", in_msg);
         // Check for data access to blocks in I-cache and ifetchs to blocks in D-cache
         if (in_msg.Type == RubyRequestType:IFETCH) {
           // ** INSTRUCTION ACCESS ***
@@ -460,13 +460,13 @@ machine(MachineType:L1Cache, "L1 cache protocol")
                       L1Icache_entry, TBEs[in_msg.LineAddress]);
             }
             if (L1Dcache.cacheAvail(in_msg.LineAddress)) {
-              // DPRINTF(RubyCustom, "Some Action from the Processor : %s\n", in_msg);
+              // // DPRINTF(RubyCustom, "Some Action from the Processor : %s\n", in_msg);
               // L1 does't have the line, but we have space for it in the L1 let's see if the L2 has it
               trigger(mandatory_request_type_to_event(in_msg.Type),
                       in_msg.LineAddress, L1Dcache_entry,
                       TBEs[in_msg.LineAddress]);
             } else {
-              // DPRINTF(RubyCustom, "[L1 Replacement] : Some Action from the Processor : %s\n", in_msg);
+              // // DPRINTF(RubyCustom, "[L1 Replacement] : Some Action from the Processor : %s\n", in_msg);
               // Here also we have evictions so Something Interesting !!!
 
               // No room in the L1, so we need to make room in the L1
@@ -504,7 +504,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
         }else if ((in_msg.Type == RubyRequestType:ST) || (in_msg.Type == RubyRequestType:ATOMIC)){
           out_msg.isWriteReq := true;
         }
-        DPRINTF(RubyCustom, "Issue GETS for : %s \n", out_msg);
+        // DPRINTF(RubyCustom, "Issue GETS for : %s \n", out_msg);
       }
     }
   }
@@ -527,7 +527,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
           out_msg.isWriteReq := true;
         }
         // out_msg.print(std::cout);
-        DPRINTF(RubyCustom, "Issue GETX for : %s \n", out_msg);
+        // DPRINTF(RubyCustom, "Issue GETX for : %s \n", out_msg);
       }
     }
   }
@@ -751,7 +751,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
 
   action(k_popMandatoryQueue, "k", desc="Pop mandatory queue.") {
     // peek(mandatoryQueue_in, RubyRequest){
-    //   DPRINTF(RubyCustom, "Dequeing The Message : %s\n", in_msg);
+    //   // DPRINTF(RubyCustom, "Dequeing The Message : %s\n", in_msg);
     // }
 
     mandatoryQueue_in.dequeue(clockEdge());
@@ -904,7 +904,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
   action(qq_sendWBDataFromTBEToL2_store, "\qs", desc="Send data from TBE to L2 which is to be stored") {
     if(mandatoryQueue_in.isReady(clockEdge())){
       peek(mandatoryQueue_in, RubyRequest){
-        DPRINTF(RubyCustom, "[Store] wala called : %s\n", in_msg);
+        // DPRINTF(RubyCustom, "[Store] wala called : %s\n", in_msg);
       }
     }
 
@@ -945,7 +945,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
         //assert(in_msg.Dirty == false);
       }
 
-      DPRINTF(RubyCustom, "Normal Write : %s\n", cache_entry);
+      // DPRINTF(RubyCustom, "Normal Write : %s\n", cache_entry);
     }
   }
 
@@ -957,8 +957,8 @@ machine(MachineType:L1Cache, "L1 cache protocol")
       if(in_msg.Type == CoherenceRequestType:WRITEBACK_DIRTY_DATA){
         cache_entry.Dirty := true;
       }
-      DPRINTF(RubyCustom, "Stored Write : %s\n", cache_entry);
-      DPRINTF(RubyCustom, "[PROTOCOL] : Local Reply Done !\n");
+      // DPRINTF(RubyCustom, "Stored Write : %s\n", cache_entry);
+      // DPRINTF(RubyCustom, "[PROTOCOL] : Local Reply Done !\n");
     }
   }
 
@@ -970,8 +970,8 @@ machine(MachineType:L1Cache, "L1 cache protocol")
   //     if(in_msg.Type == CoherenceRequestType:WRITEBACK_DIRTY_DATA){
   //       cache_entry.Dirty := true;
   //     }
-  //     DPRINTF(RubyCustom, "Stored Write : %s\n", cache_entry);
-  //     DPRINTF(RubyCustom, "[PROTOCOL] : Local Reply Done !\n");
+  //     // DPRINTF(RubyCustom, "Stored Write : %s\n", cache_entry);
+  //     // DPRINTF(RubyCustom, "[PROTOCOL] : Local Reply Done !\n");
   //   }
   // }
 
@@ -1025,7 +1025,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
 
   action(zz_recycleMandatoryQueue, "\z", desc="Send the head of the mandatory queue to the back of the queue.") {
     peek(mandatoryQueue_in, RubyRequest){
-      DPRINTF(RubyCustom, "[Recycle] wala called : %s\n", in_msg);
+      // DPRINTF(RubyCustom, "[Recycle] wala called : %s\n", in_msg);
     }
 
     mandatoryQueue_in.recycle(clockEdge(), cyclesToTicks(recycle_latency));

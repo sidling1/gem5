@@ -228,7 +228,7 @@ NetworkInterface::wakeup()
             if (flitisizeMessage(msg_ptr, vnet)) {
                 b->dequeue(curTime);
             }else{
-                DPRINTF(RubyCustom, "[Issue] : Some Issue in Flitisizing the message : %s \n", *msg_ptr);
+                // DPRINTF(RubyCustom, "[Issue] : Some Issue in Flitisizing the message : %s \n", *msg_ptr);
             }
         }
     }

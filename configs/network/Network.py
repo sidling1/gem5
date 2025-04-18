@@ -64,6 +64,13 @@ def define_options(parser):
             in the topology file.""",
     )
     parser.add_argument(
+        "--time-to-store",
+        action="store",
+        type=int,
+        default=0,
+        help="Cycles to store our evicted block",
+    )
+    parser.add_argument(
         "--link-latency",
         action="store",
         type=int,

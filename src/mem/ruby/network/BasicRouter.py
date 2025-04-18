@@ -38,3 +38,4 @@ class BasicRouter(ClockedObject):
 
     # only used by garnet
     latency = Param.Cycles(1, "number of cycles inside router")
+    time_to_store = Param.Cycles(0, "numer of cycles to store an evicted packet")

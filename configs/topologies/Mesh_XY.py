@@ -57,6 +57,7 @@ class Mesh_XY(SimpleTopology):
         # Can be over-ridden on a per link/router basis
         link_latency = options.link_latency  # used by simple and garnet
         router_latency = options.router_latency  # only used by garnet
+        time_to_store = options.time_to_store
 
         # There must be an evenly divisible number of cntrls to routers
         # Also, obviously the number or rows must be <= the number of routers
@@ -67,7 +68,7 @@ class Mesh_XY(SimpleTopology):
 
         # Create the routers in the mesh
         routers = [
-            Router(router_id=i, latency=router_latency)
+            Router(router_id=i, latency=router_latency, time_to_store=time_to_store)
             for i in range(num_routers)
         ]
         network.routers = routers

@@ -54,7 +54,7 @@ Router::Router(const Params &p)
     m_virtual_networks(p.virt_nets), m_vc_per_vnet(p.vcs_per_vnet),
     m_num_vcs(m_virtual_networks * m_vc_per_vnet), m_bit_width(p.width),
     m_network_ptr(nullptr), routingUnit(this), switchAllocator(this),
-    crossbarSwitch(this)
+    crossbarSwitch(this), time_to_store(p.time_to_store)
 {
     m_input_unit.clear();
     m_output_unit.clear();
@@ -69,69 +69,69 @@ Router::init()
     crossbarSwitch.init();
 }
 
-void Router::RemoveStoredPacket(int inport, int vc){
-    if(!m_input_unit[inport]->isReady(vc, curTick())) return;
-    flit* t_flit = m_input_unit[inport]->peekTopFlit(vc);
+// void Router::RemoveStoredPacket(int inport, int vc){
+//     if(!m_input_unit[inport]->isReady(vc, curTick())) return;
+//     flit* t_flit = m_input_unit[inport]->peekTopFlit(vc);
 
-    DPRINTF(RubyCustom, "Removing the flits : %s having message : %s \n", *t_flit, *(t_flit->get_msg_ptr()));
+//     // DPRINTF(RubyCustom, "Removing the flits : %s having message : %s \n", *t_flit, *(t_flit->get_msg_ptr()));
 
-    // Remove this
-    if(t_flit->get_msg_ptr()->get_dirty_bit()){
-        std::vector<flit *> stor;
-        while(m_input_unit[inport]->isReady(vc, curTick())){
-            flit* t_flit = m_input_unit[inport]->getTopFlit(vc);
-            Cycles pipe_stages = this->get_pipe_stages();
-            vc_blocked[{inport, vc}] = false;
-            if (pipe_stages == 1) {
-                // 1-cycle router
-                // Flit goes for SA directly
-                t_flit->advance_stage(SA_, curTick());
-            } else {
-                assert(pipe_stages > 1);
-                // Router delay is modeled by making flit wait in buffer for
-                // (pipe_stages cycles - 1) cycles before going for SA
+//     // Remove this
+//     if(t_flit->get_msg_ptr()->get_dirty_bit()){
+//         std::vector<flit *> stor;
+//         while(m_input_unit[inport]->isReady(vc, curTick())){
+//             flit* t_flit = m_input_unit[inport]->getTopFlit(vc);
+//             Cycles pipe_stages = this->get_pipe_stages();
+//             vc_blocked[{inport, vc}] = false;
+//             if (pipe_stages == 1) {
+//                 // 1-cycle router
+//                 // Flit goes for SA directly
+//                 t_flit->advance_stage(SA_, curTick());
+//             } else {
+//                 assert(pipe_stages > 1);
+//                 // Router delay is modeled by making flit wait in buffer for
+//                 // (pipe_stages cycles - 1) cycles before going for SA
 
-                Cycles wait_time = pipe_stages - Cycles(1);
+//                 Cycles wait_time = pipe_stages - Cycles(1);
 
-                t_flit->advance_stage(SA_, this->clockEdge(wait_time));
+//                 t_flit->advance_stage(SA_, this->clockEdge(wait_time));
 
-                // Wakeup the router in that cycle to perform SA
-                this->schedule_wakeup(Cycles(wait_time));
-            }
-            stor.push_back(t_flit);
-        }
+//                 // Wakeup the router in that cycle to perform SA
+//                 this->schedule_wakeup(Cycles(wait_time));
+//             }
+//             stor.push_back(t_flit);
+//         }
 
-        m_input_unit[inport]->insert_flits(vc, stor);
-    }else{
-        // Drop the flit ?
-        vc_blocked[{inport, vc}] = false;
-        while(m_input_unit[inport]->isReady(vc, curTick())){
-            flit* t_flit = m_input_unit[inport]->getTopFlit(vc);
+//         m_input_unit[inport]->insert_flits(vc, stor);
+//     }else{
+//         // Drop the flit ?
+//         vc_blocked[{inport, vc}] = false;
+//         while(m_input_unit[inport]->isReady(vc, curTick())){
+//             flit* t_flit = m_input_unit[inport]->getTopFlit(vc);
 
-            if(t_flit->get_type() == HEAD_){
-                m_input_unit[inport]->grant_outport(vc, -1);
-            }
+//             if(t_flit->get_type() == HEAD_){
+//                 m_input_unit[inport]->grant_outport(vc, -1);
+//             }
 
-            if ((t_flit->get_type() == TAIL_) ||
-                t_flit->get_type() == HEAD_TAIL_) {
+//             if ((t_flit->get_type() == TAIL_) ||
+//                 t_flit->get_type() == HEAD_TAIL_) {
 
-                // This Input VC should now be empty
-                assert(!(m_input_unit[inport]->isReady(vc, curTick())));
+//                 // This Input VC should now be empty
+//                 assert(!(m_input_unit[inport]->isReady(vc, curTick())));
 
-                // Free this VC
-                m_input_unit[inport]->set_vc_idle(vc, curTick());
+//                 // Free this VC
+//                 m_input_unit[inport]->set_vc_idle(vc, curTick());
 
-                // Send a credit back
-                // along with the information that this VC is now idle
-                m_input_unit[inport]->increment_credit(vc, true, curTick());
-            } else {
-                // Send a credit back
-                // but do not indicate that the VC is idle
-                m_input_unit[inport]->increment_credit(vc, false, curTick());
-            }
-        }
-    }
-}
+//                 // Send a credit back
+//                 // along with the information that this VC is now idle
+//                 m_input_unit[inport]->increment_credit(vc, true, curTick());
+//             } else {
+//                 // Send a credit back
+//                 // but do not indicate that the VC is idle
+//                 m_input_unit[inport]->increment_credit(vc, false, curTick());
+//             }
+//         }
+//     }
+// }
 
 
 void
@@ -143,9 +143,25 @@ Router::wakeup()
     // check for incoming flits
     // check for stored flits ?
 
+    // Removing Time limit up flits.
+    for(auto it = this->stored_msgs.begin(); it != this->stored_msgs.end();){
+        MsgPtr stored = it->first;
+        if(it->second < this->clockEdge()){
+            DPRINTF(RubyCustom, "[Time out Remove] : %s \n", *(stored));
+            it = this->stored_msgs.erase(it);
+        }else{
+            it++;
+        }
+    }
+
     for (int inport = 0; inport < m_input_unit.size(); inport++) {
         m_input_unit[inport]->wakeup();
     }
+
+    // Sirf Message Pointer Store Karke Rakhta Hun
+    // We need to calculate total cache misses that can be satisfied by these stored blocks
+
+    // Assume : Blocks are stored after eviction for certain amount of time.
 
     // check for incoming credits
     // Note: the credit update is happening before SA

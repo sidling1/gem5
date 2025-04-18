@@ -92,6 +92,33 @@ InputUnit::wakeup()
             assert(virtualChannels[vc].get_state() == IDLE_);
             set_vc_active(vc, curTick());
 
+            if(t_flit->m_isStore){ // Try to parameterize this thing
+                DPRINTF(RubyCustom, "[Store] : %s \n", *(t_flit->get_msg_ptr()));
+                m_router->stored_msgs[t_flit->get_msg_ptr()] = m_router->clockEdge(m_router->time_to_store);
+            }
+
+            if(t_flit->m_isReadReq || t_flit->m_isWriteReq){
+                // Check for local reply
+                MsgPtr req = t_flit->get_msg_ptr();
+
+                for(auto it = m_router->stored_msgs.begin(); it != m_router->stored_msgs.end();){
+                    MsgPtr stored = it->first;
+                    if(it->second >= m_router->clockEdge()){
+                        // Valid stored block
+                        if(makeLineAddress(stored->get_physical_address()) == makeLineAddress(req->get_physical_address())){
+                            // Local Reply Succesful.
+                            DPRINTF(RubyCustom, "[Local Reply] : Stored : %s \n Requested : %s \n", *(stored), *(req));
+                            m_router->m_local_replies++;
+                            it = m_router->stored_msgs.erase(it);
+                        }else{
+                            it++;
+                        }
+                    }else{
+                        it = m_router->stored_msgs.erase(it);
+                    }
+                }
+            }
+
             // Route computation for this vc
             int outport = m_router->route_compute(t_flit->get_route(),
                 m_id, m_direction);
