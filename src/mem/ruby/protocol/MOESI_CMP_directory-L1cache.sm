@@ -504,6 +504,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
         }else if ((in_msg.Type == RubyRequestType:ST) || (in_msg.Type == RubyRequestType:ATOMIC)){
           out_msg.isWriteReq := true;
         }
+        DPRINTF(RubyCustom, "Issue GETS for : %s \n", out_msg);
       }
     }
   }
@@ -526,7 +527,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
           out_msg.isWriteReq := true;
         }
         // out_msg.print(std::cout);
-        // DPRINTF(RubyCustom, "Issue GETX for : %s", out_msg);
+        DPRINTF(RubyCustom, "Issue GETX for : %s \n", out_msg);
       }
     }
   }
@@ -541,7 +542,6 @@ machine(MachineType:L1Cache, "L1 cache protocol")
       out_msg.Destination.add(mapAddressToMachine(address,
                                                   MachineType:L2Cache));
       out_msg.MessageSize := MessageSizeType:Writeback_Control;
-      // out_msg.isWriteReq := true;
     }
   }
 
@@ -907,7 +907,7 @@ machine(MachineType:L1Cache, "L1 cache protocol")
         DPRINTF(RubyCustom, "[Store] wala called : %s\n", in_msg);
       }
     }
-    
+
     enqueue(requestNetwork_out, RequestMsg, request_latency) {
       assert(is_valid(tbe));
       out_msg.addr := address;

@@ -74,14 +74,14 @@ void Router::RemoveStoredPacket(int inport, int vc){
     flit* t_flit = m_input_unit[inport]->peekTopFlit(vc);
 
     DPRINTF(RubyCustom, "Removing the flits : %s having message : %s \n", *t_flit, *(t_flit->get_msg_ptr()));
-    
+
     // Remove this
     if(t_flit->get_msg_ptr()->get_dirty_bit()){
         std::vector<flit *> stor;
         while(m_input_unit[inport]->isReady(vc, curTick())){
             flit* t_flit = m_input_unit[inport]->getTopFlit(vc);
             Cycles pipe_stages = this->get_pipe_stages();
-            t_flit->m_isStore = false;
+            vc_blocked[{inport, vc}] = false;
             if (pipe_stages == 1) {
                 // 1-cycle router
                 // Flit goes for SA directly
@@ -104,8 +104,13 @@ void Router::RemoveStoredPacket(int inport, int vc){
         m_input_unit[inport]->insert_flits(vc, stor);
     }else{
         // Drop the flit ?
+        vc_blocked[{inport, vc}] = false;
         while(m_input_unit[inport]->isReady(vc, curTick())){
             flit* t_flit = m_input_unit[inport]->getTopFlit(vc);
+
+            if(t_flit->get_type() == HEAD_){
+                m_input_unit[inport]->grant_outport(vc, -1);
+            }
 
             if ((t_flit->get_type() == TAIL_) ||
                 t_flit->get_type() == HEAD_TAIL_) {
@@ -152,21 +157,23 @@ Router::wakeup()
 
             if(t_flit->m_isReadReq || t_flit->m_isWriteReq){
                 // Look out for local reply
-                for(int cvc = 0; cvc < m_num_vcs; cvc++){
+                int cvc = 0;
+                for(cvc = 0; cvc < m_num_vcs; cvc++){
                     if(!m_input_unit[inport]->isReady(cvc, curTick()))continue;
                     flit* c_flit = m_input_unit[inport]->peekTopFlit(cvc);
-                
+
                     if(c_flit->m_isStore){
                         DPRINTF(RubyCustom, "Checking for Local Reply \n Requested : %s stored : %s \n | Request Msg : %s \n", makeLineAddress(t_flit->get_msg_ptr()->get_physical_address()), makeLineAddress(c_flit->get_msg_ptr()->get_physical_address()), *(t_flit->get_msg_ptr()));
                         if(makeLineAddress(c_flit->get_msg_ptr()->get_physical_address()) == makeLineAddress(t_flit->get_msg_ptr()->get_physical_address())){
-                            
+
                             if((!c_flit->get_msg_ptr()->get_dirty_bit()) && t_flit->m_isWriteReq){
+                                this->schedule_wakeup(Cycles(1));
                                 RemoveStoredPacket(inport, cvc);
                                 continue;
                             }
 
                             DPRINTF(RubyCustom, "Starting Local Reply for : %s\n", *(c_flit->get_msg_ptr()));
-                            
+
                             // Dont understand the NetDest thing, will look if hagap happens
                             // Here no issues because the flit will get recieved at the proper place ?
                             // Like sirf head me he to ye sab run horha hai InputUnit.cc me bhi.
@@ -177,61 +184,62 @@ Router::wakeup()
                                 stor.push_back(t_flit);
                             }
 
-                            if(stor[0]->get_size() == stor.size()){
-                                for(auto t_flit : stor){
-                                    if(t_flit->get_type() == HEAD_ || t_flit->get_type() == HEAD_TAIL_){
-                                        t_flit->localReply();
-                                        t_flit->m_isStore = false;
-                                        int outport = this->route_compute(t_flit->get_route(), inport, "Local");
-                                        m_input_unit[inport]->grant_outport(cvc, outport);
-                                    }
-                                    /* Uncomment for Local Eviction Stored Replies */
+                            DPRINTF(RubyCustom, "We have Flits : %s and Total size : %s \n", stor.size(), stor[0]->get_size());
+
+                            for(flit* t_flit : stor){
+                                if(t_flit->get_type() == HEAD_ || t_flit->get_type() == HEAD_TAIL_){
                                     t_flit->localReply();
-                                    
-                                    t_flit->m_isStore = false;
-                                    Cycles pipe_stages = this->get_pipe_stages();
-                                    if (pipe_stages == 1) {
-                                        // 1-cycle router
-                                        // Flit goes for SA directly
-                                        t_flit->advance_stage(SA_, curTick());
-                                    } else {
-                                        assert(pipe_stages > 1);
-                                        // Router delay is modeled by making flit wait in buffer for
-                                        // (pipe_stages cycles - 1) cycles before going for SA
-
-                                        Cycles wait_time = pipe_stages - Cycles(1);
-
-                                        t_flit->advance_stage(SA_, this->clockEdge(wait_time));
-
-                                        // Wakeup the router in that cycle to perform SA
-                                        this->schedule_wakeup(Cycles(wait_time));
-                                    }
+                                    vc_blocked[{inport, cvc}] = false;
+                                    int outport = this->route_compute(t_flit->get_route(), inport, "Local");
+                                    m_input_unit[inport]->grant_outport(cvc, outport);
                                 }
+                                /* Uncomment for Local Eviction Stored Replies */
+                                t_flit->localReply();
+                                vc_blocked[{inport, cvc}] = false;
+                                Cycles pipe_stages = this->get_pipe_stages();
+                                if (pipe_stages == 1) {
+                                    // 1-cycle router
+                                    // Flit goes for SA directly
+                                    t_flit->advance_stage(SA_, curTick());
+                                } else {
+                                    assert(pipe_stages > 1);
+                                    // Router delay is modeled by making flit wait in buffer for
+                                    // (pipe_stages cycles - 1) cycles before going for SA
 
-                                // Drop the request flit 
-                                while(m_input_unit[inport]->isReady(vc, curTick())){
-                                    flit* t_flit = m_input_unit[inport]->getTopFlit(vc);
+                                    Cycles wait_time = pipe_stages - Cycles(1);
 
-                                    if ((t_flit->get_type() == TAIL_) ||
-                                        t_flit->get_type() == HEAD_TAIL_) {
+                                    t_flit->advance_stage(SA_, this->clockEdge(wait_time));
 
-                                        // This Input VC should now be empty
-                                        assert(!(m_input_unit[inport]->isReady(vc, curTick())));
-
-                                        // Free this VC
-                                        m_input_unit[inport]->set_vc_idle(vc, curTick());
-
-                                        // Send a credit back
-                                        // along with the information that this VC is now idle
-                                        m_input_unit[inport]->increment_credit(vc, true, curTick());
-                                    } else {
-                                        // Send a credit back
-                                        // but do not indicate that the VC is idle
-                                        m_input_unit[inport]->increment_credit(vc, false, curTick());
-                                    }
+                                    // Wakeup the router in that cycle to perform SA
+                                    this->schedule_wakeup(Cycles(wait_time));
                                 }
-                                DPRINTF(RubyCustom, "Set Local Reply Conditions, waiting for the Protocol to pick it up.\n");
                             }
+
+                            // Drop the request flit
+                            while(m_input_unit[inport]->isReady(vc, curTick())){
+                                flit* t_flit = m_input_unit[inport]->getTopFlit(vc);
+
+                                if ((t_flit->get_type() == TAIL_) ||
+                                    t_flit->get_type() == HEAD_TAIL_) {
+
+                                    // This Input VC should now be empty
+                                    assert(!(m_input_unit[inport]->isReady(vc, curTick())));
+
+                                    // Free this VC
+                                    m_input_unit[inport]->set_vc_idle(vc, curTick());
+
+                                    // Send a credit back
+                                    // along with the information that this VC is now idle
+                                    m_input_unit[inport]->increment_credit(vc, true, curTick());
+                                } else {
+                                    // Send a credit back
+                                    // but do not indicate that the VC is idle
+                                    m_input_unit[inport]->increment_credit(vc, false, curTick());
+                                }
+                            }
+
+                            m_local_replies++;
+                            DPRINTF(RubyCustom, "Set Local Reply Conditions, waiting for the Protocol to pick it up.\n");
 
                             m_input_unit[inport]->insert_flits(cvc, stor);
                         }
@@ -263,14 +271,15 @@ Router::wakeup()
             if(t_flit->m_isStore){
                 // Do Something
                 cnt++;
-                
-                if(this->m_timeout[vc] >= Cycles(256/total_store_vcs)){
+
+                if(this->m_timeout[{inport,vc}] >= Cycles(256)){
                     RemoveStoredPacket(inport, vc);
                 }else{
-                    this->m_timeout[vc] += Cycles(1);
+                    this->m_timeout[{inport,vc}] += Cycles(1);
                 }
 
                 if(cnt == m_vc_per_vnet){
+                    DPRINTF(RubyCustom, "All VCs are full, Emptying them\n");
                     // This means all VCs are full, empty them
                     for(int i=0;i<m_vc_per_vnet;i++){
                         int rvc = vc-i;
@@ -278,12 +287,10 @@ Router::wakeup()
                     }
                 }
 
-                
+
                 this->schedule_wakeup(Cycles(1));
             }
         }
-
-
     }
 
 
@@ -400,6 +407,10 @@ Router::regStats()
 {
     BasicRouter::regStats();
 
+    m_local_replies
+        .name(name() + ".local_replies")
+    ;
+
     m_buffer_reads
         .name(name() + ".buffer_reads")
         .flags(statistics::nozero)
@@ -445,6 +456,7 @@ Router::collateStats()
 void
 Router::resetStats()
 {
+    m_local_replies = 0;
     for (int i = 0; i < m_input_unit.size(); i++) {
             m_input_unit[i]->resetStats();
     }

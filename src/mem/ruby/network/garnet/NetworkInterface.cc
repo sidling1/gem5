@@ -410,7 +410,7 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
     DPRINTF(RubyNetwork, "Message Size:%d vnet:%d bitWidth:%d\n",
         m_net_ptr->MessageSizeType_to_int(net_msg_ptr->getMessageSize()),
         vnet, oPort->bitWidth());
-    
+
     // loop to convert all multicast messages into unicast messages
     for (int ctr = 0; ctr < dest_nodes.size(); ctr++) {
 
@@ -418,7 +418,6 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         int vc = calculateVC(vnet);
 
         if (vc == -1) {
-            
             return false;
         }
 
@@ -491,7 +490,7 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
             // And when we want to free some vc, we can setState to IDLE_
         }
 
-        
+
         outVcState[vc].setState(ACTIVE_, curTick());
         m_ni_out_vcs_enqueue_time[vc] = curTick();
     }

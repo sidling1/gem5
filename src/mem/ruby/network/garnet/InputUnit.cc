@@ -81,7 +81,7 @@ InputUnit::wakeup()
     if (m_in_link->isReady(curTick())) {
 
         t_flit = m_in_link->consumeLink();
-        
+
         assert(t_flit->m_width == m_router->getBitWidth());
         int vc = t_flit->get_vc();
         t_flit->increment_hops(); // for stats
@@ -92,7 +92,10 @@ InputUnit::wakeup()
             assert(virtualChannels[vc].get_state() == IDLE_);
             set_vc_active(vc, curTick());
 
-            m_router->m_timeout[vc] = Cycles(0);
+            if(t_flit->m_isStore){
+                m_router->m_timeout[{m_id, vc}] = Cycles(0);
+                m_router->vc_blocked[{m_id, vc}] = true;
+            }
 
             // Route computation for this vc
             int outport = m_router->route_compute(t_flit->get_route(),
@@ -106,37 +109,60 @@ InputUnit::wakeup()
             assert(virtualChannels[vc].get_state() == ACTIVE_);
         }
 
-        // Buffer the flit
-        virtualChannels[vc].insertFlit(t_flit);
 
-        int vnet = vc/m_vc_per_vnet;
-        // number of writes same as reads
-        // any flit that is written will be read only once
-        m_num_buffer_writes[vnet]++;
-        m_num_buffer_reads[vnet]++;
+        if(virtualChannels[vc].get_outport() == -1 && t_flit->m_isStore){
+            if ((t_flit->get_type() == TAIL_) ||
+                t_flit->get_type() == HEAD_TAIL_) {
 
-        if(!t_flit->m_isStore){
-            Cycles pipe_stages = m_router->get_pipe_stages();
-            if (pipe_stages == 1) {
-                // 1-cycle router
-                // Flit goes for SA directly
-                t_flit->advance_stage(SA_, curTick());
+                // This Input VC should now be empty
+                assert(!(this->isReady(vc, curTick())));
+
+                // Free this VC
+                this->set_vc_idle(vc, curTick());
+
+                // Send a credit back
+                // along with the information that this VC is now idle
+                this->increment_credit(vc, true, curTick());
             } else {
-                assert(pipe_stages > 1);
-                // Router delay is modeled by making flit wait in buffer for
-                // (pipe_stages cycles - 1) cycles before going for SA
-
-                Cycles wait_time = pipe_stages - Cycles(1);
-
-                t_flit->advance_stage(SA_, m_router->clockEdge(wait_time));
-
-                // Wakeup the router in that cycle to perform SA
-                m_router->schedule_wakeup(Cycles(wait_time));
+                // Send a credit back
+                // but do not indicate that the VC is idle
+                this->increment_credit(vc, false, curTick());
             }
         }else{
-            DPRINTF(RubyCustom, "Storing the flit : %s inside the Router : %s with Message : %s \n", *t_flit, m_router->get_id(), *(t_flit->get_msg_ptr()));
+            // Buffer the flit
+            virtualChannels[vc].insertFlit(t_flit);
+
+            int vnet = vc/m_vc_per_vnet;
+            // number of writes same as reads
+            // any flit that is written will be read only once
+            m_num_buffer_writes[vnet]++;
+            m_num_buffer_reads[vnet]++;
+
+            if(!m_router->vc_blocked[{m_id, vc}]){
+                Cycles pipe_stages = m_router->get_pipe_stages();
+                if (pipe_stages == 1) {
+                    // 1-cycle router
+                    // Flit goes for SA directly
+                    t_flit->advance_stage(SA_, curTick());
+                } else {
+                    assert(pipe_stages > 1);
+                    // Router delay is modeled by making flit wait in buffer for
+                    // (pipe_stages cycles - 1) cycles before going for SA
+
+                    Cycles wait_time = pipe_stages - Cycles(1);
+
+                    t_flit->advance_stage(SA_, m_router->clockEdge(wait_time));
+
+                    // Wakeup the router in that cycle to perform SA
+                    m_router->schedule_wakeup(Cycles(wait_time));
+                }
+            }else{
+                DPRINTF(RubyCustom, "Storing the flit : %s inside the Router : %s with Message : %s \n", *t_flit, m_router->get_id(), *(t_flit->get_msg_ptr()));
+                m_router->schedule_wakeup(Cycles(1));
+            }
+
         }
-        
+
         if (m_in_link->isReady(curTick())) {
             m_router->schedule_wakeup(Cycles(1));
         }

@@ -148,7 +148,7 @@ class InputUnit : public Consumer
     }
 
     inline void insert_flits(int vc, std::vector<flit *> &stor){
-        for(auto f : stor){
+        for(flit* f : stor){
             virtualChannels[vc].insertFlit(f);
         }
     }
