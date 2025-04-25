@@ -468,12 +468,6 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
             m_net_ptr->increment_injected_flits(vnet);
 
             Tick enqueTime = curTick();
-            // if(msg_ptr->get_store_bit()){
-            //     // isko parameter banana hai ?
-            //     // Kya karun iska bhai exact implement karun kya :(
-
-            //     enqueTime = clockEdge(Cycles(256));
-            // }
 
             // Cannot Make sure that this is the only message at that time for this VC ....
             flit *fl = new flit(packet_id,
@@ -486,8 +480,6 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
 
 
             niOutVcs[vc].insert(fl);
-            // If it is stuck here only, then it is much easier to control the movement right ?
-            // And when we want to free some vc, we can setState to IDLE_
         }
 
 

@@ -143,17 +143,6 @@ Router::wakeup()
     // check for incoming flits
     // check for stored flits ?
 
-    // Removing Time limit up flits.
-    for(auto it = this->stored_msgs.begin(); it != this->stored_msgs.end();){
-        MsgPtr stored = it->first;
-        if(it->second < this->clockEdge()){
-            DPRINTF(RubyCustom, "[Time out Remove] : %s \n", *(stored));
-            it = this->stored_msgs.erase(it);
-        }else{
-            it++;
-        }
-    }
-
     for (int inport = 0; inport < m_input_unit.size(); inport++) {
         m_input_unit[inport]->wakeup();
     }
