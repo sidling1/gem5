@@ -146,6 +146,7 @@ class Router : public BasicRouter, public Consumer
 
     std::map<MsgPtr, Tick> stored_msgs;
     statistics::Scalar m_local_replies;
+    statistics::Scalar m_packets_stored;
     Cycles time_to_store = Cycles(0);
     private:
     Cycles m_latency;

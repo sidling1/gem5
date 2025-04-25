@@ -94,7 +94,25 @@ InputUnit::wakeup()
 
             if(t_flit->m_isStore){ // Try to parameterize this thing
                 DPRINTF(RubyCustom, "[Store] : %s \n", *(t_flit->get_msg_ptr()));
+                // Storing only in local VCs na, so lets limit it to 4
+                if(m_router->stored_msgs.size() == 4){
+                    MsgPtr removal_cadidate;
+                    Tick candidate_time = MaxTick;
+                    auto &m = m_router->stored_msgs;
+                    for(auto it = m.begin();it != m.end(); it++){
+                        if(it->second < candidate_time){
+                            candidate_time = it->second;
+                            removal_cadidate = it->first;
+                        }
+                    }
+
+                    // Is this supposed to be done ?
+                    DPRINTF(RubyCustom, "Removing the oldest one : %s \n", *removal_cadidate);
+                    m_router->stored_msgs.erase(removal_cadidate);
+                }
+                m_router->m_packets_stored++;
                 m_router->stored_msgs[t_flit->get_msg_ptr()] = m_router->clockEdge(m_router->time_to_store);
+                t_flit->m_isStore = false;
             }
 
             if(t_flit->m_isReadReq || t_flit->m_isWriteReq){
@@ -105,6 +123,7 @@ InputUnit::wakeup()
                     MsgPtr stored = it->first;
                     if(it->second >= m_router->clockEdge()){
                         // Valid stored block
+                        DPRINTF(RubyCustom, "Read/Write Request : %s \n", *req);
                         if(makeLineAddress(stored->get_physical_address()) == makeLineAddress(req->get_physical_address())){
                             // Local Reply Succesful.
                             DPRINTF(RubyCustom, "[Local Reply] : Stored : %s \n Requested : %s \n", *(stored), *(req));
@@ -117,6 +136,9 @@ InputUnit::wakeup()
                         it = m_router->stored_msgs.erase(it);
                     }
                 }
+
+                t_flit->m_isReadReq = false;
+                t_flit->m_isWriteReq = false;
             }
 
             // Route computation for this vc

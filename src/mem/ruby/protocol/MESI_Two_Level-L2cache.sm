@@ -482,6 +482,14 @@ machine(MachineType:L2Cache, "MESI Directory L2 Cache CMP")
         out_msg.MessageSize := MessageSizeType:Response_Data;
 
         out_msg.AckCount := 0 - cache_entry.Sharers.count();
+
+        // if(cache_entry.Sharers.count() ==  0){
+        //   DPRINTF(RubyCustom, "Prefetch Bit : %s\n", in_msg.Prefetch);
+        //   if(in_msg.Prefetch == PrefetchBit:Yes){
+        //     out_msg.Store := true;
+        //   }
+        // }
+
         if (cache_entry.Sharers.isElement(in_msg.Requestor)) {
           out_msg.AckCount := out_msg.AckCount + 1;
         }
@@ -501,6 +509,13 @@ machine(MachineType:L2Cache, "MESI Directory L2 Cache CMP")
         out_msg.MessageSize := MessageSizeType:Response_Data;
 
         out_msg.AckCount := 0 - cache_entry.Sharers.count(); 
+
+        // if(cache_entry.Sharers.count() ==  0){
+        //   DPRINTF(RubyCustom, "Prefetch Bit : %s\n", in_msg.Prefetch);
+        //   if(in_msg.Prefetch == PrefetchBit:Yes){
+        //     out_msg.Store := true;
+        //   }
+        // }
 
         if (cache_entry.Sharers.isElement(in_msg.Requestor)) {
           out_msg.AckCount := out_msg.AckCount + 1;
@@ -565,7 +580,7 @@ machine(MachineType:L2Cache, "MESI Directory L2 Cache CMP")
       DPRINTF(RubySlicc, "Address: %#x, Destination: %s, DataBlock: %s\n",
               out_msg.addr, out_msg.Destination, out_msg.DataBlk);
       out_msg.MessageSize := MessageSizeType:Response_Data;
-      out_msg.Store := true;
+      // out_msg.Store := true;
     }
   }
 

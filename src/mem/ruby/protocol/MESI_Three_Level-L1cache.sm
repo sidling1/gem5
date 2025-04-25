@@ -115,6 +115,7 @@ machine(MachineType:L1Cache, "MESI Directory L1 Cache CMP")
     L0_Invalidate_Own,  desc="Invalidate line in L0, due to this cache's (L1) requirements";
     L0_Invalidate_Else, desc="Invalidate line in L0, due to another cache's requirements";
     L1_Replacement,     desc="Invalidate line in this cache (L1), due to another cache's requirements";
+    L1_Replacement_Pf,  desc="Invalidate line in this cache, due to prefetcher";
 
     // other requests
     Fwd_GETX,   desc="GETX from other processor";
@@ -395,8 +396,12 @@ machine(MachineType:L1Cache, "MESI Directory L1 Cache CMP")
                         trigger(Event:L0_Invalidate_Own,
                                 victim, victim_entry, victim_tbe);
                     }  else {
-                        trigger(Event:L1_Replacement,
+                        if(in_msg.Prefetch == PrefetchBit:Yes){
+                          trigger(Event:L1_Replacement_Pf, victim, victim_entry, victim_tbe);
+                        }else{
+                          trigger(Event:L1_Replacement,
                                 victim, victim_entry, victim_tbe);
+                        }
                     }
                 }
             }
@@ -434,9 +439,7 @@ machine(MachineType:L1Cache, "MESI Directory L1 Cache CMP")
                           l2_select_low_bit, l2_select_num_bits, clusterID));
         DPRINTF(RubySlicc, "address: %#x, destination: %s\n",
                 address, out_msg.Destination);
-        if ((in_msg.Type == RubyRequestType:IFETCH) || (in_msg.Type == RubyRequestType:LD)){
-          out_msg.isReadReq := true;
-        }else if ((in_msg.Type == RubyRequestType:ST) || (in_msg.Type == RubyRequestType:ATOMIC)){
+        if ((in_msg.Class == CoherenceClass:GETX)){
           out_msg.isWriteReq := true;
         }
         out_msg.MessageSize := MessageSizeType:Control;
@@ -594,21 +597,44 @@ machine(MachineType:L1Cache, "MESI Directory L1 Cache CMP")
       }
   }
 
-  action(g_issuePUTX, "g", desc="send data to the L2 cache") {
-    enqueue(requestNetwork_out, RequestMsg, l1_response_latency) {
-      assert(is_valid(cache_entry));
-      out_msg.addr := address;
-      out_msg.Type := CoherenceRequestType:PUTX;
-      out_msg.Dirty := cache_entry.Dirty;
-      out_msg.Requestor:= machineID;
-      out_msg.Destination.add(mapAddressToRange(address, MachineType:L2Cache,
-                          l2_select_low_bit, l2_select_num_bits, clusterID));
-      if (cache_entry.Dirty) {
-        out_msg.MessageSize := MessageSizeType:Writeback_Data;
-        out_msg.DataBlk := cache_entry.DataBlk;
-      } else {
-        out_msg.MessageSize := MessageSizeType:Writeback_Control;
+  action(gp_issuePUTX, "gp", desc="send data to the L2 cache cause due to prefetched block"){
+    peek(messageBufferFromL0_in, CoherenceMsg) {
+      enqueue(requestNetwork_out, RequestMsg, l1_response_latency) {
+        assert(is_valid(cache_entry));
+        out_msg.addr := address;
+        out_msg.Type := CoherenceRequestType:PUTX;
+        out_msg.Dirty := cache_entry.Dirty;
+        out_msg.Requestor:= machineID;
+        out_msg.Destination.add(mapAddressToRange(address, MachineType:L2Cache,
+                            l2_select_low_bit, l2_select_num_bits, clusterID));
+        if (cache_entry.Dirty) {
+          out_msg.MessageSize := MessageSizeType:Writeback_Data;
+          out_msg.DataBlk := cache_entry.DataBlk;
+        } else {
+          out_msg.MessageSize := MessageSizeType:Writeback_Control;
+        }
+        if(in_msg.Prefetch == PrefetchBit:Yes){
+          out_msg.Store := true;
+        }
       }
+    }
+  }
+
+  action(g_issuePUTX, "g", desc="send data to the L2 cache") {
+      enqueue(requestNetwork_out, RequestMsg, l1_response_latency) {
+        assert(is_valid(cache_entry));
+        out_msg.addr := address;
+        out_msg.Type := CoherenceRequestType:PUTX;
+        out_msg.Dirty := cache_entry.Dirty;
+        out_msg.Requestor:= machineID;
+        out_msg.Destination.add(mapAddressToRange(address, MachineType:L2Cache,
+                            l2_select_low_bit, l2_select_num_bits, clusterID));
+        if (cache_entry.Dirty) {
+          out_msg.MessageSize := MessageSizeType:Writeback_Data;
+          out_msg.DataBlk := cache_entry.DataBlk;
+        } else {
+          out_msg.MessageSize := MessageSizeType:Writeback_Control;
+        }
     }
   }
 
@@ -778,6 +804,10 @@ machine(MachineType:L1Cache, "MESI Directory L1 Cache CMP")
     wakeUpAllBuffers(address);
   }
 
+  action(uu_profilePrefetchEviction, "\upf", desc="Profile the eviction caused by prefetching"){
+    cache.profilePrefetchEviction();
+  }
+
   action(uu_profileMiss, "\um", desc="Profile the demand miss") {
     cache.profileDemandMiss();
   }
@@ -793,7 +823,7 @@ machine(MachineType:L1Cache, "MESI Directory L1 Cache CMP")
 
   // Transitions for Load/Store/Replacement/WriteBack from transient states
   transition({IS, IM, IS_I, M_I, SM, SINK_WB_ACK, S_IL0, M_IL0, E_IL0, MM_IL0},
-             {Load, Store, L1_Replacement}) {
+             {Load, Store, L1_Replacement, L1_Replacement_Pf}) {
     z0_stallAndWaitL0Queue;
   }
 
@@ -832,7 +862,7 @@ machine(MachineType:L1Cache, "MESI Directory L1 Cache CMP")
     k_popL0RequestQueue;
   }
 
-  transition(SS, L1_Replacement, I) {
+  transition(SS, {L1_Replacement, L1_Replacement_Pf}, I) {
     ff_deallocateCacheBlock;
   }
 
@@ -856,6 +886,13 @@ machine(MachineType:L1Cache, "MESI Directory L1 Cache CMP")
     hh_xdata_to_l0;
     uu_profileHit;
     k_popL0RequestQueue;
+  }
+
+  transition(EE, L1_Replacement_Pf, M_I){
+    uu_profilePrefetchEviction;
+    i_allocateTBE;
+    gp_issuePUTX;
+    ff_deallocateCacheBlock;
   }
 
   transition(EE, L1_Replacement, M_I) {
@@ -890,6 +927,13 @@ machine(MachineType:L1Cache, "MESI Directory L1 Cache CMP")
 
   transition(E, L0_Invalidate_Else, E_IL0) {
     forward_eviction_to_L0_else;
+  }
+
+  transition(MM, L1_Replacement_Pf, M_I){
+    uu_profilePrefetchEviction;
+    i_allocateTBE;
+    gp_issuePUTX;
+    ff_deallocateCacheBlock;
   }
 
   // Transitions from Modified
@@ -1146,7 +1190,7 @@ machine(MachineType:L1Cache, "MESI Directory L1 Cache CMP")
     kd_wakeUpDependents;
   }
 
-  transition(I, L1_Replacement) {
+  transition(I, {L1_Replacement, L1_Replacement_Pf}) {
     ff_deallocateCacheBlock;
   }
 }

@@ -237,6 +237,7 @@ class CacheMemory : public SimObject
           statistics::Scalar m_prefetch_hits;
           statistics::Scalar m_prefetch_misses;
           statistics::Formula m_prefetch_accesses;
+          statistics::Scalar m_prefetch_evictions;
 
           statistics::Vector m_accessModeType;
       } cacheMemoryStats;
@@ -244,6 +245,7 @@ class CacheMemory : public SimObject
     public:
       // These function increment the number of demand hits/misses by one
       // each time they are called
+      void profilePrefetchEviction();
       void profileDemandHit();
       void profileDemandMiss();
       void profilePrefetchHit();

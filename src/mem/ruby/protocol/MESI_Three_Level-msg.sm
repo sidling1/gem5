@@ -81,7 +81,10 @@ structure(CoherenceMsg, desc="...", interface="Message") {
   PrefetchBit Prefetch,         desc="Is this a prefetch request";
 
   bool get_store_bit(){
-    return Prefetch;
+    if(Prefetch == PrefetchBit:No){
+      return false;
+    }
+    return true;
   }
 
   bool functionalRead(Packet *pkt) {

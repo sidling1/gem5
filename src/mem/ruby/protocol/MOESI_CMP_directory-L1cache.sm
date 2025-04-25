@@ -135,6 +135,10 @@ machine(MachineType:L1Cache, "L1 cache protocol")
     DataBlock DataBlk,       desc="data for the block";
   }
 
+  // Structure to maintain the request time and when the request was fullfilled.
+  
+
+
   // TBE fields
   structure(TBE, desc="...") {
     Addr addr,         desc="Physical address for this TBE";
@@ -940,6 +944,8 @@ machine(MachineType:L1Cache, "L1 cache protocol")
       assert(is_valid(cache_entry));
       cache_entry.DataBlk := in_msg.DataBlk;
       cache_entry.Dirty := in_msg.Dirty;
+
+      
 
       if (in_msg.Type == CoherenceResponseType:DATA) {
         //assert(in_msg.Dirty == false);

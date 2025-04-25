@@ -276,6 +276,10 @@ Router::regStats()
 {
     BasicRouter::regStats();
 
+    m_packets_stored
+        .name(name() + ".packets_stored")
+    ;
+
     m_local_replies
         .name(name() + ".local_replies")
     ;

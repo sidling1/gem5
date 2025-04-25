@@ -398,7 +398,7 @@ Sequencer::recordMissLatency(SequencerRequest* srequest, bool llscSuccess,
     DPRINTFR(ProtocolTrace, "%15s %3s %10s%20s %6s>%-6s %s %d cycles\n",
              curTick(), m_version, "Seq", llscSuccess ? "Done" : "SC_Failed",
              "", "", printAddress(srequest->pkt->getAddr()), total_lat);
-
+    
     m_latencyHist.sample(total_lat);
     m_typeLatencyHist[type]->sample(total_lat);
 

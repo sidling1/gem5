@@ -544,6 +544,7 @@ CacheMemoryStats::CacheMemoryStats(statistics::Group *parent)
       ADD_STAT(m_prefetch_misses, "Number of cache prefetch misses"),
       ADD_STAT(m_prefetch_accesses, "Number of cache prefetch accesses",
                m_prefetch_hits + m_prefetch_misses),
+      ADD_STAT(m_prefetch_evictions, "Number of eviction due to prefetch requests"),
       ADD_STAT(m_accessModeType, "")
 {
     numDataArrayReads
@@ -745,6 +746,10 @@ CacheMemory::htmCommitTransaction()
     cacheMemoryStats.htmTransCommitWriteSet.sample(htmWriteSetSize);
     DPRINTF(HtmMem, "htmCommitTransaction: read set=%u write set=%u\n",
         htmReadSetSize, htmWriteSetSize);
+}
+
+void CacheMemory::profilePrefetchEviction(){
+    cacheMemoryStats.m_prefetch_evictions++;
 }
 
 void
