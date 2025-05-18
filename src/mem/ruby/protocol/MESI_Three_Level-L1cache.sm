@@ -863,6 +863,7 @@ machine(MachineType:L1Cache, "MESI Directory L1 Cache CMP")
   }
 
   transition(SS, {L1_Replacement, L1_Replacement_Pf}, I) {
+    uu_profilePrefetchEviction;
     ff_deallocateCacheBlock;
   }
 

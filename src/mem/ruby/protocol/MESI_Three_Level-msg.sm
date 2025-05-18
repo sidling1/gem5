@@ -101,4 +101,6 @@ structure(CoherenceMsg, desc="...", interface="Message") {
     // read data from those messages that contain the block
     return testAndWrite(addr, DataBlk, pkt);
   }
+
+  Tick getLastEnqueueTime();
 }

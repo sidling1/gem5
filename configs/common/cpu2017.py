@@ -29,7 +29,7 @@ import sys
 from os.path import basename, exists, join as joinpath, normpath
 from os.path import isdir, isfile, islink
 
-gem5_path = f"/home/siddhant/Desktop/btp/gem5"
+gem5_path = f"/home/siddhant/btp/gem5"
 
 
 # '/home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017'
@@ -649,7 +649,7 @@ class sjeng(DefaultBenchmark):
 
     def test(self, isa, os):
         self.args = [
-            "//home/siddhant/Desktop/btp/gem5/benchmarks/cpu2017/data/sjeng/test/input/test.txt"
+            f"{gem5_path}/benchmarks/cpu2017/data/sjeng/test/input/test.txt"
         ]
 
     def train(self, isa, os):

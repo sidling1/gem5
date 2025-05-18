@@ -1,0 +1,146 @@
+https://www.spec.org/cpu2017/Docs/runrules.html
+
+
+Prefetching in gem5
+
+https://github.com/dhschall/gem5-fdp
+
+https://www.sciencedirect.com/science/article/pii/S1569190X14000434#bi005
+https://arco.e.ac.upc.edu/wiki/images/a/a7/Molina_gem15.pdf
+
+Benchmark details
+
+
+------------ Benchmarks Running ---------------
+namd
+gcc
+blender
+cactus
+leela
+sjeng
+
+------- Commands to run -----------------
+
+
+sudo build/X86_MOESI_CMP_directory/gem5.opt configs/deprecated/example/se.py --num-cpus=4 --num-dirs=4 --sys-clock=2GHz --topology=Mesh_XY --mesh-rows=2 --ruby --num-l2caches=4 --network=garnet --mem-size=8GB --caches --l2cache --routing-algorithm=1 --router-latency=1 -I 1000000 --fast-forward=100000 --bench=namd-namd-namd-namd
+
+sudo build/X86_MOESI_CMP_directory/gem5.opt configs/deprecated/example/se.py --num-cpus=16 --num-dirs=16 --sys-clock=2GHz --topology=Mesh_XY --mesh-rows=4 --ruby --num-l2caches=16 --network=garnet --mem-size=8GB --caches --l2cache --routing-algorithm=1 --router-latency=1 -I 1000000 --fast-forward=100000 --bench=namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd
+
+scons build/X86_MOESI_CMP_directory/gem5.opt PROTOCOL=MOESI_CMP_directory -j15
+
+sudo build/X86_MOESI_CMP_directory/gem5.opt configs/deprecated/example/se.py --num-cpus=64 --num-dirs=64 --sys-clock=2GHz --topology=Mesh_XY --mesh-rows=16 --ruby --num-l2caches=64 --network=garnet --mem-size=8GB --caches --l2cache --routing-algorithm=1 --router-latency=1 -I 1000000 --fast-forward=100000 --bench=namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd
+
+
+## With Prefetching
+
+sudo build/X86_MESI_Three_Level/gem5.opt --debug-flags=RubyPrefetcher configs/deprecated/example/se.py --num-cpus=16 --num-dirs=16 --sys-clock=2GHz --topology=Mesh_XY --mesh-rows=4 --ruby --num-l2caches=16 --network=garnet --mem-size=8GB --caches --l2cache --routing-algorithm=1 --router-latency=1 -I 1000000 --fast-forward=100000 --bench=namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd-namd --enable-prefetch
+
+Understand the cache hirarchy in a better way.
+
+
+----- Garnet Synth Traffic -----------
+
+sudo ./build/X86_MOESI_CMP_directory/gem5.opt ./configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --l2cache --num-l2cache=16 --ruby --topology=Mesh_XY --sim-cycles=10000 --mesh-rows=4 --routing-algorithm=1 --single-sender-id=1 --single-dest-id=7 --injectionrate=1 --num-packets-max=1
+
+Q) How did we put debug flags ?
+
+sudo ./build/X86_MESI_Three_Level/gem5.opt --debug-flags=RubyPrefetcher ./configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --l2cache --num-l2cache=16 --ruby --topology=Mesh_XY --sim-cycles=10000 --mesh-rows=4 --routing-algorithm=1 --single-sender-id=1 --single-dest-id=7 --injectionrate=1 --enable-prefetch
+
+This is how you use the Prefetching i guess ?
+If we wish to use something else, then we need a protocol for it.
+
+
+-------------- FS mode --------------------
+
+build/X86_MOESI_CMP_directory/gem5.opt configs/deprecated/example/fs.py --kernel=/home/jethwani/parsec/x86_linux_kernel --disk-image=/home/jethwani/parsec/x86_image.img --network=garnet --num-cpus=16 --num-dirs=16 --sys-clock=1GHz --topology=Mesh_XY --ruby --num-l2caches=16 --mem-size=8GB --caches --l2cache --mesh-rows=4 --router-latency=3 --routing-algorithm=1 --script=/home/jethwani/parsec/parsec_runscripts/vips.rcS --fast-forward=100000
+
+
+------------------- Errors -----------------------------------------
+
+Faced an Error in executing the benchmarks : 
+- fatal : pid 100 is already in use
+
+Searched it online, found https://www.mail-archive.com/gem5-users@gem5.org/msg20722.html
+Fixed it by adding the pid manually when the process is created in the script !
+
+- panic: panic condition !_fstream->is_open() occurred: Failed to open "m5out/stats.txt"
+
+Did not give sudo privillege thats why.
+
+
+---------------- Notes --------------------------
+
+# --outdir=DIR, -d DIR
+The directory to be created which hold the gem5 output files, including config.ini, config.json, stats.txt, and possibly other. The files in this directory are overwritten if they already exist.
+
+
+
+
+Tips : 
+Limit instructions from 100 M to 1 B after fastforwarding
+Rule of thumb is to fast forward 10% of the instructions
+
+Deadlock ho jara hai store karne se because the message has the enqueue time in it
+=> need to update the time when we send it forward.
+
+// Look for local reply chances and do local reply.
+
+
+This is how a response message looks, how do i update a message such that 
+it looks like this, swapping the source and destination, and then doing the local reply.
+
+This is L2 ka reply
+[ResponseMsg: addr = [0x18a5540, line 0x18a5540] Type = DATA Sender = L2Cache-1 SenderMachine = L2Cache Destination = [NetDest (20)  - 0 1 0 0  - 0 0 0 0  -  - 0 0 0 0  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - ] DataBlk = [ 0x48 0x89 0xe7 0xe8 0x88 0xc 0x0 0x0 0x49 0x89 0xc4 0x49 0x89 0xe5 0x8b 0x15 0x14 0x9b 0x1 0x0 0xf7 0xc2 0x2 0x0 0x0 0x0 0x74 0x11 0xbe 0x1 0x0 0x0 0x0 0xbf 0x1 0x50 0x0 0x0 0xb8 0x9e 0x0 0x0 0x0 0xf 0x5 0x89 0xd7 0x48 0x83 0xe4 0xf0 0xe8 0xc8 0x85 0xff 0xff 0x4c 0x89 0xe0 0x4c 0x89 0xec 0x48 0x8b ] Dirty = 0 Acks = 0 MessageSize = Response_Data ] 
+
+This is what is Stored
+[RequestMsg: addr = [0x1895500, line 0x1895500] Len = 0 Type = WRITEBACK_CLEAN_DATA Requestor = L1Cache-1 RequestorMachine = L1Cache Destination = [NetDest (20)  - 0 0 0 0  - 1 0 0 0  -  - 0 0 0 0  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - ] DataBlk = [ 0xc5 0x4c 0x8d 0x4 0x30 0x48 0x89 0x45 0x90 0x4d 0x39 0xc8 0x75 0xb 0x48 0x29 0xfe 0x48 0x89 0x75 0x98 0x4c 0x8d 0x4 0x6 0x45 0x85 0xe4 0xf 0x85 0xae 0xe 0x0 0x0 0x4c 0x39 0xc2 0xf 0x84 0x7f 0xf 0x0 0x0 0xf 0x29 0x45 0xb0 0x48 0x8d 0x45 0xd0 0x81 0xe3 0x0 0x0 0x0 0x2 0x4c 0x8d 0x65 0x90 0x4c 0x89 0xad ] Acks = 0 MessageSize = Writeback_Data AccessMode = User Prefetch = No Store = 1 isReadReq = 0 isWriteReq = 0 ] 
+
+
+outNode_ptr sends the message to the protocol.
+
+
+
+outVcState[vc].setState(ACTIVE_, clockEdge(Cycles(256))); Changing this 256 results in lesser number of these things to be stored.
+
+
+
+--------- Debugging Gem5 ---------------------
+run --debug-break=2000 configs/deprecated/example/se.py --num-cpus=1 --num-dirs=1 --sys-clock=2GHz --topology=Mesh_XY --mesh-rows=1 --ruby --num-l2caches=1 --network=garnet --mem-size=8GB --caches --l2cache --routing-algorithm=1 --router-latency=1 -I 1000000 --fast-forward=10000 --bench=gcc
+
+
+
+
+
+
+
+
+
+
+
+------------- Errors Faced -----------------------
+
+1 -> On implementing the paper, i think there is some issue with the logic.
+build/X86_MOESI_CMP_directory/mem/ruby/protocol/L2Cache_Transitions.cc:2199: panic: Invalid transition
+system.ruby.l2_cntrl1 time: 1613245 addr: 0x47f440 event: Exclusive_Unblock state: ILXW
+
+Solution : Bad state updates in the local L1 cache causing to useless control messages sent to the L2.
+
+
+2 -> panic: Possible Deadlock detected. Aborting!
+ version: 0 request.paddr: 0x4434c6 m_readRequestTable: 1 current time: 1117250000 issue_time: 836351500 difference: 280898500
+
+Limit extend karke chal jaa raha , but should it be like that ?
+
+--------- Prefetching Stats That i measured -------------------------------
+
+1) No. of hits due to Prefetching
+2) No. of evictions due to Prefetching # And how to get this quantity ?
+3) No. of unused Prefetch blocks ( prefetched but not requested while the block was there or never requested )
+4) No. of misses due to eviction of some block due to a prefetched block !!
+
+# Is there any way to know ki kitne cycles pehle prefetched block nikalgaya ?
+
+
+-------- Results -----------
+Q ) Does size of NOC matter ?
+Ans - It Matters, dont know how :(

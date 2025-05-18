@@ -34,3 +34,4 @@ configs/dram/lowp_sweep.cfg
 .vscode
 gem5_outputs
 WL*.txt
+benchmarks/
